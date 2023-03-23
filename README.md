@@ -1,6 +1,4 @@
-# Visualisation des données
-
-
+# Visualisation de données : census-income
 
 ## Introduction
 
@@ -8,7 +6,7 @@ Extrait du recensement de la population américaine effectué en 1994-1995, ce j
 
 
 
-## Données
+### Données
 
 Pour chaque variable, les personnes recensées les ont remplies si elles étaient concernées. La liste des variables du dataset est la suivante :
 
@@ -57,7 +55,7 @@ Pour chaque variable, les personnes recensées les ont remplies si elles étaien
 
 
 
-## Plan d'analyse
+### Plan d'analyse
 
 La présence de données ethniques est une des spécificités de ce jeu de données. Celles-ci ne sont en effet pas présentes dans les données issues des instituts français, empêchant de facto l'étude des inégalités liées à la race* sur une grande échelle.
 
