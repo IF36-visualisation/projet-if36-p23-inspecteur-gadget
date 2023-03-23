@@ -66,18 +66,18 @@ Plus d'informations sur la signification des variables sont disponibles sur le s
 La présence de données ethniques est une des spécificités de ce jeu de données. Celles-ci ne sont en effet pas présentes dans les données issues des instituts français, empêchant de facto l'étude des inégalités liées à la race* sur une grande échelle.
 
 
--Nous avons donc décidé de profiter de la présence de l’attribut ethnique ("race") pour étudier l’impact de l’appartenance à un groupe racisé* sur la situation économique de la personne, et plus particulièrement sur son revenu.
+Nous avons donc décidé de profiter de la présence de l’attribut ethnique ("race") pour étudier l’impact de l’appartenance à un groupe racisé* sur la situation économique de la personne, et plus particulièrement sur son revenu.
 Nous essaierons d’affiner notre analyse en croisant nos résultats avec d’autres données: 
--Le sexe ; Est-ce un facteur d’aggravation des inégalités raciales ?
--La situation géographique ; Le lieu de résidence (la Sunbelt par exemple) influe-t-il sur le niveau de vie et la qualité des emplois ?
+- Le sexe ; Est-ce un facteur d’aggravation des inégalités raciales ?
+- La situation géographique ; Le lieu de résidence (la Sunbelt par exemple) influe-t-il sur le niveau de vie et la qualité des emplois ?
 - Le statut marital et la situation familiale ; Le mariage profite-t-il économiquement aux individus ? On pourra aussi pondérer les revenus en fonction du nombre de personnes composant les foyers.
--temporel (générations); Les enfants américains nés de parents étrangers sont-ils mieux intégrés au marché de l’emploi que leurs parents avant eux ?
+- temporel (générations); Les enfants américains nés de parents étrangers sont-ils mieux intégrés au marché de l’emploi que leurs parents avant eux ?
 
 
 Enfin, nous nous attacherons à essayer de comprendre les inégalités économiques. Pour cela nous nous pencherons sur les données structurelles : 
--Le niveau scolaire; La poursuite d’études permet-elle l’accès aux plus hauts revenus ? Élimine-t-elle le travail précaire ?
--La qualité de l’emploi (nombre de semaines travaillées, salaire horaire, cause du chômage, domaine d’activité, syndicat,); L’ethnie a-t-elle un impact sur les postes occupés et la rémunération des individus ? 
--Le capital
+- Le niveau scolaire; La poursuite d’études permet-elle l’accès aux plus hauts revenus ? Élimine-t-elle le travail précaire ?
+- La qualité de l’emploi (nombre de semaines travaillées, salaire horaire, cause du chômage, domaine d’activité, syndicat,); L’ethnie a-t-elle un impact sur les postes occupés et la rémunération des individus ? 
+- Le capital
 
 
 
