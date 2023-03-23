@@ -66,7 +66,7 @@ Plus d'informations sur la signification des variables sont disponibles sur le s
 La présence de données ethniques est une des spécificités de ce jeu de données. Celles-ci ne sont en effet pas présentes dans les données issues des instituts français, empêchant de facto l'étude des inégalités liées à la race* sur une grande échelle.
 
 
- Nous avons donc décidé de profiter de la présence de l’attribut ethnique pour étudier l’impact de l’appartenance à une race* sur la situation économique de la personne, et plus particulièrement sur son revenu. 
+-Nous avons donc décidé de profiter de la présence de l’attribut ethnique ("race") pour étudier l’impact de l’appartenance à un groupe racisé* sur la situation économique de la personne, et plus particulièrement sur son revenu.
 Nous essaierons d’affiner notre analyse en croisant nos résultats avec d’autres données: 
 -Le sexe ; Est-ce un facteur d’aggravation des inégalités raciales ?
 -La situation géographique ; Le lieu de résidence (la Sunbelt par exemple) influe-t-il sur le niveau de vie et la qualité des emplois ?
