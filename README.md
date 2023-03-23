@@ -2,13 +2,17 @@
 
 ## Introduction
 
-Extrait du recensement de la population américaine effectué en 1994-1995, ce jeu de données contient les données d’un peu moins de 200 000 individus, réparties sur 40 variables. Ce jeu de données provient du Département du Commerce des Etats-Unis; nous sommes donc en présence de données qui s'attachent principalement à décrire des données démographiques et sur l'emploi. 
+Extrait du recensement de la population américaine effectué en 1994-1995, ce jeu de données contient les données d’un peu moins de 200 000 individus, réparties sur 40 variables. Ce jeu de données provient du Département du Commerce des Etats-Unis; nous sommes donc en présence de données qui s'attachent principalement à décrire des données démographiques et sur l'emploi.
+
+Il est disponible sur le site de l'[UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Census-Income+%28KDD%29).
 
 
 
 ### Données
 
-Pour chaque variable, les personnes recensées les ont remplies si elles étaient concernées. La liste des variables du dataset est la suivante :
+Ce dataset contient 199 523 observations et 42 variables. 
+
+Pour chaque variable, les personnes recensées les ont remplies si elles étaient concernées. La liste des variables est la suivante :
 
 - `age` : âge
 - `class_of_worker` : type de l'emploi (gouvernement, auto-entrepreneur, privé)
@@ -53,6 +57,8 @@ Pour chaque variable, les personnes recensées les ont remplies si elles étaien
 - `year` : année du recensement
 - `income_level` : niveau de revenu (inférieur à 50k, supérieur à 50k)
 
+Plus d'informations sur la signification des variables sont disponibles sur le site du [Census Bureau](https://www.census.gov/).
+
 
 
 ### Plan d'analyse
@@ -71,6 +77,9 @@ Enfin, nous nous attacherons à essayer de comprendre ces inégalités économiq
 - niveau scolaire
 - qualité de l’emploi (nombre de semaines travaillées, salaire horaire, cause du chômage, domaine d’activité, syndicat)
 - capital
+
+
+Il est tout de même important de noter que les données datent des années 90 et que les visualisations que nous allons réaliser ne seront pas forcément représentatives de la situation actuelle. Il sera donc nécessaire de replacer ces visualisations dans le contexte de l'époque afin de les interpréter correctement.
 
 
 > *NB : “race” est un mot de vocabulaire employé dans le champ de la recherche en sociologie, en France comme aux Etats-Unis. 
