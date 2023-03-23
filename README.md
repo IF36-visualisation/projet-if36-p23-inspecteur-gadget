@@ -1,12 +1,16 @@
-# Introduction
+# Visualisation des données
+
+
+
+## Introduction
+
 Extrait du recensement de la population américaine effectué en 1994-1995, ce jeu de données contient les données d’un peu moins de 200 000 individus, réparties sur 40 variables. Ce jeu de données provient du Département du Commerce des Etats-Unis; nous sommes donc en présence de données qui s'attachent principalement à décrire des données démographiques et sur l'emploi. 
 
 
-# Données
 
+## Données
 
 Pour chaque variable, les personnes recensées les ont remplies si elles étaient concernées. La liste des variables du dataset est la suivante :
-
 
 - `age` : âge
 - `class_of_worker` : type de l'emploi (gouvernement, auto-entrepreneur, privé)
@@ -53,25 +57,22 @@ Pour chaque variable, les personnes recensées les ont remplies si elles étaien
 
 
 
-
-# Plan d'analyse
-
+## Plan d'analyse
 
 La présence de données ethniques est une des spécificités de ce jeu de données. Celles-ci ne sont en effet pas présentes dans les données issues des instituts français, empêchant de facto l'étude des inégalités liées à la race* sur une grande échelle.
 
 
 Nous avons donc décidé de profiter de la présence de l’attribut ethnique ("race") pour étudier l’impact de l’appartenance à un groupe racisé* sur la situation économique de la personne, et plus particulièrement sur son revenu. 
 Nous essaierons d’affiner notre analyse en croisant nos résultats avec d’autres données: 
--sexe
--situation géographique
--temporel (générations)
+- sexe
+- situation géographique
+- temporel (générations)
 
 
 Enfin, nous nous attacherons à essayer de comprendre ces inégalités économiques. Pour cela nous nous pencherons sur les données structurelles : 
--niveau scolaire
--qualité de l’emploi (nombre de semaines travaillées, salaire horaire, cause du chômage, domaine d’activité, syndicat)
--capital
+- niveau scolaire
+- qualité de l’emploi (nombre de semaines travaillées, salaire horaire, cause du chômage, domaine d’activité, syndicat)
+- capital
 
 
-*NB : “race” est un mot de vocabulaire employé dans le champ de la recherche en sociologie, en France comme aux Etats-Unis. 
-
+> *NB : “race” est un mot de vocabulaire employé dans le champ de la recherche en sociologie, en France comme aux Etats-Unis. 
