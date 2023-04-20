@@ -15,9 +15,17 @@ Prendre les US comme témoin et analyser en fonction de ça
 -Map : 
 Pour les migrations. 
 
+_ Secteur d'activité/Sexe :_
+Différentes formes pour homme et femme, ajout de couleur en fonction du secteur d'activité (industry code ou occupation code). Pour une analyse plus fine, eventuellement utiliser le major industry code ou le major occupation code.
+
+_Taux d'emploi en fonction de la génération et/ou de l'âge :_
+Line chart, 
+Abscisse : Génération ou âge. 
+Ordonnée : taux d'emploi (population en emploi/population concernée)
+
 
 _Map :_
-Gradiant de couleur en fonction de la proportion de chaque ethnie.
+Gradiant de couleur en fonction de la proportion de chaque ethnie, sur fond de carte des Etats-Unis.
 (Region of previous residence + state of previous residence)
 
 _Pyramide des âges :_
