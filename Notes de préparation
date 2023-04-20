@@ -1,4 +1,4 @@
-Analyse selon la race : 
+**Analyse selon l'ethnie :**
 
 -Race / Adjusted gross income
 Barchart avec 2 barres, couleurs pour la répartition en fonction de la race
@@ -14,5 +14,16 @@ Prendre les US comme témoin et analyser en fonction de ça
 
 -Map : 
 Pour les migrations. 
+
+
+_Map :_
+Gradiant de couleur en fonction de la proportion de chaque ethnie.
+(Region of previous residence + state of previous residence)
+
+_Pyramide des âges :_
+En fonction de l'âge
+
+_Boîte à moustache :_
+Pour capital gains, capital losses et les dividendes. Afichage de la répartition, du minimum, du maximum et de la médiane.
 
 
