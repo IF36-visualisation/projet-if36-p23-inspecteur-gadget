@@ -1,1 +1,18 @@
+Analyse selon la race : 
+
+-Race / Adjusted gross income
+Barchart avec 2 barres, couleurs pour la répartition en fonction de la race
+Abscisse : Adjusted gross Income
+Ordonnée : base 100%
+Puis refaire le même en croisant avec le genre, on divise avec homme / femme en gardant la répartition par race
+
+-Country of Birth or Citizenship 
+Barchart avec une barre par pays
+Abscisse : Pays de naissance ou citoyenneté
+Ordonnée : base 100%, 100% = nb de personnes par pays
+Prendre les US comme témoin et analyser en fonction de ça
+
+-Map : 
+Pour les migrations. 
+
 
