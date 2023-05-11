@@ -5,7 +5,7 @@ library(gridExtra)
 data <- read_csv("../census-income.csv")
 
 
-#
+# income level by race (not relevant with 50000+, too crowded)
 ggplot(data, aes(x = income_level, fill = race)) +
     geom_bar() +
     labs(x = "Income Level", y = "Count", fill = "Race")
@@ -25,7 +25,7 @@ ggplot(data, aes(x = income_level, fill = sex)) +
     theme(text = element_text(size = 26))
 
 
-# countries of birth (not really interesting due to the us)
+# countries of birth (not relevant due to the us)
 ggplot(data, aes(y = country_of_birth_self)) +
     geom_bar() +
     labs(x = "Count", y = "Country of Birth")
