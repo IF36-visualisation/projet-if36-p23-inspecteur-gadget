@@ -5,10 +5,6 @@ library(gridExtra)
 data <- read_csv("../census-income.csv")
 
 
-temp <- data$full_or_part_time_employment_stat
-unique(temp)
-
-
 # income level by race (not relevant with 50000+, too crowded)
 ggplot(data, aes(x = income_level, fill = race)) +
     geom_bar(position = "fill") +
@@ -53,6 +49,26 @@ ggplot(data, aes(x = income_level, fill = sex)) +
     scale_fill_manual(values = c("Male" = "blue", "Female" = "pink")) +
     labs(x = "Income Level", y = "Count", fill = "Sex") +
     theme(text = element_text(size = 26))
+
+
+# average income level by age and race
+wage <- data %>%
+    filter(wage_per_hour != 0 & race != "Other")
+
+average_income_by_age_race <-
+    aggregate(wage_per_hour ~ age + race, data = wage, FUN = mean)
+
+ggplot(data = average_income_by_age_race, aes(
+    x = age, y = wage_per_hour,
+    color = race
+)) +
+    geom_smooth(se = FALSE) +
+    labs(
+        title = "Average income level by age and race",
+        x = "Age", y = "Average Income Level",
+        color = "Race"
+    ) +
+    theme(text = element_text(size = 18))
 
 
 # countries of birth (not relevant due to the us)
