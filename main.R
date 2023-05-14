@@ -5,16 +5,46 @@ library(gridExtra)
 data <- read_csv("../census-income.csv")
 
 
+temp <- data$full_or_part_time_employment_stat
+unique(temp)
+
+
 # income level by race (not relevant with 50000+, too crowded)
 ggplot(data, aes(x = income_level, fill = race)) +
-    geom_bar() +
-    labs(x = "Income Level", y = "Count", fill = "Race")
+    geom_bar(position = "fill") +
+    labs(
+        title = "Income level by race",
+        x = "Income Level", y = "Percentage", fill = "Race"
+    ) +
+    theme(text = element_text(size = 26))
+
+
+# employment rate by age
+employment_rate <- aggregate(
+    data$full_or_part_time_employment_stat,
+    by = list(data$age), FUN = function(x) {
+        sum(x == "Full-time schedules" |
+            x == "PT for econ reasons usually PT" |
+            x == "PT for econ reasons usually FT" |
+            x == "PT for non-econ reasons usually FT") / length(x)
+    }
+)
+
+colnames(employment_rate) <- c("age", "employment_rate")
+
+ggplot(data = employment_rate, aes(x = age, y = employment_rate)) +
+    geom_line(color = "blue") +
+    labs(title = "Employment rate by age", x = "Age", y = "Employment Rate") +
+    theme(text = element_text(size = 26))
 
 
 # weeks worked and wage per hour : not correlated
 ggplot(data, aes(x = wage_per_hour, y = weeks_worked_in_year)) +
     geom_point(aes(color = race)) +
-    labs(x = "Wage Per Hour", y = "Weeks Worked In Year", color = "Race")
+    labs(
+        title = "Wage according to weeks worked in a year",
+        x = "Wage Per Hour", y = "Weeks Worked In Year"
+    )
 
 
 # income level by sex
@@ -107,7 +137,7 @@ print(grid.arrange(gains_plot, losses_plot, dividends_plot, nrow = 1))
 # age distribution
 ggplot(data, aes(x = age)) +
     geom_histogram(binwidth = 5) +
-    labs(x = "Age", y = "Count") +
+    labs(title = "Age distribution", x = "Age", y = "Count") +
     theme(text = element_text(size = 26))
 
 
@@ -119,5 +149,3 @@ ggplot(industry, aes(y = major_industry_recode, fill = sex)) +
     geom_bar() +
     scale_fill_manual(values = c("Male" = "blue", "Female" = "pink")) +
     labs(x = "Count", y = "Major Industry Recode")
-
-# employment_rate_by_sex <- data %>%
