@@ -11,8 +11,7 @@ ggplot(data, aes(x = income_level, fill = race)) +
     labs(
         title = "Income level by race",
         x = "Income Level", y = "Percentage", fill = "Race"
-    ) +
-    theme(text = element_text(size = 26))
+    )
 
 
 # employment rate by age
@@ -30,8 +29,7 @@ colnames(employment_rate) <- c("age", "employment_rate")
 
 ggplot(data = employment_rate, aes(x = age, y = employment_rate)) +
     geom_line(color = "blue") +
-    labs(title = "Employment rate by age", x = "Age", y = "Employment Rate") +
-    theme(text = element_text(size = 26))
+    labs(title = "Employment rate by age", x = "Age", y = "Employment Rate")
 
 
 # weeks worked and wage per hour : not correlated
@@ -47,8 +45,7 @@ ggplot(data, aes(x = wage_per_hour, y = weeks_worked_in_year)) +
 ggplot(data, aes(x = income_level, fill = sex)) +
     geom_bar() +
     scale_fill_manual(values = c("Male" = "blue", "Female" = "pink")) +
-    labs(x = "Income Level", y = "Count", fill = "Sex") +
-    theme(text = element_text(size = 26))
+    labs(x = "Income Level", y = "Count", fill = "Sex")
 
 
 # average income level by age and race
@@ -67,8 +64,7 @@ ggplot(data = average_income_by_age_race, aes(
         title = "Average income level by age and race",
         x = "Age", y = "Average Income Level",
         color = "Race"
-    ) +
-    theme(text = element_text(size = 18))
+    )
 
 
 # countries of birth (not relevant due to the us)
@@ -100,10 +96,7 @@ plot_usmap(data = move, values = "count") +
         low = "white", high = "red",
     ) +
     labs(title = "State of Previous Residence") +
-    theme(
-        legend.position = "right", legend.text = element_text(size = 10),
-        legend.title = element_text(size = 12)
-    )
+    theme(legend.position = "right")
 
 
 # grouped gains, losses, and dividends
@@ -118,8 +111,7 @@ capital <- data %>%
 
 ggplot(capital, aes(x = variable, y = value)) +
     geom_boxplot() +
-    labs(title = "Gains, losses and dividends") +
-    theme(text = element_text(size = 26))
+    labs(title = "Gains, losses and dividends")
 
 
 # separated gains, losses, and dividends
@@ -153,8 +145,7 @@ print(grid.arrange(gains_plot, losses_plot, dividends_plot, nrow = 1))
 # age distribution
 ggplot(data, aes(x = age)) +
     geom_histogram(binwidth = 5) +
-    labs(title = "Age distribution", x = "Age", y = "Count") +
-    theme(text = element_text(size = 26))
+    labs(title = "Age distribution", x = "Age", y = "Count")
 
 
 # major industry code by sex
@@ -165,3 +156,12 @@ ggplot(industry, aes(y = major_industry_recode, fill = sex)) +
     geom_bar() +
     scale_fill_manual(values = c("Male" = "blue", "Female" = "pink")) +
     labs(x = "Count", y = "Major Industry Recode")
+
+
+# job loss according to race
+job_loss <- data %>%
+    filter(reason_for_unemployment != "Not in universe")
+
+ggplot(job_loss, aes(x = reason_for_unemployment, fill = race)) +
+    geom_bar() +
+    labs(title = "Reason for unemployment", x = "Reason", y = "Count")
