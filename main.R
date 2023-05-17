@@ -165,3 +165,42 @@ job_loss <- data %>%
 ggplot(job_loss, aes(x = reason_for_unemployment, fill = race)) +
     geom_bar() +
     labs(title = "Reason for unemployment", x = "Reason", y = "Count")
+
+
+
+# wage per hour by education
+education_order <- c(
+    "Less than 1st grade",
+    "1st 2nd 3rd or 4th grade",
+    "5th or 6th grade",
+    "7th and 8th grade",
+    "9th grade",
+    "10th grade",
+    "11th grade",
+    "12th grade no diploma",
+    "High school graduate",
+    "Some college but no degree",
+    "Associates degree-occup /vocational",
+    "Associates degree-academic program",
+    "Bachelors degree(BA AB BS)",
+    "Masters degree(MA MS MEng MEd MSW MBA)",
+    "Prof school degree (MD DDS DVM LLB JD)",
+    "Doctorate degree(PhD EdD)"
+)
+
+education <- data %>%
+    filter(wage_per_hour != 0) %>%
+    filter(education != "Children") %>%
+    mutate(education = factor(
+        education,
+        levels = education_order
+    )) %>%
+    group_by(education) %>%
+    summarise(wage_per_hour = mean(wage_per_hour))
+
+ggplot(education, aes(x = wage_per_hour, y = education)) +
+    geom_bar(stat = "identity") +
+    labs(
+        title = "Wage per hour by education",
+        x = "Wage per hour", y = "Education"
+    )
