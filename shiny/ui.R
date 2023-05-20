@@ -2,9 +2,9 @@ library(shiny)
 library(shinydashboard)
 library(shinydashboardPlus)
 library(bs4Dash)
+library(shinycssloaders)
 
 dashboardPage(
-    skin = "purple",
     dashboardHeader(
         title = "Census Income",
         tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
@@ -24,12 +24,20 @@ dashboardPage(
     dashboardBody(
         fluidRow(
             box(
-                title = "Income level by race, by percentage or count",
-                plotlyOutput("income_level_race")
+                title = "Income level by race",
+                shinycssloaders::withSpinner(
+                    plotlyOutput("income_level_race"),
+                    type = 8,
+                    size = .5
+                )
             ),
             box(
                 title = "State of previous residence",
-                plotlyOutput("previous_residence")
+                shinycssloaders::withSpinner(
+                    plotlyOutput("previous_residence"),
+                    type = 8,
+                    size = .5
+                )
             )
         )
     ),
