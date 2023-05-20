@@ -1,0 +1,11 @@
+.control-sidebar {
+    padding: 20px;
+}
+
+.control-sidebar .row {
+    margin-left: 0;
+}
+
+.custom-control-label {
+    cursor: pointer;
+}
