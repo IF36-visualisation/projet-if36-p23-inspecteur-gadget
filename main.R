@@ -1,8 +1,11 @@
-library(tidyverse)
+library(dplyr)
+library(tidyr)
+library(readr)
+library(ggplot2)
 library(usmap)
 library(gridExtra)
 
-data <- read_csv("../census-income.csv")
+data <- read_csv("./data/census-income.csv")
 
 
 # income level by race (not relevant with 50000+, too crowded)

@@ -21,7 +21,7 @@ library(gridExtra)
 ```
 
 ```{r data, include=FALSE}
-data <- read_csv("../census-income.csv")
+data <- read_csv("./data/census-income.csv")
 ```
 
 ## income level by race
