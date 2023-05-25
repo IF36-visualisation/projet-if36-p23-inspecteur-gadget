@@ -1,0 +1,36 @@
+---
+title: "Rapport"
+author: "Inspecteur Gadget"
+date: "2023-05-15"
+output:
+  prettydoc::html_pretty:
+    theme: hpstr
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r libraries, include=FALSE}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(readr)
+library(usmap)
+library(gridExtra)
+```
+
+```{r data, include=FALSE}
+data <- read_csv("../census-income.csv")
+```
+
+## income level by race
+
+```{r income, echo=FALSE}
+ggplot(data, aes(x = income_level, fill = race)) +
+    geom_bar(position = "fill") +
+    labs(
+        title = "Income level by race",
+        x = "Income Level", y = "Percentage", fill = "Race"
+    )
+```
