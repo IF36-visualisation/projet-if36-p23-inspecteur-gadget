@@ -17,6 +17,16 @@ ggplot(data, aes(x = income_level, fill = race)) +
     )
 
 
+# income level by race, male and female
+ggplot(data, aes(x = sex, fill = race)) +
+    geom_bar(position = "fill") +
+    facet_wrap(~income_level) +
+    labs(
+        title = "Income level by race",
+        x = "Income Level", y = "Percentage", fill = "Race"
+    )
+
+
 # employment rate by age
 employment_rate <- aggregate(
     data$full_or_part_time_employment_stat,
