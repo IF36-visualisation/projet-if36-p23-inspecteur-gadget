@@ -21,28 +21,12 @@ library(gridExtra)
 ```
 
 ```{r data, include=FALSE}
-data <- read_csv("../data/census-income.csv")
+data <- read_csv("./data/census-income.csv")
 ```
 
-# Age distribution
-
-```
-Voici la répartition par âge de notre échantillon.
-```
+## income level by race
 
 ```{r income, echo=FALSE}
-ggplot(data, aes(x = age)) +
-    geom_histogram(binwidth = 5) +
-    labs(title = "Age distribution", x = "Age", y = "Count")
-```
-
-```
-On constate la prépondérance des classes d'âge entre 
-```
-
-# Income level by race
-
-```{r level, echo=FALSE}
 ggplot(data, aes(x = income_level, fill = race)) +
     geom_bar(position = "fill") +
     labs(
