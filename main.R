@@ -2,7 +2,6 @@ library(dplyr)
 library(tidyr)
 library(readr)
 library(ggplot2)
-library(usmap)
 library(gridExtra)
 
 data <- read_csv("./data/census-income.csv")
@@ -47,6 +46,18 @@ ggplot(data, aes(y = country_of_birth_self)) +
     geom_bar() +
     labs(x = "Count", y = "Country of Birth")
 
+# pyramides des âges
+ages <- data %>%
+    mutate(age_range = cut(age, breaks = seq(min(data$age), max(data$age), 5)))
+
+ggplot(data = ages, aes(x = as.factor(age_range), fill = sex)) +
+    geom_bar(data = subset(ages, sex == "Female")) +
+    geom_bar(
+        data = subset(ages, sex == "Male"),
+        aes(y = after_stat(count) * (-1))
+    ) +
+    coord_flip() +
+    labs(title = "Pyramide des âges", x = "Âge", y = "Nombre de personnes")
 
 
 
@@ -307,6 +318,8 @@ ggplot(education, aes(y = education, fill = sex)) +
 
 # MIGRATION
 # us map : states of previous residences
+library(usmap)
+
 move <- data %>%
     filter(state_of_previous_residence != "Not in universe" &
         state_of_previous_residence != "?") %>%
