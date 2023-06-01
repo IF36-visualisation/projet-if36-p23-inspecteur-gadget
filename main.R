@@ -8,39 +8,39 @@ library(gridExtra)
 data <- read_csv("./data/census-income.csv")
 
 
-#Présentation du jeu de données
+# Présentation du jeu de données
 
-#distribution des âges du jeu de données
+# distribution des âges du jeu de données
 ggplot(data, aes(x = age)) +
-  geom_density(fill = "blue") +
-  labs(title = "Age distribution", x = "Age", y = "Count")
+    geom_density(fill = "blue") +
+    labs(title = "Age distribution", x = "Age", y = "Count")
 
-#distribution des ethnies sur le jeu de données
+# distribution des ethnies sur le jeu de données
 
 data$race <- gsub("Asian or Pacific Islander", "Asian/Pacific", data$race)
 data$race <- gsub("Amer Indian Aleut or Eskimo", "Natives", data$race)
 
 ggplot(data, aes(x = race)) +
-  geom_bar() +
-  labs(title = "Distribution des ethnies", x = "Ethnies", y = "Distribution")
+    geom_bar() +
+    labs(title = "Distribution des ethnies", x = "Ethnies", y = "Distribution")
 
-#distribution des genres dans le jeu de données
+# distribution des genres dans le jeu de données
 ggplot(data, aes(x = sex)) +
-  geom_bar() +
-  labs(title = "Distribution des genres", x = "Genres", y = "Distribution")
+    geom_bar() +
+    labs(title = "Distribution des genres", x = "Genres", y = "Distribution")
 
-#Distribution en fonction du genre et de l'ethnie
+# Distribution en fonction du genre et de l'ethnie
 ggplot(data, aes(x = sex, fill = race)) +
-  geom_bar() +
-  labs(title = "Distribution des genres", x = "Genres", y = "Distribution")
+    geom_bar() +
+    labs(title = "Distribution des genres", x = "Genres", y = "Distribution")
 
 
-#Répartition des hommes et des femmes selon l'âge
+# Répartition des hommes et des femmes selon l'âge
 ggplot(data = data, aes(x = age, color = sex)) +
-  geom_line(stat = "count") +
-  xlab("Âge") +
-  ylab("Nombre de personnes") +
-  ggtitle("Nombre d'hommes et de femmes par âge")
+    geom_line(stat = "count") +
+    xlab("Âge") +
+    ylab("Nombre de personnes") +
+    ggtitle("Nombre d'hommes et de femmes par âge")
 
 # countries of birth (not relevant due to the us)
 ggplot(data, aes(y = country_of_birth_self)) +
@@ -52,8 +52,8 @@ ggplot(data, aes(y = country_of_birth_self)) +
 
 
 
-#Analyse
-#INCOME
+# Analyse
+# INCOME
 # income level by race (not relevant with 50000+, too crowded)
 ggplot(data, aes(x = income_level, fill = race)) +
     geom_bar(position = "fill") +
@@ -61,6 +61,7 @@ ggplot(data, aes(x = income_level, fill = race)) +
         title = "Income level by race",
         x = "Income Level", y = "Percentage", fill = "Race"
     )
+
 # income level by sex
 ggplot(data, aes(x = income_level, fill = sex)) +
     geom_bar(position = "fill") +
@@ -74,16 +75,17 @@ ggplot(data, aes(x = sex, fill = race)) +
         title = "Income level by race",
         x = "Income Level", y = "Percentage", fill = "Race"
     )
-#income level by race, male, female - NO WHITE
-no_white <- filter (data, race !="White")
+
+# income level by race, male, female - NO WHITE
+no_white <- filter(data, race != "White")
 
 ggplot(no_white, aes(x = sex, fill = race)) +
-  geom_bar(position = "fill") +
-  facet_wrap(~income_level) +
-  labs(
-    title = "Income level by race",
-    x = "Income Level", y = "Percentage", fill = "Race"
-  )
+    geom_bar(position = "fill") +
+    facet_wrap(~income_level) +
+    labs(
+        title = "Income level by race",
+        x = "Income Level", y = "Percentage", fill = "Race"
+    )
 
 # average income level by age and race
 wage <- data %>%
@@ -105,9 +107,9 @@ ggplot(data = average_income_by_age_race, aes(
 
 
 
-#EMPLOYMENT
+# EMPLOYMENT
 # employment rate by age
-#version se base sur population totale
+# version se base sur population totale
 employment_rate <- aggregate(
     data$full_or_part_time_employment_stat,
     by = list(data$age), FUN = function(x) {
@@ -124,45 +126,45 @@ ggplot(data = employment_rate, aes(x = age, y = employment_rate)) +
     geom_line(color = "blue") +
     labs(title = "Taux d'emploi par âge", x = "Age", y = "Taux d'emploi")
 
-#version se basant sur la population active (en prenant en compte enfants et militaires)
-major <- filter (data, data$age > 14)
+# version se basant sur la population active (en prenant en compte enfants et militaires)
+major <- filter(data, data$age > 14)
 
 employment_rate <- aggregate(
-  major$full_or_part_time_employment_stat,
-  by = list(major$age), FUN = function(x) {
-    sum(x == "Full-time schedules" |
-          x == "PT for econ reasons usually PT" |
-          x == "PT for econ reasons usually FT" |
-          x == "PT for non-econ reasons usually FT" |
-          x == " Children or Armed Forces") / length(x)
-  }
+    major$full_or_part_time_employment_stat,
+    by = list(major$age), FUN = function(x) {
+        sum(x == "Full-time schedules" |
+            x == "PT for econ reasons usually PT" |
+            x == "PT for econ reasons usually FT" |
+            x == "PT for non-econ reasons usually FT" |
+            x == " Children or Armed Forces") / length(x)
+    }
 )
 
 colnames(employment_rate) <- c("age", "employment_rate")
 
 ggplot(data = employment_rate, aes(x = age, y = employment_rate)) +
-  geom_line(color = "blue") +
-  labs(title = "Taux d'emploi par âge", x = "Age", y = "Taux d'emploi")
+    geom_line(color = "blue") +
+    labs(title = "Taux d'emploi par âge", x = "Age", y = "Taux d'emploi")
 
-#Taux d'emploi par ethnie et par âge
+# Taux d'emploi par ethnie et par âge
 R_Empl <- data %>%
-  filter(age > 14 & age < 80 & race != "Other")
+    filter(age > 14 & age < 80 & race != "Other")
 
 taux_emploi <- aggregate(full_or_part_time_employment_stat ~ race + age, data = R_Empl, FUN = function(x) {
-  taux <- sum(x == "Full-time schedules" |
-                x == "PT for econ reasons usually PT" |
-                x == "PT for econ reasons usually FT" |
-                x == "PT for non-econ reasons usually FT" |
-                x == " Children or Armed Forces") / length(x) * 100
+    taux <- sum(x == "Full-time schedules" |
+        x == "PT for econ reasons usually PT" |
+        x == "PT for econ reasons usually FT" |
+        x == "PT for non-econ reasons usually FT" |
+        x == " Children or Armed Forces") / length(x) * 100
 })
 
-colnames(taux_emploi) = c("Ethnies", "age", "emploi")
+colnames(taux_emploi) <- c("Ethnies", "age", "emploi")
 
 ggplot(data = taux_emploi, aes(x = age, y = emploi, color = Ethnies)) +
-  geom_smooth(se = FALSE) +
-  xlab("Âge") +
-  ylab("Taux d'emploi (%)") +
-  ggtitle("Taux d'emploi par ethnie et âge")
+    geom_smooth(se = FALSE) +
+    xlab("Âge") +
+    ylab("Taux d'emploi (%)") +
+    ggtitle("Taux d'emploi par ethnie et âge")
 
 # job loss according to race
 job_loss <- data %>%
@@ -181,19 +183,19 @@ ggplot(data, aes(x = wage_per_hour, y = weeks_worked_in_year)) +
     )
 
 
-#taux d'emploi par genre
+# taux d'emploi par genre
 taux_emploi <- aggregate(full_or_part_time_employment_stat ~ sex, data = major, FUN = function(x) {
-  taux <- sum(x == "Full-time schedules" |
-                x == "PT for econ reasons usually PT" |
-                x == "PT for econ reasons usually FT" |
-                x == "PT for non-econ reasons usually FT") / length(x)
+    taux <- sum(x == "Full-time schedules" |
+        x == "PT for econ reasons usually PT" |
+        x == "PT for econ reasons usually FT" |
+        x == "PT for non-econ reasons usually FT") / length(x)
 })
 
 ggplot(data = taux_emploi) +
-  geom_bar(aes(x = sex, y = full_or_part_time_employment_stat), stat = "identity", fill = "Purple", width =  0.5) +
-  xlab("Genre") +
-  ylab("Taux d'emploi (%)") +
-  ggtitle("Taux d'emploi chez les hommes et les femmes")
+    geom_bar(aes(x = sex, y = full_or_part_time_employment_stat), stat = "identity", fill = "Purple", width = 0.5) +
+    xlab("Genre") +
+    ylab("Taux d'emploi (%)") +
+    ggtitle("Taux d'emploi chez les hommes et les femmes")
 
 # major industry code by sex
 industry <- data %>%
@@ -212,7 +214,7 @@ ggplot(industry, aes(y = major_industry_recode, fill = sex)) +
 
 
 
-#CAPITAL AND EDUCATION
+# CAPITAL AND EDUCATION
 # grouped gains, losses, and dividends
 capital <- data %>%
     select(capital_gains, capital_losses, dividends_from_stocks) %>%
@@ -282,7 +284,7 @@ education <- data %>%
         education,
         levels = education_order
     )) %>%
-    group_by(education) %>%
+    group_by(education, race, sex) %>%
     summarise(wage_per_hour = mean(wage_per_hour))
 
 ggplot(education, aes(x = wage_per_hour, y = education)) +
@@ -292,13 +294,18 @@ ggplot(education, aes(x = wage_per_hour, y = education)) +
         x = "Wage per hour", y = "Education"
     )
 
+# niveau d'étude en fonction de la race
+ggplot(education, aes(y = education, fill = race)) +
+    geom_bar(position = "fill")
+
+# niveau d'étude en fonction du sexe
+ggplot(education, aes(y = education, fill = sex)) +
+    geom_bar(position = "fill")
 
 
 
 
-
-
-#MIGRATION
+# MIGRATION
 # us map : states of previous residences
 move <- data %>%
     filter(state_of_previous_residence != "Not in universe" &
@@ -314,8 +321,9 @@ plot_usmap(data = move, values = "count") +
     ) +
     labs(title = "State of Previous Residence") +
     theme(legend.position = "right")
-#Pays de naissance des personnes interrogées
-#Pays différents
+
+# Pays de naissance des personnes interrogées
+# Pays différents
 # countries of birth (without the us)
 world <- data %>%
     filter(country_of_birth_self != "United-States")
@@ -324,18 +332,18 @@ ggplot(world, aes(y = country_of_birth_self)) +
     geom_bar() +
     labs(x = "Count", y = "Country of Birth")
 
-#US vs AUTRE
+# US vs AUTRE
 counts <- table(data$country_of_birth_self)
 nb_etats_unis <- counts["United-States"]
 nb_autres_pays <- sum(counts) - nb_etats_unis
 
 graph_data <- data.frame(
-  Pays = c("États-Unis", "Autres"),
-  Fréquence = c(counts["United-States"], sum(counts) - counts["United-States"])
+    Pays = c("États-Unis", "Autres"),
+    Fréquence = c(counts["United-States"], sum(counts) - counts["United-States"])
 )
 
 ggplot(data = graph_data, aes(x = Fréquence, y = Pays, fill = Pays)) +
-  geom_bar(stat = "identity", width = 0.5) +
-  xlab("Fréquence") +
-  ylab("Pays") +
-  ggtitle("Comparaison du nombre de personnes ayant les EU comme pays de naissance et le reste")
+    geom_bar(stat = "identity", width = 0.5) +
+    xlab("Fréquence") +
+    ylab("Pays") +
+    ggtitle("Comparaison du nombre de personnes ayant les EU comme pays de naissance et le reste")
