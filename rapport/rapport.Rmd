@@ -51,7 +51,7 @@ Un déficit des naissances est aussi observé pour les classes d'âges allant de
 # Pays de naissance
 
 ```
-On s'intéresse désormais aux pays de naissance des personnes interrogés dans notre échantillon.
+On s'intéresse désormais aux pays de naissance des personnes interrogées dans notre échantillon.
 ```
 ```{r income, echo=FALSE}
 ggplot(data, aes(y = country_of_birth_self)) +
@@ -64,17 +64,25 @@ On constate que l'écrasante majorité de la population interrogée est née aux
 
 *Intégrer ici un bar chart naissance USA vs naissance ailleurs, pour déduire un pourcentage et comparer éventuellement à d'autrs pays ou à maintenant*
 
-Quelques pays comme le Mexique semblent néanmoins se distinguer, mais il est néanmoins difficile de faire une analyse. Pour mieux appréhender la pluralité des pays d'origine de ces immigrés, voici donc un autre graphique, qui exclut cette fois-ci les Etats-Unis.
+Il convient aussi de souligner qu'un pays de naissance n'est pas toujours révélateur d'une nationalité. Un enfant américain peut très bien naître sur le sol français par exemple. Néanmoins cet indicateur peut être utile pour modéliser les mobilités de population et l'attraction des Etats-Unis sur la scène internationale. Il est un indicateur complémentaire de la nationalité, qui elle aussi peut-être variable (elle peut s'acquérir par exemple, après un certains nombres d'années de résidence).
+Quelques pays comme le Mexique semblent néanmoins se distinguer, mais il est néanmoins difficile de faire une analyse. 
+ Pour mieux appréhender la pluralité des pays d'origine de ces immigrés, voici donc un autre graphique, qui exclut cette fois-ci les Etats-Unis.
 ```
 
 
 # Pays de naissance - Hors Etats-Unis
+
+```{r income, echo=FALSE}
 world <- data %>%
     filter(country_of_birth_self != "United-States")
 
 ggplot(world, aes(y = country_of_birth_self)) +
     geom_bar() +
     labs(x = "Count", y = "Country of Birth")
+```
+```
+On a cette fois-ci une vision plus claire des pays de naissance
+```
 
 
 # Income level by race
