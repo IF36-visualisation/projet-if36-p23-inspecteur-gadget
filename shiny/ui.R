@@ -3,6 +3,8 @@ library(shinydashboard)
 library(shinydashboardPlus)
 library(bs4Dash)
 library(shinycssloaders)
+library(plotly)
+library(threejs)
 
 dashboardPage(
     dashboardHeader(
@@ -35,6 +37,14 @@ dashboardPage(
                 title = "State of previous residence",
                 shinycssloaders::withSpinner(
                     plotlyOutput("previous_residence"),
+                    type = 8,
+                    size = .5
+                )
+            ),
+            box(
+                title = "Globe",
+                shinycssloaders::withSpinner(
+                    globeOutput("globe"),
                     type = 8,
                     size = .5
                 )
