@@ -17,12 +17,14 @@ ggplot(data, aes(x = age)) +
 data$race <- gsub("Asian or Pacific Islander", "Asian/Pacific", data$race)
 data$race <- gsub("Amer Indian Aleut or Eskimo", "Natives", data$race)
 
-
 ggplot(data, aes(x = race)) +
   geom_bar() +
   labs(title = "Distribution des ethnies", x = "Ethnies", y = "Distribution")
 
-
+#distribution des genres dans le jeu de données
+ggplot(data, aes(x = sex)) +
+  geom_bar() +
+  labs(title = "Distribution des genres", x = "Genres", y = "Distribution")
 
 # income level by race (not relevant with 50000+, too crowded)
 ggplot(data, aes(x = income_level, fill = race)) +
