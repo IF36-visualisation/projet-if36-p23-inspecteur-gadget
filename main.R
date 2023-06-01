@@ -10,7 +10,6 @@ data <- read_csv("./data/census-income.csv")
 
 #Présentation du jeu de données
 
-
 #distribution des âges du jeu de données
 ggplot(data, aes(x = age)) +
   geom_density(fill = "blue") +
@@ -35,7 +34,23 @@ ggplot(data, aes(x = sex, fill = race)) +
   geom_bar() +
   labs(title = "Distribution des genres", x = "Genres", y = "Distribution")
 
+
 #Pays de naissance des personnes interrogées
+#Pays différents
+# countries of birth (not relevant due to the us)
+ggplot(data, aes(y = country_of_birth_self)) +
+    geom_bar() +
+    labs(x = "Count", y = "Country of Birth")
+
+# countries of birth (without the us)
+world <- data %>%
+    filter(country_of_birth_self != "United-States")
+
+ggplot(world, aes(y = country_of_birth_self)) +
+    geom_bar() +
+    labs(x = "Count", y = "Country of Birth")
+
+#US vs AUTRE
 counts <- table(data$country_of_birth_self)
 nb_etats_unis <- counts["United-States"]
 nb_autres_pays <- sum(counts) - nb_etats_unis
@@ -51,6 +66,12 @@ ggplot(data = graph_data, aes(x = Fréquence, y = Pays, fill = Pays)) +
   ylab("Pays") +
   ggtitle("Comparaison du nombre de personnes ayant les EU comme pays de naissance et le reste")
 
+#Répartition des hommes et des femmes selon l'âge
+ggplot(data = data, aes(x = age, color = sex)) +
+  geom_line(stat = "count") +
+  xlab("Âge") +
+  ylab("Nombre de personnes") +
+  ggtitle("Nombre d'hommes et de femmes par âge")
 
 
 
@@ -129,22 +150,6 @@ ggplot(data = average_income_by_age_race, aes(
         x = "Age", y = "Average Income Level",
         color = "Race"
     )
-
-
-# countries of birth (not relevant due to the us)
-ggplot(data, aes(y = country_of_birth_self)) +
-    geom_bar() +
-    labs(x = "Count", y = "Country of Birth")
-
-
-# countries of birth (without the us)
-world <- data %>%
-    filter(country_of_birth_self != "United-States")
-
-ggplot(world, aes(y = country_of_birth_self)) +
-    geom_bar() +
-    labs(x = "Count", y = "Country of Birth")
-
 
 # us map : states of previous residences
 move <- data %>%
