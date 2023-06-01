@@ -119,8 +119,17 @@ Deuxième piste, les données portaient sur l'Etat de "précédente résidence" 
 Ces suppositions sont évidemments insuffisantes pour expliquer ce décalage, mais elles nous permettent de nous apporter quelques pistes de réflexions, et surtout de garder à l'esprit de toujours s'interroger sur la provenance des données.
 ```
 
+```
+Maintenant que le jeu de données est présenté, nous allons étudier l'impact du  genre et de l'ethnie sur la vie des individus, et leurs opportunités salariales et éducatives. 
+Les données ethniques sont en effet autorisées aux Etats-Unis, ce qui n'est pas le cas en France par exemple, et il nous a semblé important et pertinent d'utiliser ses données pour appuyer nos analyses.
+```
 
-# Income level by race
+
+```
+Voici donc un graphique présentant le niveau de revenu, en fonction de l'ethnie de la personne.
+```
+
+# Niveau de revenu par ethnie
 
 ```{r level, echo=FALSE}
 ggplot(data, aes(x = income_level, fill = race)) +
@@ -130,3 +139,13 @@ ggplot(data, aes(x = income_level, fill = race)) +
         x = "Income Level", y = "Percentage", fill = "Race"
     )
 ```
+
+
+
+
+
+
+
+
+
+
