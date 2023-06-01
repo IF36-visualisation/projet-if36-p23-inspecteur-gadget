@@ -37,7 +37,9 @@ ggplot(data, aes(x = age)) +
 ```
 
 ```
-On constate la prépondérance des classes d'âge entre 
+On remarque ainsi que la majeure partie de l'échantillon a moins de 45 ans. Il existe néanmoins de fortes disparités ; l'engagement des Etats-Unis dans la guerre du Vietnam, notamment à partir de 1965 explique en partie ces écarts démographiques. Les classes d'âge qui se sont majoritairement enrolés au Vietnam ont entre 40 et 50  au moment de l'enquête, et on peut constater leur sous-représenatation dans la population générale. En mobilisant plus de 2 millions de soldats, dont la moyenne d'âge était de 19 ans, la guerre a en effet fait un peu moins de 60 000 morts du côté américain.
+Un déficit des naissances est aussi observé pour les classes d'âges allant de 12 à 30 ans, avec un pic vers 20 ans ; ce sont des naissances "manquantes", qui n'ont pas eu lieu à cause de l'absence des hommes enrolés dans la guerre.
+
 ```
 
 # Income level by race
