@@ -26,6 +26,18 @@ ggplot(data, aes(x = sex)) +
   geom_bar() +
   labs(title = "Distribution des genres", x = "Genres", y = "Distribution")
 
+#Distribution en fonction du genre et de l'ethnie
+ggplot(data, aes(x = sex, fill = race)) +
+  geom_bar() +
+  labs(title = "Distribution des genres", x = "Genres", y = "Distribution")
+
+
+
+
+
+
+
+
 # income level by race (not relevant with 50000+, too crowded)
 ggplot(data, aes(x = income_level, fill = race)) +
     geom_bar(position = "fill") +
