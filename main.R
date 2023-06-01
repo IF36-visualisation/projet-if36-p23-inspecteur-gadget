@@ -7,6 +7,10 @@ library(gridExtra)
 
 data <- read_csv("./data/census-income.csv")
 
+
+#Présentation du jeu de données
+
+
 #distribution des âges du jeu de données
 ggplot(data, aes(x = age)) +
   geom_density(fill = "blue") +
@@ -31,12 +35,29 @@ ggplot(data, aes(x = sex, fill = race)) +
   geom_bar() +
   labs(title = "Distribution des genres", x = "Genres", y = "Distribution")
 
+#Pays de naissance des personnes interrogées
+counts <- table(data$country_of_birth_self)
+nb_etats_unis <- counts["United-States"]
+nb_autres_pays <- sum(counts) - nb_etats_unis
+
+graph_data <- data.frame(
+  Pays = c("États-Unis", "Autres"),
+  Fréquence = c(counts["United-States"], sum(counts) - counts["United-States"])
+)
+
+ggplot(data = graph_data, aes(x = Fréquence, y = Pays, fill = Pays)) +
+  geom_bar(stat = "identity", width = 0.5) +
+  xlab("Fréquence") +
+  ylab("Pays") +
+  ggtitle("Comparaison du nombre de personnes ayant les EU comme pays de naissance et le reste")
 
 
 
 
 
 
+
+#Analyse
 
 # income level by race (not relevant with 50000+, too crowded)
 ggplot(data, aes(x = income_level, fill = race)) +
