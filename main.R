@@ -7,6 +7,14 @@ library(gridExtra)
 
 data <- read_csv("./data/census-income.csv")
 
+#distribution des âges du jeu de données
+ggplot(data, aes(x = age)) +
+  geom_density(fill = "blue") +
+  labs(title = "Age distribution", x = "Age", y = "Count")
+
+#distribution des ethnies sur le jeu de données
+
+
 
 # income level by race (not relevant with 50000+, too crowded)
 ggplot(data, aes(x = income_level, fill = race)) +
@@ -153,13 +161,6 @@ dividends_plot <- ggplot(dividends_data, aes(y = dividends_from_stocks)) +
     labs(title = "Dividends From Stocks", y = "Dividends From Stocks")
 
 print(grid.arrange(gains_plot, losses_plot, dividends_plot, nrow = 1))
-
-
-# age distribution
-ggplot(data, aes(x = age)) +
-    geom_histogram(binwidth = 5) +
-    labs(title = "Age distribution", x = "Age", y = "Count")
-
 
 # major industry code by sex
 industry <- data %>%
