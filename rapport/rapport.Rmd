@@ -88,6 +88,37 @@ Le rayonnement culturel des Etats-Unis, accentué par les politiques mises en pl
 La forte présence de population née en Allemagne pourrait elle, être expliquée par une émigration post-2nde guerre mondiale.
 ```
 
+```
+Après avoir étudié la répartition internationale des lieux de naissance, intéressons-nous maintenant aux lieux de résidence intra-étatique.
+```
+
+# Carte des Etats-Unis représentant les Etats précédents de résidence
+
+```{r income, echo=FALSE}
+move <- data %>%
+    filter(state_of_previous_residence != "Not in universe" &
+        state_of_previous_residence != "?") %>%
+    group_by(state_of_previous_residence) %>%
+    summarise(count = n()) %>%
+    arrange(desc(count)) %>%
+    rename(state = state_of_previous_residence)
+
+plot_usmap(data = move, values = "count") +
+    scale_fill_continuous(
+        low = "white", high = "red",
+    ) +
+    labs(title = "State of Previous Residence") +
+    theme(legend.position = "right")
+```
+
+```
+La Californie, l'Utah, la Floride et la Caroline du Nord comptent pour les Etats les plus représentés dans la population sondée.
+La Californie ( 3o millions d'habitant en 1994) et la Floride (31 millions) sont en effet les Etats les plus peuplés des Etats-Unis, et il n'est pas étonnant de les retrouver sur cette carte. Néanmoins la présence de l'Utah est plus surprenante, alors qu'en 1994 la population de cet Etat n'excédait par les 2 millions de personnes. On peut faire le même constat pour la Caroline du nord, et ses 7 millions d'habitants.
+On peut faire plusieurs conjonctures pour expliquer cette carte. Tout d'abord, il faut rappeler que malgré sa volonté d'être représentative de la population américaine, ce recensement ne se base "que" sur 100 000 personnes, et qu'il peut donc y avoir des biais, surtout géographiques. On n'a en effet pas les lieux où les enquêtes ont été majoritairement menées, et il est possible qu'il y ait eu un plus fort taux de réponses dans certains Etats comme l'Utah qu'ailleurs.
+Deuxième piste, les données portaient sur l'Etat de "précédente résidence" ; on peut donc faire l'hypothèse que les habitants de l'Utah et de la Caroline du Nord sont plus souvent partis de ces Etats pour s'installer dans d'autres. La forte population dans certains Etats ne seraient pas donc dû à un solde naturel possitif de naissance inter-étatique, mais bien à des mobilités de population à l'échelle nationale.
+Ces suppositions sont évidemments insuffisantes pour expliquer ce décalage, mais elles nous permettent de nous apporter quelques pistes de réflexions, et surtout de garder à l'esprit de toujours s'interroger sur la provenance des données.
+```
+
 
 # Income level by race
 
