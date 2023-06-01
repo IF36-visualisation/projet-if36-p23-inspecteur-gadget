@@ -65,6 +65,7 @@ On constate que l'écrasante majorité de la population interrogée est née aux
 *Intégrer ici un bar chart naissance USA vs naissance ailleurs, pour déduire un pourcentage et comparer éventuellement à d'autrs pays ou à maintenant*
 
 Il convient aussi de souligner qu'un pays de naissance n'est pas toujours révélateur d'une nationalité. Un enfant américain peut très bien naître sur le sol français par exemple. Néanmoins cet indicateur peut être utile pour modéliser les mobilités de population et l'attraction des Etats-Unis sur la scène internationale. Il est un indicateur complémentaire de la nationalité, qui elle aussi peut-être variable (elle peut s'acquérir par exemple, après un certains nombres d'années de résidence).
+
 Quelques pays comme le Mexique semblent néanmoins se distinguer, mais il est néanmoins difficile de faire une analyse. 
  Pour mieux appréhender la pluralité des pays d'origine de ces immigrés, voici donc un autre graphique, qui exclut cette fois-ci les Etats-Unis.
 ```
@@ -81,7 +82,10 @@ ggplot(world, aes(y = country_of_birth_self)) +
     labs(x = "Count", y = "Country of Birth")
 ```
 ```
-On a cette fois-ci une vision plus claire des pays de naissance
+On a cette fois-ci une vision plus claire des pays de naissance. On constate une assez grande diversité géographique, puisque presques tous les continents sont représentés ; l'Amérique du Sud ( Mexique, Salvador, etc), l'Asie (Vietnam, Laos,Philippines,Inde, Japon,etc) mais aussi l'Europe (Italie,Allemagne).
+Au niveau des proportions, le Mexique s'impose assez largement comme 1er pays de naissance (hors Etats-Unis) de la population. Attirée par un pays voisin au niveau de vie supérieur, on peut aisémment supposer qu'une partie de la population mexicaine a fait le choix de s'intaller aux Etats-Unis. On retouve de la même manière plusieurs pays latino-américains comme Puerto-Rico ou Cuba en haut du classement.
+Le rayonnement culturel des Etats-Unis, accentué par les politiques mises en place durant la Guerre Froide, à fait apparaître le pays comme un nouvel Eldorado, et a attiré les populations du monde entier en quête d'un avenir meilleur.
+La forte présence de population née en Allemagne pourrait elle, être expliquée par une émigration post-2nde guerre mondiale.
 ```
 
 
