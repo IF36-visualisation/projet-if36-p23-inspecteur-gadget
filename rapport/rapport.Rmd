@@ -53,6 +53,24 @@ Un déficit des naissances est aussi observé pour les classes d'âges allant de
 
 On s'intéresse désormais aux pays de naissance des personnes interrogées dans notre échantillon.
 
+```{r birthcountrybar, echo=FALSE}
+#US vs AUTRE
+counts <- table(data$country_of_birth_self)
+nb_etats_unis <- counts["United-States"]
+nb_autres_pays <- sum(counts) - nb_etats_unis
+
+graph_data <- data.frame(
+  Pays = c("États-Unis", "Autres"),
+  Fréquence = c(counts["United-States"], sum(counts) - counts["United-States"])
+)
+
+ggplot(data = graph_data, aes(x = Fréquence, y = Pays, fill = Pays)) +
+  geom_bar(stat = "identity", width = 0.5) +
+  xlab("Fréquence") +
+  ylab("Pays") +
+  ggtitle("Comparaison du nombre de personnes ayant les EU comme pays de naissance et le reste")
+```
+
 ```{r birthcountry, echo=FALSE}
 ggplot(data, aes(y = country_of_birth_self)) +
     geom_bar() +
@@ -61,6 +79,7 @@ ggplot(data, aes(y = country_of_birth_self)) +
 
 
 On constate que l'écrasante majorité de la population interrogée est née aux Etats-Unis. 
+
 
 *Intégrer ici un bar chart naissance USA vs naissance ailleurs, pour déduire un pourcentage et comparer éventuellement à d'autrs pays ou à maintenant*
 
