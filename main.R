@@ -100,6 +100,7 @@ ggplot(data, aes(x = sex, fill = race)) +
 
 
 # employment rate by age
+#version se base sur population totale
 employment_rate <- aggregate(
     data$full_or_part_time_employment_stat,
     by = list(data$age), FUN = function(x) {
@@ -114,7 +115,42 @@ colnames(employment_rate) <- c("age", "employment_rate")
 
 ggplot(data = employment_rate, aes(x = age, y = employment_rate)) +
     geom_line(color = "blue") +
-    labs(title = "Employment rate by age", x = "Age", y = "Employment Rate")
+    labs(title = "Taux d'emploi par âge", x = "Age", y = "Taux d'emploi")
+
+#version se basant sur la population active (en prenant en compte enfants et militaires)
+major <- filter (data, data$age > 14)
+
+employment_rate <- aggregate(
+  major$full_or_part_time_employment_stat,
+  by = list(major$age), FUN = function(x) {
+    sum(x == "Full-time schedules" |
+          x == "PT for econ reasons usually PT" |
+          x == "PT for econ reasons usually FT" |
+          x == "PT for non-econ reasons usually FT" |
+          x == " Children or Armed Forces") / length(x)
+  }
+)
+
+colnames(employment_rate) <- c("age", "employment_rate")
+
+ggplot(data = employment_rate, aes(x = age, y = employment_rate)) +
+  geom_line(color = "blue") +
+  labs(title = "Taux d'emploi par âge", x = "Age", y = "Taux d'emploi")
+
+
+#taux d'emploi par genre
+taux_emploi <- aggregate(full_or_part_time_employment_stat ~ sex, data = major, FUN = function(x) {
+  taux <- sum(x == "Full-time schedules" |
+                x == "PT for econ reasons usually PT" |
+                x == "PT for econ reasons usually FT" |
+                x == "PT for non-econ reasons usually FT") / length(x)
+})
+
+ggplot(data = taux_emploi) +
+  geom_bar(aes(x = sex, y = full_or_part_time_employment_stat), stat = "identity", fill = "Purple", width =  0.5) +
+  xlab("Genre") +
+  ylab("Taux d'emploi (%)") +
+  ggtitle("Taux d'emploi chez les hommes et les femmes")
 
 
 # weeks worked and wage per hour : not correlated
