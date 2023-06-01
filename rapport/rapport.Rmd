@@ -11,7 +11,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r libraries, include=FALSE}
+```{r libraries, include=FALSE}c
 library(ggplot2)
 library(dplyr)
 library(tidyr)
@@ -32,9 +32,9 @@ data <- read_csv("../data/census-income.csv")
 
 # Répartition par âge
 
-```
+
 Voici la répartition par âge de notre échantillon.
-```
+
 
 ```{r income, echo=FALSE}
 ggplot(data, aes(x = age)) +
@@ -42,24 +42,24 @@ ggplot(data, aes(x = age)) +
     labs(title = "Age distribution", x = "Age", y = "Count")
 ```
 
-```
+
 On remarque ainsi que la majeure partie de l'échantillon a moins de 45 ans. Il existe néanmoins de fortes disparités ; l'engagement des Etats-Unis dans la guerre du Vietnam, notamment à partir de 1965 explique en partie ces écarts démographiques. Les classes d'âge qui se sont majoritairement enrolés au Vietnam ont entre 40 et 50  au moment de l'enquête, et on peut constater leur sous-représenatation dans la population générale. En mobilisant plus de 2 millions de soldats, dont la moyenne d'âge était de 19 ans, la guerre a en effet fait un peu moins de 60 000 morts du côté américain.
+
 Un déficit des naissances est aussi observé pour les classes d'âges allant de 12 à 30 ans, avec un pic vers 20 ans ; ce sont des naissances "manquantes", qui n'ont pas eu lieu à cause de l'absence des hommes enrolés dans la guerre.
 
-```
 
 # Pays de naissance
 
-```
+
 On s'intéresse désormais aux pays de naissance des personnes interrogées dans notre échantillon.
-```
-```{r income, echo=FALSE}
+
+```{r birthcountry, echo=FALSE}
 ggplot(data, aes(y = country_of_birth_self)) +
     geom_bar() +
     labs(x = "Count", y = "Country of Birth")
 ```
 
-```
+
 On constate que l'écrasante majorité de la population interrogée est née aux Etats-Unis. 
 
 *Intégrer ici un bar chart naissance USA vs naissance ailleurs, pour déduire un pourcentage et comparer éventuellement à d'autrs pays ou à maintenant*
@@ -68,12 +68,12 @@ Il convient aussi de souligner qu'un pays de naissance n'est pas toujours révé
 
 Quelques pays comme le Mexique semblent néanmoins se distinguer, mais il est néanmoins difficile de faire une analyse. 
  Pour mieux appréhender la pluralité des pays d'origine de ces immigrés, voici donc un autre graphique, qui exclut cette fois-ci les Etats-Unis.
-```
+
 
 
 # Pays de naissance - Hors Etats-Unis
 
-```{r income, echo=FALSE}
+```{r map, echo=FALSE}
 world <- data %>%
     filter(country_of_birth_self != "United-States")
 
@@ -81,20 +81,23 @@ ggplot(world, aes(y = country_of_birth_self)) +
     geom_bar() +
     labs(x = "Count", y = "Country of Birth")
 ```
-```
-On a cette fois-ci une vision plus claire des pays de naissance. On constate une assez grande diversité géographique, puisque presques tous les continents sont représentés ; l'Amérique du Sud ( Mexique, Salvador, etc), l'Asie (Vietnam, Laos,Philippines,Inde, Japon,etc) mais aussi l'Europe (Italie,Allemagne).
-Au niveau des proportions, le Mexique s'impose assez largement comme 1er pays de naissance (hors Etats-Unis) de la population. Attirée par un pays voisin au niveau de vie supérieur, on peut aisémment supposer qu'une partie de la population mexicaine a fait le choix de s'intaller aux Etats-Unis. On retouve de la même manière plusieurs pays latino-américains comme Puerto-Rico ou Cuba en haut du classement.
-Le rayonnement culturel des Etats-Unis, accentué par les politiques mises en place durant la Guerre Froide, à fait apparaître le pays comme un nouvel Eldorado, et a attiré les populations du monde entier en quête d'un avenir meilleur.
-La forte présence de population née en Allemagne pourrait elle, être expliquée par une émigration post-2nde guerre mondiale.
-```
 
-```
+On a cette fois-ci une vision plus claire des pays de naissance. On constate une assez grande diversité géographique, puisque presques tous les continents sont représentés ; l'Amérique du Sud ( Mexique, Salvador, etc), l'Asie (Vietnam, Laos,Philippines,Inde, Japon,etc) mais aussi l'Europe (Italie,Allemagne).
+
+Au niveau des proportions, le Mexique s'impose assez largement comme 1er pays de naissance (hors Etats-Unis) de la population. Attirée par un pays voisin au niveau de vie supérieur, on peut aisémment supposer qu'une partie de la population mexicaine a fait le choix de s'intaller aux Etats-Unis. On retouve de la même manière plusieurs pays latino-américains comme Puerto-Rico ou Cuba en haut du classement.
+
+Le rayonnement culturel des Etats-Unis, accentué par les politiques mises en place durant la Guerre Froide, à fait apparaître le pays comme un nouvel Eldorado, et a attiré les populations du monde entier en quête d'un avenir meilleur.
+
+La forte présence de population née en Allemagne pourrait elle, être expliquée par une émigration post-2nde guerre mondiale.
+
+
+
 Après avoir étudié la répartition internationale des lieux de naissance, intéressons-nous maintenant aux lieux de résidence intra-étatique.
-```
+
 
 # Carte des Etats-Unis représentant les Etats précédents de résidence
 
-```{r income, echo=FALSE}
+```{r maptwo, echo=FALSE}
 move <- data %>%
     filter(state_of_previous_residence != "Not in universe" &
         state_of_previous_residence != "?") %>%
@@ -111,23 +114,28 @@ plot_usmap(data = move, values = "count") +
     theme(legend.position = "right")
 ```
 
-```
+
 La Californie, l'Utah, la Floride et la Caroline du Nord comptent pour les Etats les plus représentés dans la population sondée.
+
 La Californie ( 3o millions d'habitant en 1994) et la Floride (31 millions) sont en effet les Etats les plus peuplés des Etats-Unis, et il n'est pas étonnant de les retrouver sur cette carte. Néanmoins la présence de l'Utah est plus surprenante, alors qu'en 1994 la population de cet Etat n'excédait par les 2 millions de personnes. On peut faire le même constat pour la Caroline du nord, et ses 7 millions d'habitants.
+
 On peut faire plusieurs conjonctures pour expliquer cette carte. Tout d'abord, il faut rappeler que malgré sa volonté d'être représentative de la population américaine, ce recensement ne se base "que" sur 100 000 personnes, et qu'il peut donc y avoir des biais, surtout géographiques. On n'a en effet pas les lieux où les enquêtes ont été majoritairement menées, et il est possible qu'il y ait eu un plus fort taux de réponses dans certains Etats comme l'Utah qu'ailleurs.
+
 Deuxième piste, les données portaient sur l'Etat de "précédente résidence" ; on peut donc faire l'hypothèse que les habitants de l'Utah et de la Caroline du Nord sont plus souvent partis de ces Etats pour s'installer dans d'autres. La forte population dans certains Etats ne seraient pas donc dû à un solde naturel possitif de naissance inter-étatique, mais bien à des mobilités de population à l'échelle nationale.
+
 Ces suppositions sont évidemments insuffisantes pour expliquer ce décalage, mais elles nous permettent de nous apporter quelques pistes de réflexions, et surtout de garder à l'esprit de toujours s'interroger sur la provenance des données.
-```
 
-```
+
+
 Maintenant que le jeu de données est présenté, nous allons étudier l'impact du  genre et de l'ethnie sur la vie des individus, et leurs opportunités salariales et éducatives. 
+
 Les données ethniques sont en effet autorisées aux Etats-Unis, ce qui n'est pas le cas en France par exemple, et il nous a semblé important et pertinent d'utiliser ses données pour appuyer nos analyses.
-```
 
 
-```
+
+
 Voici donc un graphique présentant le niveau de revenu, en fonction de l'ethnie de la personne.
-```
+
 
 # Niveau de revenu par ethnie
 
