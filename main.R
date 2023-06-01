@@ -79,7 +79,6 @@ ggplot(data = data, aes(x = age, color = sex)) +
 
 
 #Analyse
-
 # income level by race (not relevant with 50000+, too crowded)
 ggplot(data, aes(x = income_level, fill = race)) +
     geom_bar(position = "fill") +
@@ -137,6 +136,26 @@ ggplot(data = employment_rate, aes(x = age, y = employment_rate)) +
   geom_line(color = "blue") +
   labs(title = "Taux d'emploi par âge", x = "Age", y = "Taux d'emploi")
 
+#Taux d'emploi par ethnie et par âge
+R_Empl <- data %>%
+  filter(age > 14 & age < 80 & race != "Other")
+
+taux_emploi <- aggregate(full_or_part_time_employment_stat ~ race + age, data = R_Empl, FUN = function(x) {
+  taux <- sum(x == "Full-time schedules" |
+                x == "PT for econ reasons usually PT" |
+                x == "PT for econ reasons usually FT" |
+                x == "PT for non-econ reasons usually FT" |
+                x == " Children or Armed Forces") / length(x) * 100
+})
+
+colnames(taux_emploi) = c("Ethnies", "age", "emploi")
+
+ggplot(data = taux_emploi, aes(x = age, y = emploi, color = Ethnies)) +
+  geom_smooth(se = FALSE) +
+  xlab("Âge") +
+  ylab("Taux d'emploi (%)") +
+  ggtitle("Taux d'emploi par ethnie et âge")
+
 
 #taux d'emploi par genre
 taux_emploi <- aggregate(full_or_part_time_employment_stat ~ sex, data = major, FUN = function(x) {
@@ -164,8 +183,7 @@ ggplot(data, aes(x = wage_per_hour, y = weeks_worked_in_year)) +
 
 # income level by sex
 ggplot(data, aes(x = income_level, fill = sex)) +
-    geom_bar() +
-    scale_fill_manual(values = c("Male" = "blue", "Female" = "pink")) +
+    geom_bar(position = "fill") +
     labs(x = "Income Level", y = "Count", fill = "Sex")
 
 
