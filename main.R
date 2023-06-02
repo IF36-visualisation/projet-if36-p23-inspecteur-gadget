@@ -44,7 +44,10 @@ ggplot(data = data, aes(x = age, color = sex)) +
 # countries of birth (not relevant due to the us)
 ggplot(data, aes(y = country_of_birth_self)) +
     geom_bar() +
-    labs(x = "Count", y = "Country of Birth")
+    labs(
+        title = "Country of birth",
+        x = "Count", y = "Country"
+    )
 
 # pyramides des âges
 ages <- data %>%
@@ -111,11 +114,20 @@ ggplot(data = average_income_by_age_race, aes(
 )) +
     geom_smooth(se = FALSE) +
     labs(
-        title = "Average income level by age and race",
-        x = "Age", y = "Average Income Level",
+        title = "Average wage per hour by age and race",
+        x = "Age", y = "Average wage per hour",
         color = "Race"
     )
 
+# distribution of races by income level
+ggplot(data, aes(x = income_level, fill = race)) +
+    geom_bar(position = "dodge") +
+    labs(
+        title = "Distribution of Races by Income Level",
+        fill = "Race",
+        x = "Income Level",
+        y = "Count"
+    )
 
 
 # EMPLOYMENT
