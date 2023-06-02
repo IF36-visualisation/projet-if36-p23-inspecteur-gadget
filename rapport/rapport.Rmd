@@ -132,7 +132,7 @@ On remarque ainsi que la majeure partie de l'échantillon a moins de 45 ans. Il 
 Un déficit des naissances est aussi observé pour les classes d'âges allant de 12 à 30 ans, avec un pic vers 20 ans ; ce sont des naissances "manquantes", qui n'ont pas eu lieu à cause de l'absence des hommes enrolés dans la guerre.
 
 
-# Pays de naissance
+### Pays de naissance
 
 
 On s'intéresse désormais aux pays de naissance des personnes interrogées dans notre échantillon.
@@ -174,7 +174,7 @@ Quelques pays comme le Mexique semblent néanmoins se distinguer, mais il est n�
 
 
 
-# Pays de naissance - Hors Etats-Unis
+### Pays de naissance - Hors Etats-Unis
 
 ```{r map, echo=FALSE}
 world <- data %>%
@@ -198,7 +198,7 @@ La forte présence de population née en Allemagne pourrait elle, être expliqu�
 Après avoir étudié la répartition internationale des lieux de naissance, intéressons-nous maintenant aux lieux de résidence intra-étatique.
 
 
-# Carte des Etats-Unis représentant les Etats précédents de résidence
+### Carte des Etats-Unis représentant les Etats précédents de résidence
 
 ```{r maptwo, echo=FALSE}
 move <- data %>%
@@ -240,7 +240,26 @@ Les données ethniques sont en effet autorisées aux Etats-Unis, ce qui n'est pa
 Voici donc un graphique présentant le niveau de revenu, en fonction de l'ethnie de la personne.
 
 
-# Niveau de revenu par ethnie
+### Niveau de revenu en fonction du sexe
+
+```{r incomesex, echo=FALSE}
+ggplot(data, aes(x = income_level, fill = sex)) +
+    geom_bar(position = "fill") +
+    labs(x = "Income Level", y = "Count", fill = "Sex")
+```
+
+Les catégories de revenu sont divisées en deux, soit moins de 50 000 dollars par an, soit plus que 50 000 dollars par an, puisque le jeu de données ne comporte pas de données plus précise.
+Le revenu moyen d'un foyer américain en 1990 était en effet de 50 000 dollars annuel, ce qui rend le choix de cette valeur pertinent pour avoir un rapide aperçu de la situation financière des personnes interrogés dans le cadre de cette étude. On suppose donc que c'est pour cette raison qu'elle a été incluse dans le jeu de données.
+ 
+ Si on analyse néanmoins les résultats, on constate qu'une majeure partie des sondés gagne moins de 50 000 dollars par an, et q'une minorité seulement arrive à avoir un travail plus rémunérateur. Lorsqu'on parlait plus tôt de "foyer", on peut néanmoins préciser que ceux-ci sont en général constitués de plus d'une personne, et quand plus de 70% des femmes travaillent en 1990, le revenu du foyer est en général constitué de 2 salaires. Cette distinction peut permettre de mieux comprendre pourquoi une large partie de la population interrogées demeure donc sous le seuil des 50 000 dollars de revenus annuel.
+ 
+ Même si hommes et femmes travaillent, on constate tout de même que la répartition des salaires entre les deux genres n'est pas la même. Parmi les populations les plus favorisés ( plus de 50 000 dollars par an), seul un quart sont des femmes. Au contraire, elles représentent plus de la moitié de ceux gaganant moins de 50 000 dollars par mois. 
+ 
+ Il faudra donc essayer de trouver les causes de cette inégalité de revenus ; on s'intéressera dans la suite à l'impact de l'éducation, mais aussi du choix du secteur d'activité, qui pourraient apporter des pistes d'explications.
+ 
+  Pour le moment, intéressons-nous à l'impact de l'ethnie sur le niveau de revenu.
+ 
+ ### Niveau de revenu en fonction de l'ethnie
 
 ```{r level, echo=FALSE}
 ggplot(data, aes(x = income_level, fill = race)) +
@@ -250,10 +269,8 @@ ggplot(data, aes(x = income_level, fill = race)) +
         x = "Income Level", y = "Percentage", fill = "Race"
     )
 ```
-
-
-
-
+ 
+ ```Intégrer ici un commentaire ```
 
 
 
