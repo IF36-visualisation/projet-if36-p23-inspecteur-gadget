@@ -120,13 +120,20 @@ ggplot(data = average_income_by_age_race, aes(
     )
 
 # distribution of races by income level
-ggplot(data, aes(x = income_level, fill = race)) +
-    geom_bar(position = "dodge") +
+library(scales)
+income_percent <- data %>%
+    group_by(income_level) %>%
+    count(race) %>%
+    mutate(percentage = n / sum(n))
+
+ggplot(income_percent, aes(x = income_level, y = percentage, fill = race)) +
+    geom_bar(position = "dodge", stat = "identity") +
+    scale_y_continuous(labels = percent_format()) +
     labs(
         title = "Distribution of Races by Income Level",
         fill = "Race",
         x = "Income Level",
-        y = "Count"
+        y = "Percentage"
     )
 
 
