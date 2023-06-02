@@ -1,7 +1,8 @@
 ---
-title: "Rapport"
-author: "Inspecteur Gadget"
-date: "2023-05-15"
+title: "Rapport d'analyse - Census Income"
+author: "IF36 - Inspecteur Gadget"
+date: "UTT - Semestre P23"
+
 output:
   prettydoc::html_pretty:
     theme: hpstr
@@ -11,7 +12,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r libraries, include=FALSE}c
+```{r libraries, include=FALSE}
 library(ggplot2)
 library(dplyr)
 library(tidyr)
@@ -26,7 +27,9 @@ data <- read_csv("../data/census-income.csv")
 
 # Introduction
 
-Extrait du recensement de la population américaine effectué en 1994-1995, ce jeu de données contient les données d’un peu moins de 200 000 individus, réparties sur 40 variables. Ce jeu de données provient du Département du Commerce des Etats-Unis; nous sommes donc en présence de données qui s'attachent principalement à décrire des données démographiques et sur l'emploi.
+Extrait du recensement de la population américaine effectué en 1994-1995, ce jeu de données contient les données d’un peu moins de 200 000 individus, réparties sur 40 variables. Ces données proviennent du Département du Commerce des Etats-Unis; nous sommes donc en présence de données qui s'attachent principalement à décrire des données démographiques et sur l'emploi.
+
+À l'origine, ce jeu de données a été publié par Ronny Kohavi et Barry Becker (Data Mining and Visualization, Silicon Graphics) avec pour objectif de prédire si un individu gagne plus de 50 000 dollars par an, dans le cadre du machine learning.
 
 Il est disponible sur le site de l'[UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Census-Income+%28KDD%29).
 
@@ -167,25 +170,32 @@ Le graph fonctionne pas???? déduire un pourcentage et comparer éventuellement 
 Il convient aussi de souligner qu'un pays de naissance n'est pas toujours révélateur d'une nationalité. Un enfant américain peut très bien naître sur le sol français par exemple. Néanmoins cet indicateur peut être utile pour modéliser les mobilités de population et l'attraction des Etats-Unis sur la scène internationale. Il est un indicateur complémentaire de la nationalité, qui elle aussi peut-être variable (elle peut s'acquérir par exemple, après un certains nombres d'années de résidence).
 
 
-```{r birthcountry, echo=FALSE}
+```{r birthcountry, fig.height=8, echo=FALSE}
 ggplot(data, aes(y = country_of_birth_self)) +
     geom_bar() +
-    labs(x = "Count", y = "Country of Birth")
+    labs(
+        title = "Country of birth",
+        x = "Count", y = "Country"
+    )
 ```
+
 Quelques pays comme le Mexique semblent néanmoins se distinguer, mais il est néanmoins difficile de faire une analyse. 
- Pour mieux appréhender la pluralité des pays d'origine de ces immigrés, voici donc un autre graphique, qui exclut cette fois-ci les Etats-Unis.
+Pour mieux appréhender la pluralité des pays d'origine de ces immigrés, voici donc un autre graphique, qui exclut cette fois-ci les Etats-Unis.
 
 
 
 ### Pays de naissance - Hors Etats-Unis
 
-```{r map, echo=FALSE}
-world <- data %>%
+```{r birthcountrynous, fig.height=8, echo=FALSE}
+no_us <- data %>%
     filter(country_of_birth_self != "United-States")
 
-ggplot(world, aes(y = country_of_birth_self)) +
+ggplot(no_us, aes(y = country_of_birth_self)) +
     geom_bar() +
-    labs(x = "Count", y = "Country of Birth")
+    labs(
+        title = "Country of birth",
+        x = "Count", y = "Country"
+    )
 ```
 
 On a cette fois-ci une vision plus claire des pays de naissance. On constate une assez grande diversité géographique, puisque presques tous les continents sont représentés ; l'Amérique du Sud ( Mexique, Salvador, etc), l'Asie (Vietnam, Laos,Philippines,Inde, Japon,etc) mais aussi l'Europe (Italie,Allemagne).
@@ -204,7 +214,7 @@ Après avoir étudié la répartition internationale des lieux de naissance, int
 ### Carte des Etats-Unis représentant les Etats précédents de résidence
 
 ```{r maptwo, echo=FALSE}
-move <- data %>%
+previous_residence_data <- data %>%
     filter(state_of_previous_residence != "Not in universe" &
         state_of_previous_residence != "?") %>%
     group_by(state_of_previous_residence) %>%
@@ -212,12 +222,18 @@ move <- data %>%
     arrange(desc(count)) %>%
     rename(state = state_of_previous_residence)
 
-plot_usmap(data = move, values = "count") +
+plot_usmap(
+    data = previous_residence_data,
+    values = "count"
+) +
     scale_fill_continuous(
-        low = "white", high = "red",
+        low = "white", high = "#DC143C",
     ) +
-    labs(title = "State of Previous Residence") +
-    theme(legend.position = "right")
+    theme(legend.position = "right") +
+    labs(
+        title = "State of Previous Residence",
+        fill = "Number of people"
+    )
 ```
 
 
@@ -254,15 +270,15 @@ ggplot(data, aes(x = income_level, fill = sex)) +
 Les catégories de revenu sont divisées en deux, soit moins de 50 000 dollars par an, soit plus que 50 000 dollars par an, puisque le jeu de données ne comporte pas de données plus précise.
 Le revenu moyen d'un foyer américain en 1990 était en effet de 50 000 dollars annuel, ce qui rend le choix de cette valeur pertinent pour avoir un rapide aperçu de la situation financière des personnes interrogés dans le cadre de cette étude. On suppose donc que c'est pour cette raison qu'elle a été incluse dans le jeu de données.
  
- Si on analyse néanmoins les résultats, on constate qu'une majeure partie des sondés gagne moins de 50 000 dollars par an, et q'une minorité seulement arrive à avoir un travail plus rémunérateur. Lorsqu'on parlait plus tôt de "foyer", on peut néanmoins préciser que ceux-ci sont en général constitués de plus d'une personne, et quand plus de 70% des femmes travaillent en 1990, le revenu du foyer est en général constitué de 2 salaires. Cette distinction peut permettre de mieux comprendre pourquoi une large partie de la population interrogées demeure donc sous le seuil des 50 000 dollars de revenus annuel.
+Si on analyse néanmoins les résultats, on constate qu'une majeure partie des sondés gagne moins de 50 000 dollars par an, et q'une minorité seulement arrive à avoir un travail plus rémunérateur. Lorsqu'on parlait plus tôt de "foyer", on peut néanmoins préciser que ceux-ci sont en général constitués de plus d'une personne, et quand plus de 70% des femmes travaillent en 1990, le revenu du foyer est en général constitué de 2 salaires. Cette distinction peut permettre de mieux comprendre pourquoi une large partie de la population interrogées demeure donc sous le seuil des 50 000 dollars de revenus annuel.
  
- Même si hommes et femmes travaillent, on constate tout de même que la répartition des salaires entre les deux genres n'est pas la même. Parmi les populations les plus favorisés ( plus de 50 000 dollars par an), seul un quart sont des femmes. Au contraire, elles représentent plus de la moitié de ceux gaganant moins de 50 000 dollars par mois. 
+Même si hommes et femmes travaillent, on constate tout de même que la répartition des salaires entre les deux genres n'est pas la même. Parmi les populations les plus favorisés ( plus de 50 000 dollars par an), seul un quart sont des femmes. Au contraire, elles représentent plus de la moitié de ceux gaganant moins de 50 000 dollars par mois. 
  
- Il faudra donc essayer de trouver les causes de cette inégalité de revenus ; on s'intéressera dans la suite à l'impact de l'éducation, mais aussi du choix du secteur d'activité, qui pourraient apporter des pistes d'explications.
+Il faudra donc essayer de trouver les causes de cette inégalité de revenus ; on s'intéressera dans la suite à l'impact de l'éducation, mais aussi du choix du secteur d'activité, qui pourraient apporter des pistes d'explications.
  
-  Pour le moment, intéressons-nous à l'impact de l'ethnie sur le niveau de revenu.
+Pour le moment, intéressons-nous à l'impact de l'ethnie sur le niveau de revenu.
  
- ### Niveau de revenu en fonction de l'ethnie
+### Niveau de revenu en fonction de l'ethnie
 
 ```{r level, echo=FALSE}
 ggplot(data, aes(x = income_level, fill = race)) +
@@ -273,7 +289,7 @@ ggplot(data, aes(x = income_level, fill = race)) +
     )
 ```
  
- ```Intégrer ici un commentaire pour ce graph ```
+```Intégrer ici un commentaire pour ce graph ```
 
 
 
