@@ -65,13 +65,7 @@ globe_data <- data %>%
     ) %>%
     transform(country_of_birth_self = sub("-", " ", country_of_birth_self))
 
-unique(globe_data$country_of_birth_self)
-
-count <- table(globe_data$country_of_birth_self)
-globe_data$country_count <- count[
-    as.character(globe_data$country_of_birth_self)
-]
-globe_data <- distinct(globe_data, country_of_birth_self, country_count)
+globe_data <- distinct(globe_data, country_of_birth_self)
 
 map_data <- map_data("world")
 coordinates <- map_data[
@@ -81,13 +75,18 @@ coordinates <- map_data[
 globe_data$longitude <- coordinates$long
 globe_data$latitude <- coordinates$lat
 
+globe_data$end_long <- -100.094673
+globe_data$end_lat <- 40.165441
+
+arcs_data <- globe_data %>% select(latitude, longitude, end_lat, end_long)
+
 globe <- globejs(
-    lat = globe_data$latitude,
-    long = globe_data$longitude,
-    val = globe_data$country_count,
-    color = "white",
-    bodycolor = "steelblue",
-    atmosphere = FALSE
+    arcs = arcs_data,
+    rotationlat = 0.5,
+    rotationlong = 0.2,
+    atmosphere = TRUE,
+    arcsOpacity = 0.5,
+    arcsColor = "white"
 )
 
 # -------------------------------------------------
