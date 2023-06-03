@@ -137,6 +137,25 @@ On remarque ainsi que la majeure partie de l'échantillon a moins de 45 ans. Il 
 
 Un déficit des naissances est aussi observé pour les classes d'âges allant de 12 à 30 ans, avec un pic vers 20 ans ; ce sont des naissances "manquantes", qui n'ont pas eu lieu à cause de l'absence des hommes enrolés dans la guerre.
 
+Ce déficit s'observe aussi sur la pyramide des âges.
+
+### Pyramide des âges
+
+```{r pyramide, echo=FALSE}
+ages <- data %>%
+    mutate(age_range = cut(age, breaks = seq(min(data$age), max(data$age), 5)))
+
+ggplot(data = ages, aes(x = as.factor(age_range), fill = sex)) +
+    geom_bar(data = subset(ages, sex == "Female")) +
+    geom_bar(
+        data = subset(ages, sex == "Male"),
+        aes(y = after_stat(count) * (-1))
+    ) +
+    coord_flip() +
+    labs(title = "Pyramide des âges", x = "Âge", y = "Nombre de personnes")
+```
+
+On peut aussi constater que les femmes vivent plus longtemps que les hommes, puisqu'elles représentent par exemple 3/4 de la classe d'âge 85-90 ans. Une hygiène de vie plus favorable, avec moins de tabac ou d'alcool, peut en partie expliquer cet écart.
 
 ### Pays de naissance
 
@@ -276,7 +295,7 @@ Même si hommes et femmes travaillent, on constate tout de même que la réparti
  
 Il faudra donc essayer de trouver les causes de cette inégalité de revenus ; on s'intéressera dans la suite à l'impact de l'éducation, mais aussi du choix du secteur d'activité, qui pourraient apporter des pistes d'explications.
  
-Pour le moment, intéressons-nous à l'impact de l'ethnie sur le niveau de revenu.
+Pour le moment, intéressons-nous à l'impact de l'ethnie sur le niveau de revenu. 
  
 ### Niveau de revenu en fonction de l'ethnie
 
@@ -288,8 +307,17 @@ ggplot(data, aes(x = income_level, fill = race)) +
         x = "Income Level", y = "Percentage", fill = "Race"
     )
 ```
+
+```Base 100 explication ```
+
+Avec ce graphisme, on constate qu'il existe bien des inégalités raciales au niveau du salaire. Alors que les populations caucasiennes sont, en proportion, plus représentés dans les salaires supérieurs à 50 000 dollars mensuels, c'est l'inverse pour les populations noires. Leur proportion réduit en effet presque de moitié (....)
+De l'autre côté, (cas des populations asiatiques).
+
+
+
+
  
-```Intégrer ici un commentaire pour ce graph ```
+
 
 
 
