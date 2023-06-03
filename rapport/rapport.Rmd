@@ -138,6 +138,7 @@ On remarque ainsi que la majeure partie de l'échantillon a moins de 45 ans. Il 
 Un déficit des naissances est aussi observé pour les classes d'âges allant de 12 à 30 ans, avec un pic vers 20 ans ; ce sont des naissances "manquantes", qui n'ont pas eu lieu à cause de l'absence des hommes enrolés dans la guerre.
 
 Ce déficit s'observe aussi sur la pyramide des âges.
+De plus, le jeu de données est à l'origine utilisé pour faire du machine learning afin de prédire la tranche de salaire en fonction d'autres paramètres. Ainsi, les individus les plus pertinents à interroger se situent entre 20 et 60ans, en sachant que le taux d'emploi décroit mécaniquement avec l'avancée en âge. 
 
 ### Pyramide des âges
 
@@ -198,7 +199,7 @@ ggplot(data, aes(y = country_of_birth_self)) +
     )
 ```
 
-Quelques pays comme le Mexique semblent néanmoins se distinguer, mais il est néanmoins difficile de faire une analyse. 
+Quelques pays comme le Mexique semblent néanmoins se distinguer du fait de sa proximité avec les Etats-Unis (frontière commune). Cette information peut être mise en perspective avec les débats des années 2010 sur la construction d'un mur à la frontière entre les Etats-Unis et le Mexique pour endiguer le flux migratoire venant du Mexique mais aussi de l'Amérique latine.  
 Pour mieux appréhender la pluralité des pays d'origine de ces immigrés, voici donc un autre graphique, qui exclut cette fois-ci les Etats-Unis.
 
 
@@ -311,7 +312,7 @@ ggplot(data, aes(x = income_level, fill = race)) +
 ```Base 100 explication ```
 
 Avec ce graphisme, on constate qu'il existe bien des inégalités raciales au niveau du salaire. Alors que les populations caucasiennes sont, en proportion, plus représentés dans les salaires supérieurs à 50 000 dollars mensuels, c'est l'inverse pour les populations noires. Leur proportion réduit en effet presque de moitié (....)
-De l'autre côté, (cas des populations asiatiques).
+De l'autre côté, les populations en provenance d'Asie sont un peu mieux représentées dans les salaires à +50000dollars que dans les salaires à -50000dollars.  (cas des populations asiatiques).
 
 
 
