@@ -101,14 +101,14 @@ ggplot(no_white, aes(x = sex, fill = race)) +
         x = "Income Level", y = "Percentage", fill = "Race"
     )
 
-# average income level by age and race
+# average wage per hour by age and race
 wage <- data %>%
     filter(wage_per_hour != 0 & race != "Other" & age < 76)
 
-average_income_by_age_race <-
+average_wph_by_age_race <-
     aggregate(wage_per_hour ~ age + race, data = wage, FUN = mean)
 
-ggplot(data = average_income_by_age_race, aes(
+ggplot(data = average_wph_by_age_race, aes(
     x = age, y = wage_per_hour,
     color = race
 )) +
@@ -117,6 +117,21 @@ ggplot(data = average_income_by_age_race, aes(
         title = "Average wage per hour by age and race",
         x = "Age", y = "Average wage per hour",
         color = "Race"
+    )
+
+# salaire horaire moyen en fonction du genre et de l'âge
+average_wph_by_age_sex <-
+    aggregate(wage_per_hour ~ age + sex, data = wage, FUN = mean)
+
+ggplot(data = average_wph_by_age_sex, aes(
+    x = age, y = wage_per_hour,
+    color = sex
+)) +
+    geom_smooth(se = FALSE) +
+    labs(
+        title = "Average wage per hour by age and sex",
+        x = "Age", y = "Average wage per hour",
+        color = "Sex"
     )
 
 # distribution of races by income level
