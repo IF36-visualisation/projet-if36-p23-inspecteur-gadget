@@ -323,8 +323,33 @@ ggplot(data, aes(x = income_level, fill = race)) +
 Avec ce graphisme, on constate qu'il existe bien des inégalités raciales au niveau du salaire. Alors que les populations caucasiennes sont, en proportion, plus représentés dans les salaires supérieurs à 50 000 dollars mensuels, c'est l'inverse pour les populations noires. Leur proportion réduit en effet presque de moitié (....)
 De l'autre côté, les populations en provenance d'Asie sont un peu mieux représentées dans les salaires à +50000dollars que dans les salaires à -50000dollars.  (cas des populations asiatiques).
 
+```{r wage_per_hour, echo=FALSE}
+wage <- data %>%
+  filter(wage_per_hour != 0 & race != "Other" & age < 75)
 
+average_income_by_age_race <-
+  aggregate(wage_per_hour ~ age + race, data = wage, FUN = mean)
 
+ggplot(data = average_income_by_age_race, aes(
+  x = age, y = wage_per_hour,
+  color = race
+)) +
+  geom_smooth(se = FALSE) +
+  geom_vline(xintercept = 40, linetype = "dashed", color = "red") +
+  geom_vline(xintercept = 55, linetype = "dashed", color = "red") +
+  labs(
+    title = "Salaire horaire moyen en fonction de l'âge et de l'ethnie",
+    x = "Age", y = "Salaire horaire",
+    color = "Ethnie"
+  )
+```
+
+Plusieurs phénomènes apparaissent sur ce graphique. Nous allons tout d'abord nous intéresser à l'allure globale des courbes. Nous pouvons en effet noter que les courbes sont concaves. Il semblerait ainsi que le salaire horaire croit jusqu'à un certain âge puis décroit. Cette décroissance peut être analysée comme une anomalie car, dans de nombreuses études, il est montré que le salaire horaire croit jusqu'à l'âge de la retraite, ce qui n'est pas le cas ici. Il semblerait cependant que nous soyons ici face à un effet de génération. En effet si l'on se renseigne sur l'évolution du salaire moyen aux Etats-Unis, nous apprenons que le salaire horaire moyen a progressivement évolué pendant la Seconde Guerre Mondiale avant de connaître une importante hausse dans les années 60. Les personnes entrées dans l'emploi dans ces années là correspondent, de manière générale, aux personnes nées entre 1940 et 1955. Ces personnes sont donc agées, lors de l'enquête, de 40 à 55ans. Ces âges correspondent aux points hauts de trois de courbes. Ces personnes ont bénéficié d'un salaire horaire de départ plus important que leurs prédécesseurs qui n'a cessé de progresser avec l'expérience. 
+
+Ce phénomène d'augmentation du salaire avec l'âge est visible sur la partie montante de la courbe concave. En effet, le salaire augmente souvent avec l'expérience. 
+
+Nous allons maintenant nous interesser aux différences entre les ethnies. Tout d'abord nous constatons que le salaire horaire moyen maximum des personnes Afro-Américaines est plus faible que celui des autres ethnies. Cela peut s'expliquer par un racisme encore bien ancré dans la société américaine qui se traduit par une discrimination à l'emploi. De plus, les personnes Afro-américaines sont plus représentées dans des secteurs peu rémunérateurs. 
+(à mettre en relation avec les industries codes). + (mettre en relation avec le niveau d'éducation, aussi pour asiats). 
 
  
 
