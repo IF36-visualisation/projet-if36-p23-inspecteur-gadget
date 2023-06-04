@@ -5,7 +5,6 @@ date: "UTT - Semestre P23"
 
 output:
   rmdformats::material:
-    highlight: tango
     thumbnails: false
     gallery: true
 ---
@@ -29,7 +28,7 @@ data <- read_csv("../data/census-income.csv")
 
 # Introduction
 
-Extrait du recensement de la population américaine effectué en 1994-1995, ce jeu de données contient les données d’un peu moins de 200 000 individus, réparties sur 40 variables. Ces données proviennent du Département du Commerce des Etats-Unis; nous sommes donc en présence de données qui s'attachent principalement à décrire des données démographiques et sur l'emploi.
+Extrait du recensement de la population américaine effectué en 1994-1995, ce jeu de données contient les données d’un peu moins de 200 000 individus, réparties sur 40 variables. Ces données proviennent du Département du Commerce des États-Unis; nous sommes donc en présence de données qui s'attachent principalement à décrire des données démographiques et sur l'emploi.
 
 À l'origine, ce jeu de données a été publié par Ronny Kohavi et Barry Becker (Data Mining and Visualization, Silicon Graphics) avec pour objectif de prédire si un individu gagne plus de 50 000 dollars par an, dans le cadre du machine learning.
 
@@ -113,7 +112,7 @@ Enfin, nous nous attacherons à essayer de comprendre les inégalités économiq
 Il est tout de même important de noter que les données datent des années 90 et que les visualisations que nous allons réaliser ne seront pas forcément représentatives de la situation actuelle. Il sera donc nécessaire de replacer ces visualisations dans le contexte de l'époque afin de les interpréter correctement.
 
 
-> *NB : “race” est un mot de vocabulaire employé dans le champ de la recherche en sociologie, en France comme aux Etats-Unis. 
+> *NB : “race” est un mot de vocabulaire employé dans le champ de la recherche en sociologie, en France comme aux États-Unis. 
 
 
 
@@ -135,7 +134,7 @@ ggplot(data, aes(x = age)) +
 ```
 
 
-On remarque ainsi que la majeure partie de l'échantillon a moins de 45 ans. Il existe néanmoins de fortes disparités ; l'engagement des Etats-Unis dans la guerre du Vietnam, notamment à partir de 1965 explique en partie ces écarts démographiques. Les classes d'âge qui se sont majoritairement enrolés au Vietnam ont entre 40 et 50  au moment de l'enquête, et on peut constater leur sous-représenatation dans la population générale. En mobilisant plus de 2 millions de soldats, dont la moyenne d'âge était de 19 ans, la guerre a en effet fait un peu moins de 60 000 morts du côté américain.
+On remarque ainsi que la majeure partie de l'échantillon a moins de 45 ans. Il existe néanmoins de fortes disparités ; l'engagement des États-Unis dans la guerre du Vietnam, notamment à partir de 1965 explique en partie ces écarts démographiques. Les classes d'âge qui se sont majoritairement enrolés au Vietnam ont entre 40 et 50  au moment de l'enquête, et on peut constater leur sous-représenatation dans la population générale. En mobilisant plus de 2 millions de soldats, dont la moyenne d'âge était de 19 ans, la guerre a en effet fait un peu moins de 60 000 morts du côté américain.
 
 Un déficit des naissances est aussi observé pour les classes d'âges allant de 12 à 30 ans, avec un pic vers 20 ans ; ce sont des naissances "manquantes", qui n'ont pas eu lieu à cause de l'absence des hommes enrolés dans la guerre.
 
@@ -184,13 +183,13 @@ ggplot(data = graph_data, aes(x = Fréquence, y = Pays, fill = Pays)) +
   ggtitle("Comparaison du nombre de personnes ayant les EU comme pays de naissance et le reste")
 ```
 
-On constate que l'écrasante majorité de la population interrogée est née aux Etats-Unis. 
+On constate que l'écrasante majorité de la population interrogée est née aux États-Unis. 
 
 ```
 Le graph fonctionne pas???? déduire un pourcentage et comparer éventuellement à d'autrs pays ou à maintenant
 ```
 
-Il convient aussi de souligner qu'un pays de naissance n'est pas toujours révélateur d'une nationalité. Un enfant américain peut très bien naître sur le sol français par exemple. Néanmoins cet indicateur peut être utile pour modéliser les mobilités de population et l'attraction des Etats-Unis sur la scène internationale. Il est un indicateur complémentaire de la nationalité, qui elle aussi peut-être variable (elle peut s'acquérir par exemple, après un certains nombres d'années de résidence).
+Il convient aussi de souligner qu'un pays de naissance n'est pas toujours révélateur d'une nationalité. Un enfant américain peut très bien naître sur le sol français par exemple. Néanmoins cet indicateur peut être utile pour modéliser les mobilités de population et l'attraction des États-Unis sur la scène internationale. Il est un indicateur complémentaire de la nationalité, qui elle aussi peut-être variable (elle peut s'acquérir par exemple, après un certains nombres d'années de résidence).
 
 
 ```{r birthcountry, fig.height=8, echo=FALSE}
@@ -202,8 +201,8 @@ ggplot(data, aes(y = country_of_birth_self)) +
     )
 ```
 
-Quelques pays comme le Mexique semblent néanmoins se distinguer du fait de sa proximité avec les Etats-Unis (frontière commune). Cette information peut être mise en perspective avec les débats des années 2010 sur la construction d'un mur à la frontière entre les Etats-Unis et le Mexique pour endiguer le flux migratoire venant du Mexique mais aussi de l'Amérique latine.  
-Pour mieux appréhender la pluralité des pays d'origine de ces immigrés, voici donc un autre graphique, qui exclut cette fois-ci les Etats-Unis.
+Quelques pays comme le Mexique semblent néanmoins se distinguer du fait de sa proximité avec les États-Unis (frontière commune). Cette information peut être mise en perspective avec les débats des années 2010 sur la construction d'un mur à la frontière entre les États-Unis et le Mexique pour endiguer le flux migratoire venant du Mexique mais aussi de l'Amérique latine.  
+Pour mieux appréhender la pluralité des pays d'origine de ces immigrés, voici donc un autre graphique, qui exclut cette fois-ci les États-Unis.
 
 
 
@@ -212,9 +211,8 @@ Pour mieux appréhender la pluralité des pays d'origine de ces immigrés, voici
 
 
 
-###PARTIE ANALYSE
-###Immigration aux Etats-Unis
-### Pays de naissance - Hors Etats-Unis
+
+### Pays de naissance - Hors États-Unis
 
 ```{r birthcountrynous, fig.height=8, echo=FALSE}
 no_us <- data %>%
@@ -230,9 +228,9 @@ ggplot(no_us, aes(y = country_of_birth_self)) +
 
 On a cette fois-ci une vision plus claire des pays de naissance. On constate une assez grande diversité géographique, puisque presques tous les continents sont représentés ; l'Amérique du Sud ( Mexique, Salvador, etc), l'Asie (Vietnam, Laos,Philippines,Inde, Japon,etc) mais aussi l'Europe (Italie,Allemagne).
 
-Au niveau des proportions, le Mexique s'impose assez largement comme 1er pays de naissance (hors Etats-Unis) de la population. Attirée par un pays voisin au niveau de vie supérieur, on peut aisémment supposer qu'une partie de la population mexicaine a fait le choix de s'intaller aux Etats-Unis. On retouve de la même manière plusieurs pays latino-américains comme Puerto-Rico ou Cuba en haut du classement.
+Au niveau des proportions, le Mexique s'impose assez largement comme 1er pays de naissance (hors États-Unis) de la population. Attirée par un pays voisin au niveau de vie supérieur, on peut aisémment supposer qu'une partie de la population mexicaine a fait le choix de s'intaller aux États-Unis. On retouve de la même manière plusieurs pays latino-américains comme Puerto-Rico ou Cuba en haut du classement.
 
-Le rayonnement culturel des Etats-Unis, accentué par les politiques mises en place durant la Guerre Froide, à fait apparaître le pays comme un nouvel Eldorado, et a attiré les populations du monde entier en quête d'un avenir meilleur.
+Le rayonnement culturel des États-Unis, accentué par les politiques mises en place durant la Guerre Froide, à fait apparaître le pays comme un nouvel Eldorado, et a attiré les populations du monde entier en quête d'un avenir meilleur.
 
 La forte présence de population née en Allemagne pourrait elle, être expliquée par une émigration durant et post-2nde guerre mondiale.
 
@@ -241,7 +239,7 @@ La forte présence de population née en Allemagne pourrait elle, être expliqu�
 Après avoir étudié la répartition internationale des lieux de naissance, intéressons-nous maintenant aux lieux de résidence intra-étatique.
 
 
-### Carte des Etats-Unis représentant les Etats précédents de résidence
+### Carte des États-Unis représentant les Etats précédents de résidence
 
 ```{r maptwo, echo=FALSE}
 previous_residence_data <- data %>%
@@ -269,7 +267,7 @@ plot_usmap(
 
 La Californie, l'Utah, la Floride et la Caroline du Nord comptent pour les Etats les plus représentés dans la population sondée.
 
-La Californie ( 3o millions d'habitant en 1994) et la Floride (31 millions) sont en effet les Etats les plus peuplés des Etats-Unis, et il n'est pas étonnant de les retrouver sur cette carte. De plus, le gouverneur de Californie Pete Wilson (Républicain) en poste en 1994 s'est lancé dans une croisade contre les immigrés de son Etat. La Proposition 187 de Californie était une proposition de loi controversée qui a été soumise au vote des électeurs en Californie lors des élections de novembre 1994. Son titre officiel était l'« Initiative de la loi sur l'immigration illégale ». Elle visait à restreindre l'accès des immigrants sans papiers aux services publics, tels que l'éducation et les soins de santé. Un débat a été engagé sur la constitutionnalité de cette loi. Cependant, de nombreux personnes issues de l'immigration ont préféré quitter l'Etat.  La présence de l'Utah est plus surprenante, alors qu'en 1994 la population de cet Etat n'excédait par les 2 millions de personnes. On peut faire le même constat pour la Caroline du nord, et ses 7 millions d'habitants.
+La Californie ( 3o millions d'habitant en 1994) et la Floride (31 millions) sont en effet les Etats les plus peuplés des États-Unis, et il n'est pas étonnant de les retrouver sur cette carte. De plus, le gouverneur de Californie Pete Wilson (Républicain) en poste en 1994 s'est lancé dans une croisade contre les immigrés de son Etat. La Proposition 187 de Californie était une proposition de loi controversée qui a été soumise au vote des électeurs en Californie lors des élections de novembre 1994. Son titre officiel était l'« Initiative de la loi sur l'immigration illégale ». Elle visait à restreindre l'accès des immigrants sans papiers aux services publics, tels que l'éducation et les soins de santé. Un débat a été engagé sur la constitutionnalité de cette loi. Cependant, de nombreux personnes issues de l'immigration ont préféré quitter l'Etat.  La présence de l'Utah est plus surprenante, alors qu'en 1994 la population de cet Etat n'excédait par les 2 millions de personnes. On peut faire le même constat pour la Caroline du nord, et ses 7 millions d'habitants.
 
 On peut faire plusieurs conjonctures pour expliquer cette carte. Tout d'abord, il faut rappeler que malgré sa volonté d'être représentative de la population américaine, ce recensement ne se base "que" sur 200 000 personnes, et qu'il peut donc y avoir des biais, surtout géographiques. On n'a en effet pas les lieux où les enquêtes ont été majoritairement menées, et il est possible qu'il y ait eu un plus fort taux de réponses dans certains Etats comme l'Utah qu'ailleurs.
 
@@ -281,7 +279,7 @@ Ces suppositions sont évidemments insuffisantes pour expliquer ce décalage, ma
 
 Maintenant que le jeu de données est présenté, nous allons étudier l'impact du  genre et de l'ethnie sur la vie des individus, et leurs opportunités salariales et éducatives. 
 
-Les données ethniques sont en effet autorisées aux Etats-Unis, ce qui n'est pas le cas en France par exemple, et il nous a semblé important et pertinent d'utiliser ses données pour appuyer nos analyses.
+Les données ethniques sont en effet autorisées aux États-Unis, ce qui n'est pas le cas en France par exemple, et il nous a semblé important et pertinent d'utiliser ses données pour appuyer nos analyses.
 
 
 
@@ -348,7 +346,7 @@ ggplot(data = average_income_by_age_race, aes(
   )
 ```
 
-Plusieurs phénomènes apparaissent sur ce graphique. Nous allons tout d'abord nous intéresser à l'allure globale des courbes. Nous pouvons en effet noter que les courbes sont concaves. Il semblerait ainsi que le salaire horaire croit jusqu'à un certain âge puis décroit. Cette décroissance peut être analysée comme une anomalie car, dans de nombreuses études, il est montré que le salaire horaire croit jusqu'à l'âge de la retraite, ce qui n'est pas le cas ici. Il semblerait cependant que nous soyons ici face à un effet de génération. En effet si l'on se renseigne sur l'évolution du salaire moyen aux Etats-Unis, nous apprenons que le salaire horaire moyen a progressivement évolué pendant la Seconde Guerre Mondiale avant de connaître une importante hausse dans les années 60. Les personnes entrées dans l'emploi dans ces années là correspondent, de manière générale, aux personnes nées entre 1940 et 1955. Ces personnes sont donc agées, lors de l'enquête, de 40 à 55ans. Ces âges correspondent aux points hauts de trois de courbes. Ces personnes ont bénéficié d'un salaire horaire de départ plus important que leurs prédécesseurs qui n'a cessé de progresser avec l'expérience. 
+Plusieurs phénomènes apparaissent sur ce graphique. Nous allons tout d'abord nous intéresser à l'allure globale des courbes. Nous pouvons en effet noter que les courbes sont concaves. Il semblerait ainsi que le salaire horaire croit jusqu'à un certain âge puis décroit. Cette décroissance peut être analysée comme une anomalie car, dans de nombreuses études, il est montré que le salaire horaire croit jusqu'à l'âge de la retraite, ce qui n'est pas le cas ici. Il semblerait cependant que nous soyons ici face à un effet de génération. En effet si l'on se renseigne sur l'évolution du salaire moyen aux États-Unis, nous apprenons que le salaire horaire moyen a progressivement évolué pendant la Seconde Guerre Mondiale avant de connaître une importante hausse dans les années 60. Les personnes entrées dans l'emploi dans ces années là correspondent, de manière générale, aux personnes nées entre 1940 et 1955. Ces personnes sont donc agées, lors de l'enquête, de 40 à 55 ans. Ces âges correspondent aux points hauts de trois de courbes. Ces personnes ont bénéficié d'un salaire horaire de départ plus important que leurs prédécesseurs qui n'a cessé de progresser avec l'expérience. 
 
 Ce phénomène d'augmentation du salaire avec l'âge est visible sur la partie montante de la courbe concave. En effet, le salaire augmente souvent avec l'expérience. 
 
