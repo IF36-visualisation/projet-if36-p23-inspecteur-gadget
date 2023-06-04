@@ -4,8 +4,10 @@ author: "IF36 - Inspecteur Gadget"
 date: "UTT - Semestre P23"
 
 output:
-  prettydoc::html_pretty:
-    theme: hpstr
+  rmdformats::material:
+    highlight: tango
+    thumbnails: false
+    gallery: true
 ---
 
 ```{r setup, include=FALSE}
@@ -144,7 +146,9 @@ De plus, le jeu de données est à l'origine utilisé pour faire du machine lear
 
 ```{r pyramide, echo=FALSE}
 ages <- data %>%
-    mutate(age_range = cut(age, breaks = seq(min(data$age), max(data$age), 5)))
+    mutate(age_range = cut(age,
+        breaks = seq(min(data$age), max(data$age), 5), include.lowest = TRUE
+    ))
 
 ggplot(data = ages, aes(x = as.factor(age_range), fill = sex)) +
     geom_bar(data = subset(ages, sex == "Female")) +
