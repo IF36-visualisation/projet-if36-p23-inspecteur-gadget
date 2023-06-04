@@ -51,7 +51,9 @@ ggplot(data, aes(y = country_of_birth_self)) +
 
 # pyramides des âges
 ages <- data %>%
-    mutate(age_range = cut(age, breaks = seq(min(data$age), max(data$age), 5)))
+    mutate(age_range = cut(age,
+        breaks = seq(min(data$age), max(data$age), 5), include.lowest = TRUE
+    ))
 
 ggplot(data = ages, aes(x = as.factor(age_range), fill = sex)) +
     geom_bar(data = subset(ages, sex == "Female")) +
