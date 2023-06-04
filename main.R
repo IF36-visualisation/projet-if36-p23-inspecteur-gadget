@@ -103,7 +103,7 @@ ggplot(no_white, aes(x = sex, fill = race)) +
 
 # average income level by age and race
 wage <- data %>%
-    filter(wage_per_hour != 0 & race != "Other")
+    filter(wage_per_hour != 0 & race != "Other" & age < 76)
 
 average_income_by_age_race <-
     aggregate(wage_per_hour ~ age + race, data = wage, FUN = mean)
