@@ -4,6 +4,7 @@ library(ggplot2)
 library(plotly)
 library(maps)
 library(usmap)
+library(mapdata)
 library(shiny)
 
 data <- read_csv("../data/census-income.csv")
@@ -24,15 +25,21 @@ previous_residence_data <- data %>%
     summarise(count = n()) %>%
     arrange(desc(count)) %>%
     rename(state = state_of_previous_residence)
-
 previous_residence_plot <- plot_usmap(
     data = previous_residence_data,
     values = "count"
 ) +
     scale_fill_continuous(
-        low = "white", high = "red",
+        low = "white", high = "#DC143C",
     ) +
-    theme(legend.position = "right")
+    theme(legend.position = "right") +
+    labs(
+        fill = "Number of people"
+    )
+
+# wage per hour without 0
+wph_nozero <- data %>%
+    filter(wage_per_hour != 0)
 
 # --------------------- globe ---------------------
 
@@ -92,6 +99,18 @@ globe <- globejs(
 # -------------------------------------------------
 
 server <- function(input, output) {
+    output$nb_observations <- renderText({
+        nrow(data)
+    })
+    output$nb_dimensions <- renderText({
+        ncol(data)
+    })
+    output$age_moyen <- renderText({
+        round(mean(data$age))
+    })
+    output$wph_moyen <- renderText({
+        round(mean(wph_nozero$wage_per_hour))
+    })
     output$income_level_race <- renderPlotly({
         income_level_race_plot
     })

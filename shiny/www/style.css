@@ -1,3 +1,33 @@
+.nav-link {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    border-radius: 24px !important;
+    transition: .2s;
+}
+
+.nav-link p {
+    padding-left: 2px;
+}
+
+.info-box .shiny-text-output {
+    font-size: 32px;
+}
+
+.info-box .info-box-icon {
+    width: 90.4px;
+}
+
+.info-box .info-box-icon i {
+    font-size: 36px;
+}
+
+.shiny-spinner-output-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
 .control-sidebar {
     padding: 20px;
 }
