@@ -2,6 +2,7 @@ library(dplyr)
 library(tidyr)
 library(readr)
 library(ggplot2)
+library(plotly)
 library(gridExtra)
 
 data <- read_csv("./data/census-income.csv")
@@ -331,7 +332,7 @@ education <- data %>%
         education,
         levels = education_order
     )) %>%
-    group_by(education, race, sex) %>%
+    group_by(education, race, sex, major_occupation_recode) %>%
     summarise(wage_per_hour = mean(wage_per_hour))
 
 ggplot(education, aes(x = wage_per_hour, y = education)) +
@@ -349,6 +350,32 @@ ggplot(education, aes(y = education, fill = race)) +
 ggplot(education, aes(y = education, fill = sex)) +
     geom_bar(position = "fill")
 
+# niveau d'étude en fonction du domaine d'activité
+ggplot(education, aes(y = education, fill = major_occupation_recode)) +
+    geom_bar(position = "fill") +
+    theme(legend.spacing.y = unit(0.1, "cm")) +
+    guides(fill = guide_legend(byrow = TRUE)) +
+    labs(
+        title = "Education by occupation",
+        fill = "Occupation",
+        x = "Percentage", y = "Education"
+    )
+
+# wage per hour en fonction du domaine d'activité (barchart)
+ggplot(education, aes(y = major_occupation_recode, x = wage_per_hour)) +
+    geom_bar(stat = "identity") +
+    labs(
+        title = "Wage per hour by occupation",
+        x = "Wage per hour", y = "Occupation"
+    )
+
+# wage per hour en fonction du domaine d'activité (boxplot)
+ggplot(education, aes(y = major_occupation_recode, x = wage_per_hour)) +
+    geom_boxplot() +
+    labs(
+        title = "Wage per hour by occupation",
+        x = "Wage per hour", y = "Occupation"
+    )
 
 
 
@@ -356,20 +383,47 @@ ggplot(education, aes(y = education, fill = sex)) +
 # us map : states of previous residences
 library(usmap)
 
-move <- data %>%
+previous_residence_data <- data %>%
     filter(state_of_previous_residence != "Not in universe" &
-        state_of_previous_residence != "?") %>%
+        state_of_previous_residence != "?" &
+        state_of_previous_residence != "Abroad") %>%
     group_by(state_of_previous_residence) %>%
     summarise(count = n()) %>%
     arrange(desc(count)) %>%
     rename(state = state_of_previous_residence)
 
-plot_usmap(data = move, values = "count") +
+plot_usmap(data = previous_residence_data, values = "count") +
     scale_fill_continuous(
         low = "white", high = "red",
     ) +
     labs(title = "State of Previous Residence") +
     theme(legend.position = "right")
+
+# us map BUT BETTER
+previous_residence_data$code <- state.abb[match(
+    previous_residence_data$state, state.name
+)]
+
+previous_residence_data$hover <- paste0(
+    previous_residence_data$state
+)
+
+g <- list(
+    scope = "usa",
+    projection = list(type = "albers usa")
+)
+
+map <- plot_geo(previous_residence_data, locationmode = "USA-states")
+
+map <- map %>% add_trace(
+    z = ~count, text = ~hover, locations = ~code,
+    color = ~count, colors = "Reds"
+)
+
+map <- map %>% colorbar(title = "Count")
+
+map <- map %>% layout(geo = g)
+map
 
 # Pays de naissance des personnes interrogées
 # Pays différents
