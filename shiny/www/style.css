@@ -22,12 +22,6 @@
     font-size: 36px;
 }
 
-.shiny-spinner-output-container {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-}
-
 .control-sidebar {
     padding: 20px;
 }

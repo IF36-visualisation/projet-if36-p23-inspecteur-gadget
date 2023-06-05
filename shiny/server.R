@@ -2,47 +2,63 @@ library(dplyr)
 library(readr)
 library(ggplot2)
 library(plotly)
-library(maps)
-library(usmap)
-library(mapdata)
 library(shiny)
 
 data <- read_csv("../data/census-income.csv")
 
-# income level by race
+
+# ----------------- income level by race -----------------
 income_level_race_plot <- ggplot(data, aes(x = income_level, fill = race)) +
     geom_bar(position = "fill") +
     labs(
         x = "Income Level", y = "Percentage", fill = "Race"
     )
+# ---------------------------------------------------------
 
 
-# us map of state of previous residence
+# ------------- us map of state of previous residence -------------
 previous_residence_data <- data %>%
     filter(state_of_previous_residence != "Not in universe" &
-        state_of_previous_residence != "?") %>%
+        state_of_previous_residence != "?" &
+        state_of_previous_residence != "Abroad") %>%
     group_by(state_of_previous_residence) %>%
     summarise(count = n()) %>%
     arrange(desc(count)) %>%
     rename(state = state_of_previous_residence)
-previous_residence_plot <- plot_usmap(
-    data = previous_residence_data,
-    values = "count"
-) +
-    scale_fill_continuous(
-        low = "white", high = "#DC143C",
-    ) +
-    theme(legend.position = "right") +
-    labs(
-        fill = "Number of people"
-    )
 
-# wage per hour without 0
+previous_residence_data$code <- state.abb[match(
+    previous_residence_data$state, state.name
+)]
+
+previous_residence_data$hover <- paste0(
+    previous_residence_data$state
+)
+
+g <- list(
+    scope = "usa",
+    projection = list(type = "albers usa")
+)
+
+state_map <- plot_geo(previous_residence_data, locationmode = "USA-states")
+
+state_map <- state_map %>% add_trace(
+    z = ~count, text = ~hover, locations = ~code,
+    color = ~count, colors = "Reds"
+)
+
+state_map <- state_map %>% colorbar(title = "Count")
+
+state_map <- state_map %>% layout(geo = g)
+# -----------------------------------------------------------------
+
+
+# ----------------- wage per hour without 0 -----------------
 wph_nozero <- data %>%
     filter(wage_per_hour != 0)
+# -----------------------------------------------------------
+
 
 # --------------------- globe ---------------------
-
 library(threejs)
 library(maps)
 library(tidyverse)
@@ -95,8 +111,8 @@ globe <- globejs(
     arcsOpacity = 0.5,
     arcsColor = "white"
 )
-
 # -------------------------------------------------
+
 
 server <- function(input, output) {
     output$nb_observations <- renderText({
@@ -111,13 +127,10 @@ server <- function(input, output) {
     output$wph_moyen <- renderText({
         round(mean(wph_nozero$wage_per_hour))
     })
-    output$income_level_race <- renderPlotly({
-        income_level_race_plot
-    })
-    output$previous_residence <- renderPlotly({
-        previous_residence_plot
-    })
     output$globe <- renderGlobe({
         globe
+    })
+    output$state_map <- renderPlotly({
+        state_map
     })
 }

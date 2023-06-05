@@ -50,44 +50,44 @@ dashboardPage(
                 tabName = "stats",
                 fluidRow(
                     infoBox(
-                        "Observations",
+                        title = "Observations",
                         value = withSpinner(
                             textOutput("nb_observations"),
-                            type = 6,
-                            size = .3,
+                            type = 7,
+                            size = .4,
                             proxy.height = 57.6
                         ),
                         icon = icon("users"),
                         color = "purple"
                     ),
                     infoBox(
-                        "Dimensions",
+                        title = "Dimensions",
                         value = withSpinner(
                             textOutput("nb_dimensions"),
-                            type = 6,
-                            size = .3,
+                            type = 7,
+                            size = .4,
                             proxy.height = 57.6
                         ),
                         icon = icon("cubes"),
                         color = "lightblue"
                     ),
                     infoBox(
-                        "Âge moyen",
+                        title = "Âge moyen",
                         value = withSpinner(
                             textOutput("age_moyen"),
-                            type = 6,
-                            size = .3,
+                            type = 7,
+                            size = .4,
                             proxy.height = 57.6
                         ),
                         icon = icon("person-cane"),
                         color = "lime"
                     ),
                     infoBox(
-                        "Salaire horaire moyen",
+                        title = "Salaire horaire moyen",
                         value = withSpinner(
                             textOutput("wph_moyen"),
-                            type = 6,
-                            size = .3,
+                            type = 7,
+                            size = .4,
                             proxy.height = 57.6
                         ),
                         icon = icon("dollar-sign"),
@@ -96,30 +96,22 @@ dashboardPage(
                 )
             ),
             tabItem(
-                tabName = "demographie",
+                tabName = "cartes",
                 fluidRow(
                     box(
-                        title = "Income level by race",
-                        content = withSpinner(
-                            plotlyOutput("income_level_race"),
-                            type = 7,
-                            size = .5
-                        )
-                    ),
-                    box(
-                        title = "State of previous residence",
-                        content = withSpinner(
-                            plotlyOutput("previous_residence"),
-                            type = 7,
-                            size = .5
-                        )
-                    ),
-                    box(
-                        title = "Globe",
-                        content = withSpinner(
+                        title = "Le melting-pot américain :
+                            Visualisation des origines internationales des résidents actuels aux États-Unis",
+                        withSpinner(
                             globeOutput("globe"),
-                            type = 7,
-                            size = .5
+                            type = 8
+                        )
+                    ),
+                    box(
+                        title = "Cartographie des migrations internes aux États-Unis :
+                        les origines des résidents actuels par État de départ",
+                        withSpinner(
+                            plotlyOutput("state_map"),
+                            type = 8
                         )
                     )
                 )
