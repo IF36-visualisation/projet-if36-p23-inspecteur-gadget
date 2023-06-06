@@ -211,7 +211,7 @@ Pour mieux appréhender la pluralité des pays d'origine de ces immigrés, voici
 
 
 
-
+### Immigration
 ### Pays de naissance - Hors États-Unis
 
 ```{r birthcountrynous, fig.height=8, echo=FALSE}
@@ -232,7 +232,7 @@ Au niveau des proportions, le Mexique s'impose assez largement comme 1er pays de
 
 Le rayonnement culturel des États-Unis, accentué par les politiques mises en place durant la Guerre Froide, à fait apparaître le pays comme un nouvel Eldorado, et a attiré les populations du monde entier en quête d'un avenir meilleur.
 
-La forte présence de population née en Allemagne pourrait elle, être expliquée par une émigration durant et post-2nde guerre mondiale.
+La forte présence de population née en Allemagne pourrait elle, être expliquée par une émigration durant et post-2nde guerre mondiale, notamment chez les populations de confession juive. 
 
 
 
@@ -276,7 +276,7 @@ Deuxième piste, les données portaient sur l'Etat de "précédente résidence" 
 Ces suppositions sont évidemments insuffisantes pour expliquer ce décalage, mais elles nous permettent de nous apporter quelques pistes de réflexions, et surtout de garder à l'esprit de toujours s'interroger sur la provenance des données.
 
 
-
+### ???????? La présentation est finie depuis un moment
 Maintenant que le jeu de données est présenté, nous allons étudier l'impact du  genre et de l'ethnie sur la vie des individus, et leurs opportunités salariales et éducatives. 
 
 Les données ethniques sont en effet autorisées aux États-Unis, ce qui n'est pas le cas en France par exemple, et il nous a semblé important et pertinent d'utiliser ses données pour appuyer nos analyses.
