@@ -238,17 +238,6 @@ On constate, sans surprise, que l'écrasante majorité de la population interrog
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 #Migrations vers les US et entre les Etats. 
 
 ```{r birthcountry, fig.height=8, echo=FALSE}
@@ -287,7 +276,6 @@ La forte présence de population née en Allemagne pourrait, elle, être expliqu
 
 Après avoir étudié la répartition internationale des lieux de naissance, intéressons-nous maintenant aux lieux de résidence intra-étatique.
 
-
 ### Carte des États-Unis représentant les Etats précédents de résidence
 ```{r maptwo, echo=FALSE}
 previous_residence_data <- data %>%
@@ -323,6 +311,33 @@ Deuxième piste, les données portaient sur l'Etat de "précédente résidence" 
 
 Ces suppositions sont évidemment insuffisantes pour expliquer ce décalage, mais elles nous permettent de nous apporter quelques pistes de réflexions, et surtout de garder à l'esprit de toujours s'interroger sur la provenance des données.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### Inégalités de genre
 ### Niveau de revenu en fonction du genre
 
@@ -336,12 +351,11 @@ Les catégories de revenu sont divisées en deux, soit moins de 50 000 dollars p
 Le revenu moyen d'un foyer américain en 1990 était en effet de 50 000 dollars annuel, ce qui rend le choix de cette valeur pertinent pour avoir un rapide aperçu de la situation financière des personnes interrogés dans le cadre de cette étude. On suppose donc que c'est pour cette raison qu'elle a été incluse dans le jeu de données.
  
 Si on analyse néanmoins les résultats, on constate qu'une majeure partie des sondés gagne moins de 50 000 dollars par an, et qu'une minorité seulement arrive à avoir un travail plus rémunérateur. Lorsqu'on parlait plus tôt de "foyer", on peut néanmoins préciser que ceux-ci sont en général constitués de plus d'une personne, et quand plus de 70% des femmes travaillent en 1990, le revenu du foyer est en général constitué de 2 salaires. Cette distinction peut permettre de mieux comprendre pourquoi une large partie de la population interrogées demeure donc sous le seuil des 50 000 dollars de revenus annuel.
- 
-
 
 Même si hommes et femmes travaillent, on constate tout de même que la répartition des salaires entre les deux genres n'est pas la même. Parmi les populations les plus favorisés (plus de 50 000 dollars par an), seul un quart sont des femmes. Au contraire, elles représentent plus de la moitié de ceux gagnant moins de 50 000 dollars par mois. 
 
 Il faudra donc essayer de trouver les causes de cette inégalité de revenus ; on s'intéressera dans la suite à l'impact de l'éducation, mais aussi du choix du secteur d'activité, qui pourraient apporter des pistes d'explications.
+
 
 
 
@@ -383,6 +397,7 @@ ggplot(data = average_wph_by_age_sex, aes(
 ```
 
 Deuxièmement, l'éducation est très souvent genrée. De ce fait, les femmes sont souvent orientées vers des filières qui leur "correspondent" (stéréotype de genres) comme par exemple les métiers du "care" - car bien évidement, les femmes sont naturellement douées pour s'occuper des autres. Or ces filières genrées avec des métiers identifiés comme féminins sont les filières peu rémunératrices. 
+
 ```{r industry-genre, echo=FALSE}
 industry <- data %>%
     filter(major_industry_recode != "Not in universe or children")
@@ -391,6 +406,7 @@ ggplot(industry, aes(y = major_industry_recode, fill = sex)) +
     geom_bar() +
     labs(x = "Count", y = "Major Industry Recode")
 ```
+
 ```{r industry-wage, echo=FALSE}
 education_order <- c(
   "Less than 1st grade",
@@ -411,33 +427,78 @@ education_order <- c(
   "Doctorate degree(PhD EdD)"
 )
 
-educationIndus <- data %>%
+education <- data %>%
   filter(wage_per_hour != 0) %>%
   filter(education != "Children") %>%
   mutate(education = factor(
     education,
     levels = education_order
   )) %>%
-  group_by(educationIndus, race, sex, major_industry_recode) %>%
+  group_by(education, race, sex, major_industry_recode) %>%
   summarise(wage_per_hour = mean(wage_per_hour))
 
 ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
-  geom_bar(stat = "identity") +
+  geom_bar(stat = "summary") +
   labs(
-    title = "Wage per hour by industry",
-    x = "Wage per hour", y = "Industry"
-  )    )
+    title = "Salaire horaire par branche",
+    x = "Salaire horaire moyen", y = "Branche"
+  )  
 ```
+Nous pouvons constater ici que les femmes sont majoritairement présentes dans les domaines tels que les services sociaux, l’hôpital et plus généralement le domaine médical (souvent dans des postes d’infirmières), ainsi que dans le domaine éducatif. Le domaine des services sociaux est peu rémunérateur, mais ceux de la médecine (en hôpital ou en dehors des hôpitaux) sont dans les plus rémunérateur. Cependant ce secteur représente une grande variété de métiers. 
+Cependant, il convient tout de même de noter que les femmes sont aussi majoritaires présentes dans le domaine regroupant finance, assurance et immobilier qui est généralement très rémunérateur. 
+
 ```{r industrie-wage-boxplot, echo=FALSE}
-ggplot(educationIndus, aes(y = major_industry_recode, x = wage_per_hour)) +
+ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
     geom_boxplot() +
     labs(
-        title = "Wage per hour by industry",
-        x = "Wage per hour", y = "Industrie"
+        title = "Variance du salaire horaire en fonction du secteur d’activité",
+        x = "Variance du salaire horaire", y = "Secteur d’activité"
     )
 ```
-Nous pouvons constater ici que les femmes sont majoritairement présentes dans les domaines tels que les services sociaux, l’hôpital et plus généralement le domaine médical (souvent dans des postes d’infirmières), ainsi que dans le domaine éducatif. 
-Cependant, il convient tout de même de noter que les femmes sont aussi majoritaires présentes dans le domaine regroupant finance, assurance et immobilier qui est généralement très rémunérateur. 
+En effet les branches médicales en hôpital et hors hôpital ont une grande variance, et nous pouvons supposer que les femmes occupent des métiers d’infirmières moins rémunérés que leurs collègues médecins. Cette supposition peut être appuyée par la suite du fait de la faible proportion de femme détenant un diplôme MD (qui est nécessaire pour exercer en tant que médecin).  
+```{r gender-sector-precisely, echo=FALSE}
+
+education_order <- c(
+    "Less than 1st grade",
+    "1st 2nd 3rd or 4th grade",
+    "5th or 6th grade",
+    "7th and 8th grade",
+    "9th grade",
+    "10th grade",
+    "11th grade",
+    "12th grade no diploma",
+    "High school graduate",
+    "Some college but no degree",
+    "Associates degree-occup /vocational",
+    "Associates degree-academic program",
+    "Bachelors degree(BA AB BS)",
+    "Masters degree(MA MS MEng MEd MSW MBA)",
+    "Prof school degree (MD DDS DVM LLB JD)",
+    "Doctorate degree(PhD EdD)"
+)
+
+education <- data %>%
+    filter(wage_per_hour != 0) %>%
+    filter(education != "Children") %>%
+    filter(major_industry_recode == "Education" |
+        major_industry_recode == "Hospital services" |
+        major_industry_recode == "Medical except hospital") %>%
+    mutate(education = factor(
+        education,
+        levels = education_order
+    )) %>%
+    group_by(education, race, sex, major_industry_recode) %>%
+    summarise(wage_per_hour = mean(wage_per_hour), count = n())
+
+ggplot(education, aes(x = major_industry_recode, y = wage_per_hour, fill = major_industry_recode)) +
+    geom_bar(stat = "summary") +
+    facet_wrap(~sex) +
+    labs(
+        title = "Salaire moyen par heure en fonction du sexe et du secteur d'activité",
+        x = "Secteur d'activité", y = "Salaire moyen par heure"
+    )
+```
+On constate en effet que pour deux des trois secteurs, les salaires moyens des femmes sont effectivement plus faibles que ceux des hommes. Cette différence est très visible sur le salaire horaire, ce qui suppose donc une différence importante de salaire en fin de mois. En supposant que les hommes et les femmes travaillent le même nombre d’heures. 
 
 Troisième, les femmes ont tendance à plus être en temps partiel que les hommes. En effet, ces dernières doivent généralement s'occuper des enfants et du travail domestique en plus de leur travail rémunéré. De plus, en reprenant nos précédentes explications (salaire horaire inférieur), il est plus rationnel que cela soit la femme qui renonce à une partie du travail rémunéré car le coût d'opportunité sera moindre. (expliqué par Gary Becker, 1981, A Treaty on the Family).
 ```{r employment-time, echo=FALSE}
@@ -455,10 +516,9 @@ ggplot(employment_stat, aes(x = full_or_part_time_employment_stat, fill = sex)) 
     geom_bar(position = "fill") +
     labs(title = "Type d'activité en fonction du genre", x = "Type d'activité", y = "Nombre de personnes")
 ```
-Ce coût d’opportunité peut aussi expliquer une auto-censure des femmes dans leurs études. En effet, pourquoi investir (avec du temps et surtout de l’argent) alors qu’on gagnera moins que son mari ? C’est le serpent qui se mord la queue, tout simplement parce que sur les premiers niveaux d’études, le niveau de diplôme à un impact sur le salaire. 
-On constate que la part de femme en fonction du niveau d’étude va en diminuant, et qu’une large majorité des personnes qui ont arrêté leurs études au 1st grade (école élémentaire) sont… des femmes. 
-Nous pouvons aussi noter qu’à notre grand étonnement, la majorité des personnes ayant un master permettant d’enseigner sont des hommes. En effet nous avions constaté précédemment que ce secteur était majoritairement féminin. 
 
+Ce coût d’opportunité peut aussi expliquer une auto-censure des femmes dans leurs études. En effet, pourquoi investir (avec du temps et surtout de l’argent) alors qu’on gagnera moins que son mari ? 
+On constate que la part de femme en fonction du niveau d’étude va en diminuant, et qu’une large majorité des personnes qui ont arrêté leurs études au 1st grade (école élémentaire) sont… des femmes. La plus grande disparité entre hommes et femmes se fait au niveau PhD. 
 ```{r education-sex, echo=FALSE}
 education_order <- c(
     "Less than 1st grade",
@@ -488,27 +548,40 @@ education <- data %>%
     )) %>%
     group_by(education, race, sex, major_occupation_recode) %>%
     summarise(wage_per_hour = mean(wage_per_hour))
+
 ggplot(education, aes(y = education, fill = sex)) +
   geom_bar(position = "fill")+
 geom_vline(xintercept = 0.5, linetype = "dashed", color = "yellow")
 
 ```
-En effet, pour ce qui est de la corrélation entre diplôme et salaire par heure, on constate que le salaire croit jusqu’au «high-school diploma». Sur ce segment d’étude (« high-school diploma »), les femmes semblent à parité avec les hommes ce qui n’entraine pas d’inégalités de ce côté-là. Cependant on constate que les titulaires d’un doctorat ou d’un master de professorat ont des salaires plus faibles que les personnes d’un diplôme légèrement inférieur. Or, nous avons vu que les personnes travaillant dans le domaine de l’enseignement sont majoritairement des femmes. 
 
+Pour ce qui est de la corrélation entre diplôme et salaire par heure, on constate que le salaire croit en fonction du niveau du diplôme. Or, comme nous l’avons dit précédemment, les femmes sont moins enclines à continuer leurs études du fait d’un coût d’opportunité plus élevé que leurs homologues masculins. C’est en quelques sorte le serpent qui se mord la queue.  
 ```{r wage_education, echo=FALSE}
 ggplot(education, aes(x = wage_per_hour, y = education)) +
-    geom_bar(stat = "identity") +
+    geom_bar(stat = "summary") +
     labs(
         title = "Wage per hour by education",
         x = "Wage per hour", y = "Education"
     )
 ```
-
-Au niveau de l’éducation, selon notre jeu de données, la principale différence qui entraîne des inégalités entre les genres est que la majorité des personnes ayant arrêtés leurs études au 1st grade sont des femmes. 
 Cependant, nous pouvons aussi dire que, au-delà de questions pécuniaires, un haut niveau de diplôme va avoir un certain prestige social (capital symbolique pour reprendre les notions de Bourdieu). De ce prisme, nous pouvons constater de nouvelles inégalités entre hommes et femmes du fait de la moindre présence féminine dans les docteurs (diplômes d’un doctorat (PhD)).
 
 
  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Nous allons ensuite nous intéresser à l'impact de l'ethnie sur le niveau de revenu. 
  
 ### Niveau de revenu en fonction de l'ethnie
@@ -521,10 +594,24 @@ ggplot(data, aes(x = income_level, fill = race)) +
     )
 ```
 
-```Base 100 explication ```
+``````{r level, echo=FALSE}
+income_percent <- data %>%
+  group_by(income_level) %>%
+  count(race) %>%
+  mutate(percentage = n / sum(n))
 
-Avec ce graphisme, on constate qu'il existe bien des inégalités raciales au niveau du salaire. Alors que les populations caucasiennes sont, en proportion, plus représentés dans les salaires supérieurs à 50 000 dollars mensuels, c'est l'inverse pour les populations noires. Leur proportion réduit en effet presque de moitié (....)
-De l'autre côté, les populations en provenance d'Asie sont un peu mieux représentées dans les salaires à +50000dollars que dans les salaires à -50000dollars.  (cas des populations asiatiques).
+ggplot(income_percent, aes(x = income_level, y = percentage, fill = race)) +
+  geom_bar(position = "dodge", stat = "identity") +
+  scale_y_continuous(labels = percent_format()) +
+  labs(
+    title = "Distribution of Races by Income Level",
+    fill = "Race",
+    x = "Income Level",
+    y = "Percentage"
+  ) ```
+
+Avec ce graphisme, on constate qu'il existe bien des inégalités raciales au niveau du salaire. Alors que les populations caucasiennes sont, en proportion, plus représentés dans les salaires supérieurs à 50 000 dollars mensuels, c'est l'inverse pour les populations noires. Leur proportion est réduite en effet presque de moitié.
+De l'autre côté, les populations en provenance d'Asie sont un peu mieux représentées dans les salaires à +50000dollars que dans les salaires à -50000dollars. 
 
 ```{r wage_per_hour, echo=FALSE}
 wage <- data %>%
@@ -548,11 +635,83 @@ ggplot(data = average_income_by_age_race, aes(
 ```
 
 Plusieurs phénomènes apparaissent sur ce graphique. Nous allons tout d'abord nous intéresser à l'allure globale des courbes. Nous pouvons en effet noter que les courbes sont concaves. Il semblerait ainsi que le salaire horaire croit jusqu'à un certain âge puis décroit. Cette décroissance peut être analysée comme une anomalie car, dans de nombreuses études, il est montré que le salaire horaire croit jusqu'à l'âge de la retraite, ce qui n'est pas le cas ici. Il semblerait cependant que nous soyons ici face à un effet de génération. En effet si l'on se renseigne sur l'évolution du salaire moyen aux États-Unis, nous apprenons que le salaire horaire moyen a progressivement évolué pendant la Seconde Guerre Mondiale avant de connaître une importante hausse dans les années 60. Les personnes entrées dans l'emploi dans ces années là correspondent, de manière générale, aux personnes nées entre 1940 et 1955. Ces personnes sont donc agées, lors de l'enquête, de 40 à 55 ans. Ces âges correspondent aux points hauts de trois de courbes. Ces personnes ont bénéficié d'un salaire horaire de départ plus important que leurs prédécesseurs qui n'a cessé de progresser avec l'expérience. 
-
 Ce phénomène d'augmentation du salaire avec l'âge est visible sur la partie montante de la courbe concave. En effet, le salaire augmente souvent avec l'expérience. 
 
-Nous allons maintenant nous intéresser aux différences entre les ethnies. Tout d'abord nous constatons que le salaire horaire moyen maximum des personnes Afro-Américaines est plus faible que celui des autres ethnies. Cela peut s'expliquer par un racisme encore bien ancré dans la société américaine qui se traduit par une discrimination à l'emploi. De plus, les personnes Afro-américaines sont plus représentées dans des secteurs peu rémunérateurs. 
-(à mettre en relation avec les industries codes). + (mettre en relation avec le niveau d'éducation, aussi pour asiats).
+Nous allons maintenant nous intéresser aux différences entre les ethnies. Tout d'abord nous constatons que le salaire horaire moyen maximum des personnes Afro-Américaines est plus faible que celui des autres ethnies. Cela peut s'expliquer par un racisme encore bien ancré dans la société américaine des années 90 qui se traduit par une discrimination à l'emploi. De plus, les personnes Afro-américaines nous pouvons supposer plus représentées dans des secteurs peu rémunérateurs. 
+
+```{r industry_race, echo=FALSE}
+industry <- data %>%
+  filter(major_industry_recode != "Not in universe or children")
+
+ggplot(industry, aes(y = major_industry_recode, fill = race)) +
+  geom_bar() +
+  labs(x = "Nombre", y = "Type de branche")
+```
+On constate encore une fois que le nombre de personnes blanches du jeu de données nuit à la lisibilité de nos graphiques axés sur les personnes racisées. Nous allons donc sélectionner seulement les personnes racisées. 
+
+```{r industry_race2, echo=FALSE}
+industry2 <- data %>%
+  filter(major_industry_recode != "Not in universe or children" & race != "White")
+
+ggplot(industry2, aes(y = major_industry_recode, fill = race)) +
+  geom_bar() +
+  labs(x = "Nombre", y = "Type de branche")
+```
+
+```{r industry_wage2, echo=FALSE}
+education <- data %>%
+  filter(wage_per_hour != 0) %>%
+  filter(education != "Children") %>%
+  mutate(education = factor(
+    education,
+    levels = education_order
+  )) %>%
+  group_by(education, race, sex, major_industry_recode) %>%
+  summarise(wage_per_hour = mean(wage_per_hour))
+
+ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
+  geom_bar(stat = "summary") +
+  labs(
+    title = "Salaire horaire moyen par industrie",
+    x = "Salaire horaire moyen", y = "Type de branche")  
+```
+
+Nous pouvons constater que les branches où travaillent majoritairement les personnes racisées (retail trade, public administration, manufacturing non-durable and durable goods, education) ne sont pas les branches les plus rémunératrices. Nous allons alors nous intéresser à la variance des salaires dans ces branches. 
+
+```{r industry_wage2, echo=FALSE}
+ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
+  geom_boxplot() +
+  labs(
+    title = "Salaire horaire par branche",
+    x = "Salaire horaire", y = "Branche"
+  )
+```
+Nous pouvons remarquer ici, sur les branches qui nous intéressent (retail trade, public administration, manufacturing non-durable and durable goods, education) les salaires médians sont loin d’être les plus conséquents. 
+Maintenant que nous avons vu que les secteurs d’activités étaient répartis de manière inégales entre population racisée et non racisée, nous allons pouvoir nous concentrer sur la position des personnes dans leur travail. 
+ ```{r occupation_race_W, echo=FALSE}
+occupation <- data %>%
+  filter(major_occupation_recode != "Not in universe or children" & major_occupation_recode != "Not in universe" & major_occupation_recode != "Other service"  &  major_occupation_recode != "Armed Forces")
+
+ggplot(occupation, aes(y = major_occupation_recode, fill = race)) +
+  geom_bar() +
+  labs(x = "Nombre", y = "Type de branche")
+```
+```{r occupation_race, echo=FALSE}
+occupation <- data %>%
+  filter(major_occupation_recode != "Not in universe or children" & major_occupation_recode != "Not in universe" & major_occupation_recode != "Other service"  &  major_occupation_recode != "Armed Forces" & race != "White")
+
+ggplot(occupation, aes(y = major_occupation_recode, fill = race)) +
+  geom_bar() +
+  labs(x = "Nombre", y = "Type de branche")
+```
+On constate que les personnes racisées sont très présentes dans certains secteurs, et dans des proportions toujours similaires en fonction des ethnies, blancs compris. (à voir si on laisse ou pas parce que c’est pas très intéressant du coup). 
+
+Nous allons pouvoir nous intéresser à l’aspect scolaire des inégalités entre les ethnies. 
+```{r education_race, echo=FALSE}
+ggplot(education, aes(y = education, fill = race)) +
+    geom_bar(position = "fill")
+```
+On constate ici que jusqu’au High school diploma les personnes racisées sont autant présentes que les personnes blanches, voir même sont majoritaires dans certains cas. Cependant cette tendance s’inverse pour les diplômes les plus valorisés (et les plus longs à obtenir) que sont les prof school degree, master degree ou bien encore phD. Or nous avons vu tout à l’heure que ces diplômes étaient les plus rémunérateurs. 
 
 
  
