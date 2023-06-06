@@ -462,3 +462,19 @@ ggplot(race_percent, aes(x = race, y = percentage)) +
     geom_bar(stat = "identity") +
     scale_y_continuous(labels = percent_format()) +
     labs(title = "Distribution des ethnies", x = "Ethnies", y = "Distribution")
+
+
+# type d'activité en fonction du genre
+employment_stat <- data %>%
+    filter(full_or_part_time_employment_stat != "Not in labor force" &
+        full_or_part_time_employment_stat != "Unemployed full-time" &
+        full_or_part_time_employment_stat != "Unemployed part- time" &
+        full_or_part_time_employment_stat != "Children or Armed Forces") %>%
+    mutate(full_or_part_time_employment_stat = gsub("PT for non-econ reasons usually FT", "Part-time", full_or_part_time_employment_stat)) %>%
+    mutate(full_or_part_time_employment_stat = gsub("PT for econ reasons usually PT", "Part-time", full_or_part_time_employment_stat)) %>%
+    mutate(full_or_part_time_employment_stat = gsub("PT for econ reasons usually FT", "Part-time", full_or_part_time_employment_stat)) %>%
+    mutate(full_or_part_time_employment_stat = gsub("Full-time schedules", "Full-time", full_or_part_time_employment_stat))
+
+ggplot(employment_stat, aes(x = full_or_part_time_employment_stat, fill = sex)) +
+    geom_bar(position = "fill") +
+    labs(title = "Type d'activité en fonction du genre", x = "Type d'activité", y = "Nombre de personnes")
