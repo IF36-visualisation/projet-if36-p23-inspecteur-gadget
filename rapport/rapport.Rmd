@@ -9,17 +9,35 @@ output:
     gallery: true
 ---
 
+```{css, echo=FALSE}
+.header-panel {
+  background: linear-gradient(to right, #aa42c9, #6f8fac, #54abaa);
+}
+
+.pages h1 {
+  color: #aa42c9;
+}
+
+a {
+  color: #6f8fac;
+}
+
+code {
+  color: #54abaa;
+}
+```
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r libraries, include=FALSE}
-library(ggplot2)
+library(readr)
 library(dplyr)
 library(tidyr)
-library(readr)
+library(ggplot2)
 library(usmap)
-library(gridExtra)
+library(scales)
 ```
 
 ```{r data, include=FALSE}
@@ -377,7 +395,8 @@ ggplot(data = average_wph_by_age_sex, aes(
   )
 ```
 
-Cet écart de revenu entre les hommes et les femmes peut s'expliquer de plusieurs manières. Premièrement, le salaire horaire d'une femme est souvent inférieur à celui d'un homme - à poste équivalent, âge équivalent, expérience et formation équivalentes. En effet il est intériosé que les femmes vont avoir des enfants et seront donc moins impliquées dans leur travail. De plus, lorsque ces mêmes enfants seront malades, il y a de fortes chances que cela soit la conjointe qui prenne des congés pour s'occuper d'eux. 
+Cet écart de revenu entre les hommes et les femmes peut s'expliquer de plusieurs manières. Premièrement, le salaire horaire d'une femme est souvent inférieur à celui d'un homme - à poste équivalent, âge équivalent, expérience et formation équivalentes. En effet il est intériosé que les femmes vont avoir des enfants et seront donc moins impliquées dans leur travail. De plus, lorsque ces mêmes enfants seront malades, il y a de fortes chances que cela soit la conjointe qui prenne des congés pour s'occuper d'eux.
+
 ```{r wage_sex, echo=FALSE}
 wage <- data %>%
   filter(wage_per_hour != 0 & race != "Other" & age < 76)
@@ -458,25 +477,6 @@ ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
 En effet les branches médicales en hôpital et hors hôpital ont une grande variance, et nous pouvons supposer que les femmes occupent des métiers d’infirmières moins rémunérés que leurs collègues médecins. Cette supposition peut être appuyée par la suite du fait de la faible proportion de femme détenant un diplôme MD (qui est nécessaire pour exercer en tant que médecin).  
 ```{r gender-sector-precisely, echo=FALSE}
 
-education_order <- c(
-    "Less than 1st grade",
-    "1st 2nd 3rd or 4th grade",
-    "5th or 6th grade",
-    "7th and 8th grade",
-    "9th grade",
-    "10th grade",
-    "11th grade",
-    "12th grade no diploma",
-    "High school graduate",
-    "Some college but no degree",
-    "Associates degree-occup /vocational",
-    "Associates degree-academic program",
-    "Bachelors degree(BA AB BS)",
-    "Masters degree(MA MS MEng MEd MSW MBA)",
-    "Prof school degree (MD DDS DVM LLB JD)",
-    "Doctorate degree(PhD EdD)"
-)
-
 education <- data %>%
     filter(wage_per_hour != 0) %>%
     filter(education != "Children") %>%
@@ -498,9 +498,11 @@ ggplot(education, aes(x = major_industry_recode, y = wage_per_hour, fill = major
         x = "Secteur d'activité", y = "Salaire moyen par heure"
     )
 ```
+
 On constate en effet que pour deux des trois secteurs, les salaires moyens des femmes sont effectivement plus faibles que ceux des hommes. Cette différence est très visible sur le salaire horaire, ce qui suppose donc une différence importante de salaire en fin de mois. En supposant que les hommes et les femmes travaillent le même nombre d’heures. 
 
 Troisième, les femmes ont tendance à plus être en temps partiel que les hommes. En effet, ces dernières doivent généralement s'occuper des enfants et du travail domestique en plus de leur travail rémunéré. De plus, en reprenant nos précédentes explications (salaire horaire inférieur), il est plus rationnel que cela soit la femme qui renonce à une partie du travail rémunéré car le coût d'opportunité sera moindre. (expliqué par Gary Becker, 1981, A Treaty on the Family).
+
 ```{r employment-time, echo=FALSE}
 employment_stat <- data %>%
     filter(full_or_part_time_employment_stat != "Not in labor force" &
@@ -519,26 +521,8 @@ ggplot(employment_stat, aes(x = full_or_part_time_employment_stat, fill = sex)) 
 
 Ce coût d’opportunité peut aussi expliquer une auto-censure des femmes dans leurs études. En effet, pourquoi investir (avec du temps et surtout de l’argent) alors qu’on gagnera moins que son mari ? 
 On constate que la part de femme en fonction du niveau d’étude va en diminuant, et qu’une large majorité des personnes qui ont arrêté leurs études au 1st grade (école élémentaire) sont… des femmes. La plus grande disparité entre hommes et femmes se fait au niveau PhD. 
-```{r education-sex, echo=FALSE}
-education_order <- c(
-    "Less than 1st grade",
-    "1st 2nd 3rd or 4th grade",
-    "5th or 6th grade",
-    "7th and 8th grade",
-    "9th grade",
-    "10th grade",
-    "11th grade",
-    "12th grade no diploma",
-    "High school graduate",
-    "Some college but no degree",
-    "Associates degree-occup /vocational",
-    "Associates degree-academic program",
-    "Bachelors degree(BA AB BS)",
-    "Masters degree(MA MS MEng MEd MSW MBA)",
-    "Prof school degree (MD DDS DVM LLB JD)",
-    "Doctorate degree(PhD EdD)"
-)
 
+```{r education-sex, echo=FALSE}
 education <- data %>%
     filter(wage_per_hour != 0) %>%
     filter(education != "Children") %>%
@@ -552,7 +536,6 @@ education <- data %>%
 ggplot(education, aes(y = education, fill = sex)) +
   geom_bar(position = "fill")+
 geom_vline(xintercept = 0.5, linetype = "dashed", color = "yellow")
-
 ```
 
 Pour ce qui est de la corrélation entre diplôme et salaire par heure, on constate que le salaire croit en fonction du niveau du diplôme. Or, comme nous l’avons dit précédemment, les femmes sont moins enclines à continuer leurs études du fait d’un coût d’opportunité plus élevé que leurs homologues masculins. C’est en quelques sorte le serpent qui se mord la queue.  
@@ -585,7 +568,8 @@ Cependant, nous pouvons aussi dire que, au-delà de questions pécuniaires, un h
 Nous allons ensuite nous intéresser à l'impact de l'ethnie sur le niveau de revenu. 
  
 ### Niveau de revenu en fonction de l'ethnie
-```{r level, echo=FALSE}
+
+```{r levelrace, echo=FALSE}
 ggplot(data, aes(x = income_level, fill = race)) +
     geom_bar(position = "fill") +
     labs(
@@ -594,7 +578,7 @@ ggplot(data, aes(x = income_level, fill = race)) +
     )
 ```
 
-``````{r level, echo=FALSE}
+```{r levelracepercentage, echo=FALSE}
 income_percent <- data %>%
   group_by(income_level) %>%
   count(race) %>%
@@ -608,7 +592,8 @@ ggplot(income_percent, aes(x = income_level, y = percentage, fill = race)) +
     fill = "Race",
     x = "Income Level",
     y = "Percentage"
-  ) ```
+  )
+```
 
 Avec ce graphisme, on constate qu'il existe bien des inégalités raciales au niveau du salaire. Alors que les populations caucasiennes sont, en proportion, plus représentés dans les salaires supérieurs à 50 000 dollars mensuels, c'est l'inverse pour les populations noires. Leur proportion est réduite en effet presque de moitié.
 De l'autre côté, les populations en provenance d'Asie sont un peu mieux représentées dans les salaires à +50000dollars que dans les salaires à -50000dollars. 
@@ -678,7 +663,7 @@ ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
 
 Nous pouvons constater que les branches où travaillent majoritairement les personnes racisées (retail trade, public administration, manufacturing non-durable and durable goods, education) ne sont pas les branches les plus rémunératrices. Nous allons alors nous intéresser à la variance des salaires dans ces branches. 
 
-```{r industry_wage2, echo=FALSE}
+```{r industry_wage3, echo=FALSE}
 ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
   geom_boxplot() +
   labs(
@@ -686,9 +671,11 @@ ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
     x = "Salaire horaire", y = "Branche"
   )
 ```
+
 Nous pouvons remarquer ici, sur les branches qui nous intéressent (retail trade, public administration, manufacturing non-durable and durable goods, education) les salaires médians sont loin d’être les plus conséquents. 
 Maintenant que nous avons vu que les secteurs d’activités étaient répartis de manière inégales entre population racisée et non racisée, nous allons pouvoir nous concentrer sur la position des personnes dans leur travail. 
- ```{r occupation_race_W, echo=FALSE}
+
+```{r occupation_race_W, echo=FALSE}
 occupation <- data %>%
   filter(major_occupation_recode != "Not in universe or children" & major_occupation_recode != "Not in universe" & major_occupation_recode != "Other service"  &  major_occupation_recode != "Armed Forces")
 
@@ -696,6 +683,7 @@ ggplot(occupation, aes(y = major_occupation_recode, fill = race)) +
   geom_bar() +
   labs(x = "Nombre", y = "Type de branche")
 ```
+
 ```{r occupation_race, echo=FALSE}
 occupation <- data %>%
   filter(major_occupation_recode != "Not in universe or children" & major_occupation_recode != "Not in universe" & major_occupation_recode != "Other service"  &  major_occupation_recode != "Armed Forces" & race != "White")
@@ -704,13 +692,16 @@ ggplot(occupation, aes(y = major_occupation_recode, fill = race)) +
   geom_bar() +
   labs(x = "Nombre", y = "Type de branche")
 ```
+
 On constate que les personnes racisées sont très présentes dans certains secteurs, et dans des proportions toujours similaires en fonction des ethnies, blancs compris. (à voir si on laisse ou pas parce que c’est pas très intéressant du coup). 
 
 Nous allons pouvoir nous intéresser à l’aspect scolaire des inégalités entre les ethnies. 
+
 ```{r education_race, echo=FALSE}
 ggplot(education, aes(y = education, fill = race)) +
     geom_bar(position = "fill")
 ```
+
 On constate ici que jusqu’au High school diploma les personnes racisées sont autant présentes que les personnes blanches, voir même sont majoritaires dans certains cas. Cependant cette tendance s’inverse pour les diplômes les plus valorisés (et les plus longs à obtenir) que sont les prof school degree, master degree ou bien encore phD. Or nous avons vu tout à l’heure que ces diplômes étaient les plus rémunérateurs. 
 
 
