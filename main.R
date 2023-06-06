@@ -480,27 +480,60 @@ ggplot(employment_stat, aes(x = full_or_part_time_employment_stat, fill = sex)) 
     labs(title = "Type d'activité en fonction du genre", x = "Type d'activité", y = "Nombre de personnes")
 
 
-# proportion de femmes marioées ayant arrêté leurs études au 1st grade
+# Proportion de femmes marioées ayant arrêté leurs études au 1st grade
 married <- c("Married-civilian spouse present", "Married-spouse absent", "Married-A F spouse present")
 
-education_marital <- subset(
-    data,
-    marital_status %in% married &
-        (education == "Less than 1st grade" | education == "1st 2nd 3rd or 4th grade")
-)
-
 women_married <- data %>% filter(sex == "Female" & marital_status %in% married)
-women_married_total <- nrow(women_married)
 
-education_marital_first_grade <- nrow(education_marital)
+women_married_first_grade <- women_married %>% filter(education == "1st 2nd 3rd or 4th grade" | education == "Less than 1st grade")
 
-proportion <- (education_marital_first_grade / women_married_total) * 100
+women_first_grade <- data %>% filter(sex == "Female" & education == "1st 2nd 3rd or 4th grade" | education == "Less than 1st grade")
+
+women_total <- data %>% filter(sex == "Female")
+
+women_first_grade_proportion <- (nrow(women_married_first_grade) / nrow(women_first_grade))
+women_married_proportion <- (nrow(women_married) / nrow(women_total))
 
 df <- data.frame(
-    category = c("Femmes mariées ayant arrêté leurs études au 1st grade", "Femmes mariées"),
-    proportion = c(proportion, 100 - proportion)
+    category = c("Femmes mariées 1st / Femmes 1st", "Femmes mariées / Total des femmes"),
+    proportion = c(women_first_grade_proportion, women_married_proportion)
 )
 
 ggplot(df, aes(x = category, y = proportion, fill = category)) +
     geom_bar(stat = "identity") +
+    scale_y_continuous(labels = percent_format()) +
+    labs(
+        title = "Proportion de femmes mariées ayant arrêté leurs études au 1st grade",
+        x = "",
+        y = "Proportion (%)"
+    ) +
+    theme(legend.position = "none")
+
+
+
+######################################
+
+ggplot(df, aes(x = category, y = proportion, fill = category)) +
+    geom_bar(stat = "identity") +
     labs(title = "Proportion de femmes mariées ayant arrêté leurs études au 1st grade", x = "", y = "Proportion (%)")
+
+education <- data %>%
+    filter(wage_per_hour != 0) %>%
+    filter(education != "Children") %>%
+    filter(major_industry_recode == "Education" |
+        major_industry_recode == "Hospital services" |
+        major_industry_recode == "Medical except hospital") %>%
+    mutate(education = factor(
+        education,
+        levels = education_order
+    )) %>%
+    group_by(education, race, sex, major_industry_recode) %>%
+    summarise(wage_per_hour = mean(wage_per_hour), count = n())
+
+ggplot(education, aes(x = major_industry_recode, y = wage_per_hour, fill = major_industry_recode)) +
+    geom_bar(stat = "summary") +
+    facet_wrap(~sex) +
+    labs(
+        title = "Salaire moyen par heure en fonction du sexe et du secteur d'activité",
+        x = "Secteur d'activité", y = "Salaire moyen par heure"
+    )
