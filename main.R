@@ -251,7 +251,6 @@ industry <- data %>%
 
 ggplot(industry, aes(y = major_industry_recode, fill = sex)) +
     geom_bar() +
-    scale_fill_manual(values = c("Male" = "blue", "Female" = "pink")) +
     labs(x = "Count", y = "Major Industry Recode")
 
 
@@ -450,3 +449,16 @@ ggplot(data = graph_data, aes(x = Fréquence, y = Pays, fill = Pays)) +
     xlab("Fréquence") +
     ylab("Pays") +
     ggtitle("Comparaison du nombre de personnes ayant les EU comme pays de naissance et le reste")
+
+race_percent <- data %>%
+    mutate(race = gsub("Asian or Pacific Islander", "Asian/Pacific", race)) %>%
+    mutate(race = gsub("Amer Indian Aleut or Eskimo", "Natives", race)) %>%
+    group_by(race) %>%
+    count(race) %>%
+    ungroup() %>%
+    mutate(percentage = n / sum(n))
+
+ggplot(race_percent, aes(x = race, y = percentage)) +
+    geom_bar(stat = "identity") +
+    scale_y_continuous(labels = percent_format()) +
+    labs(title = "Distribution des ethnies", x = "Ethnies", y = "Distribution")
