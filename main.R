@@ -336,11 +336,10 @@ education <- data %>%
     summarise(wage_per_hour = mean(wage_per_hour))
 
 ggplot(education, aes(x = wage_per_hour, y = education)) +
-    geom_bar(stat = "identity") +
-    labs(
-        title = "Wage per hour by education",
-        x = "Wage per hour", y = "Education"
-    )
+    geom_bar(stat = "summary")
+
+ggplot(education, aes(x = wage_per_hour, y = education)) +
+    geom_boxplot()
 
 # niveau d'étude en fonction de la race
 ggplot(education, aes(y = education, fill = race)) +
@@ -479,3 +478,29 @@ employment_stat <- data %>%
 ggplot(employment_stat, aes(x = full_or_part_time_employment_stat, fill = sex)) +
     geom_bar(position = "fill") +
     labs(title = "Type d'activité en fonction du genre", x = "Type d'activité", y = "Nombre de personnes")
+
+
+# proportion de femmes marioées ayant arrêté leurs études au 1st grade
+married <- c("Married-civilian spouse present", "Married-spouse absent", "Married-A F spouse present")
+
+education_marital <- subset(
+    data,
+    marital_status %in% married &
+        (education == "Less than 1st grade" | education == "1st 2nd 3rd or 4th grade")
+)
+
+women_married <- data %>% filter(sex == "Female" & marital_status %in% married)
+women_married_total <- nrow(women_married)
+
+education_marital_first_grade <- nrow(education_marital)
+
+proportion <- (education_marital_first_grade / women_married_total) * 100
+
+df <- data.frame(
+    category = c("Femmes mariées ayant arrêté leurs études au 1st grade", "Femmes mariées"),
+    proportion = c(proportion, 100 - proportion)
+)
+
+ggplot(df, aes(x = category, y = proportion, fill = category)) +
+    geom_bar(stat = "identity") +
+    labs(title = "Proportion de femmes mariées ayant arrêté leurs études au 1st grade", x = "", y = "Proportion (%)")
