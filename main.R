@@ -5,6 +5,7 @@ library(ggplot2)
 library(plotly)
 library(gridExtra)
 library(scales)
+library(stringr)
 
 data <- read_csv("./data/census-income.csv")
 
