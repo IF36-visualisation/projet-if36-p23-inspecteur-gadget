@@ -19,7 +19,7 @@ Pour chaque variable, les personnes recensées les ont remplies si elles étaien
 - `detailed_industry_recode` : code de l'industrie où la personne travaille ([liste des codes](https://microdata.epi.org/variables/indocc/dind03/))
 - `detailed_occupation_recode` : code du domaine de l'emploi de la personne ([liste des codes](https://www.icpsr.umich.edu/web/RCMD/studies/03303/datasets/0001/variables/PRDTOCC1?archive=RCMD))
 - `education` : niveau d'éducation (lycée, université, ...)
-- `wage_per_hour` : salaire horaire
+- `wage_per_hour` : salaire mensuel (et non horaire)
 - `enroll_in_edu_inst_last_wk` : inscription à une école la semaine dernière (lycée, université, ...)
 - `marital_stat` : statut marital (marié, divorcé, veuf, ...)
 - `major_industry_code` : nom de l'industrie principale où travaille la personne (agriculture, éducation, administration, ...)
