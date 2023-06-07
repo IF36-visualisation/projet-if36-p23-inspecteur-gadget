@@ -195,7 +195,7 @@ ggplot(race_percent, aes(x = race, y = percentage)) +
     labs(title = "Distribution des ethnies", x = "Ethnies", y = "Distribution")
 ```
 
-On constate que l'écrasante majorité de la population interrogée est blanche. 
+On constate que l'écrasante majorité de la population interrogée est caucasienne. 
 
 
 A titre de comparaison, la population américaine en 1995 était répartie de la manière suivante (source : Census) : 
