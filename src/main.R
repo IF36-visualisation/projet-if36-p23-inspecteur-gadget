@@ -151,10 +151,10 @@ ggplot(income_percent, aes(x = income_level, y = percentage, fill = race)) +
     geom_bar(position = "dodge", stat = "identity") +
     scale_y_continuous(labels = percent_format()) +
     labs(
-        title = "Distribution of Races by Income Level",
-        fill = "Race",
-        x = "Income Level",
-        y = "Percentage"
+        title = "Distribution des ethnies par niveau de revenu",
+        fill = "Ethnie",
+        x = "Niveau de revenu",
+        y = "Distribution (%)"
     )
 
 
