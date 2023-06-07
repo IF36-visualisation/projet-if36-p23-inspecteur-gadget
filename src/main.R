@@ -21,9 +21,10 @@ ggplot(data, aes(x = age)) +
 data$race <- gsub("Asian or Pacific Islander", "Asian/Pacific", data$race)
 data$race <- gsub("Amer Indian Aleut or Eskimo", "Natives", data$race)
 
-ggplot(data, aes(x = race)) +
+ggplot(data, aes(x = race, fill = race)) +
     geom_bar() +
-    labs(title = "Distribution des ethnies", x = "Ethnies", y = "Distribution")
+    labs(title = "Distribution des ethnies", x = "Ethnies", y = "Distribution") +
+    theme(text = element_text(size = 26))
 
 # distribution des genres dans le jeu de données
 ggplot(data, aes(x = sex)) +
@@ -344,7 +345,18 @@ ggplot(education, aes(x = wage_per_hour, y = education)) +
 
 # niveau d'étude en fonction de la race
 ggplot(education, aes(y = education, fill = race)) +
-    geom_bar(position = "fill")
+    geom_bar(position = "fill") +
+    labs(
+        title = "Niveau d'étude en fonction de l'ethnie",
+        x = "Pourcentage", y = "Niveau d'étude",
+        fill = "Ethnie"
+    ) +
+    theme(
+        text = element_text(size = 25), legend.position = "bottom",
+        legend.justification = c(2, 1), plot.title = element_text(hjust = 2.7, vjust = 2.12),
+        aspect.ratio = 2.5
+    ) +
+    guides(fill = guide_legend(nrow = 2))
 
 # niveau d'étude en fonction du sexe
 ggplot(education, aes(y = education, fill = sex)) +
@@ -367,6 +379,11 @@ ggplot(education, aes(y = major_occupation_recode, x = wage_per_hour)) +
     labs(
         title = "Wage per hour by occupation",
         x = "Wage per hour", y = "Occupation"
+    ) +
+    theme(
+        text = element_text(size = 25), legend.position = "bottom",
+        legend.justification = c(2, 1), plot.title = element_text(hjust = -14.5, vjust = 2.12),
+        aspect.ratio = 1.6
     )
 
 # wage per hour en fonction du domaine d'activité (boxplot)
@@ -394,10 +411,10 @@ previous_residence_data <- data %>%
 
 plot_usmap(data = previous_residence_data, values = "count") +
     scale_fill_continuous(
-        low = "white", high = "red",
+        low = "white", high = "#D2042D",
     ) +
     labs(title = "State of Previous Residence") +
-    theme(legend.position = "right")
+    theme(legend.position = "right", text = element_text(size = 25))
 
 # us map BUT BETTER
 previous_residence_data$code <- state.abb[match(
@@ -459,11 +476,11 @@ race_percent <- data %>%
     ungroup() %>%
     mutate(percentage = n / sum(n))
 
-ggplot(race_percent, aes(x = race, y = percentage)) +
+ggplot(race_percent, aes(x = race, y = percentage, fill = race)) +
     geom_bar(stat = "identity") +
     scale_y_continuous(labels = percent_format()) +
-    labs(title = "Distribution des ethnies", x = "Ethnies", y = "Distribution")
-
+    labs(title = "Distribution des ethnies", x = "Ethnies", y = "Distribution") +
+    theme(text = element_text(size = 25))
 
 # type d'activité en fonction du genre
 employment_stat <- data %>%
