@@ -199,11 +199,12 @@ On constate que l'écrasante majorité de la population interrogée est caucasie
 
 
 A titre de comparaison, la population américaine en 1995 était répartie de la manière suivante (source : Census) : 
--+70% de la population était blanche
+-+70% de la population était causasienne
 -12% de la population était noire
--10% de la population était hispanique
+-10% de la population était hispanique*
 -3% de la population était asiatique
 
+* *hispanique est ici utilisé comme un abus de language pour parler des populations originaire d'Amérique Latine*
 L’échantillon semble donc être globalement de la population américaine en 1994, avec tout de même une proportion de personnes noires légèrement moindre. 
 
 
