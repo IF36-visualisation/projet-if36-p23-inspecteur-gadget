@@ -464,7 +464,9 @@ ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
         x = "Variance du salaire horaire", y = "Secteur d’activité"
     )
 ```
-En effet les branches médicales en hôpital et hors hôpital ont une grande variance, et nous pouvons supposer que les femmes occupent des métiers d’infirmières moins rémunérés que leurs collègues médecins. Cette supposition peut être appuyée par la suite du fait de la faible proportion de femme détenant un diplôme MD (qui est nécessaire pour exercer en tant que médecin).  
+
+En effet, les branches médicales en hôpital et hors hôpital ont une grande variance, et nous pouvons supposer que les femmes occupent des métiers d’infirmières moins rémunérés que leurs collègues médecins. Cette supposition peut être appuyée par la suite du fait de la faible proportion de femme détenant un diplôme MD (qui est nécessaire pour exercer en tant que médecin).
+
 ```{r gender-sector-precisely}
 
 education <- data %>%
