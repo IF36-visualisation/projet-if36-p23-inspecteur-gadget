@@ -133,10 +133,11 @@ ggplot(data = average_wph_by_age_sex, aes(
 )) +
     geom_smooth(se = FALSE) +
     labs(
-        title = "Average wage per hour by age and sex",
+        title = "Salaire mensuel moyen par âge et genre",
         x = "Age", y = "Average wage per hour",
         color = "Sex"
-    )
+    ) +
+    theme(aspect.ratio = 1, text = element_text(size = 26))
 
 # distribution of races by income level
 library(scales)
