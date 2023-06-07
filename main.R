@@ -8,7 +8,6 @@ library(scales)
 
 data <- read_csv("./data/census-income.csv")
 
-
 # Présentation du jeu de données
 
 # distribution des âges du jeu de données
@@ -513,10 +512,6 @@ ggplot(df, aes(x = category, y = proportion, fill = category)) +
 
 ######################################
 
-ggplot(df, aes(x = category, y = proportion, fill = category)) +
-    geom_bar(stat = "identity") +
-    labs(title = "Proportion de femmes mariées ayant arrêté leurs études au 1st grade", x = "", y = "Proportion (%)")
-
 education <- data %>%
     filter(wage_per_hour != 0) %>%
     filter(education != "Children") %>%
@@ -535,5 +530,8 @@ ggplot(education, aes(x = major_industry_recode, y = wage_per_hour, fill = major
     facet_wrap(~sex) +
     labs(
         title = "Salaire moyen par heure en fonction du sexe et du secteur d'activité",
-        x = "Secteur d'activité", y = "Salaire moyen par heure"
-    )
+        x = "Secteur d'activité", y = "Salaire moyen par heure",
+        fill = "Secteur d'activité"
+    ) +
+    theme(text = element_text(size = 20)) +
+    scale_x_discrete(labels = function(x) str_wrap(x, width = 10))

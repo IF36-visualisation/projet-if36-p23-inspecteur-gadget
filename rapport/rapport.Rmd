@@ -50,7 +50,7 @@ Extrait du recensement de la population américaine effectué en 1994-1995, ce j
 
 À l'origine, ce jeu de données a été publié par Ronny Kohavi et Barry Becker (Data Mining and Visualization, Silicon Graphics) avec pour objectif de prédire si un individu gagne plus de 50 000 dollars par an, dans le cadre du machine learning.
 
-Il est disponible sur le site de l'[UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Census-Income+%28KDD%29).
+Il est disponible sur le site de l'[UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/20/census+income).
 
 
 
@@ -65,7 +65,7 @@ Pour chaque variable, les personnes recensées les ont remplies si elles étaien
 - `detailed_industry_recode` : code de l'industrie où la personne travaille ([liste des codes](https://microdata.epi.org/variables/indocc/dind03/))
 - `detailed_occupation_recode` : code du domaine de l'emploi de la personne ([liste des codes](https://www.icpsr.umich.edu/web/RCMD/studies/03303/datasets/0001/variables/PRDTOCC1?archive=RCMD))
 - `education` : niveau d'éducation (lycée, université, ...)
-- `wage_per_hour` : salaire horaire
+- `wage_per_hour` : salaire mensuel (et non mensuel)
 - `enroll_in_edu_inst_last_wk` : inscription à une école la semaine dernière (lycée, université, ...)
 - `marital_stat` : statut marital (marié, divorcé, veuf, ...)
 - `major_industry_code` : nom de l'industrie principale où travaille la personne (agriculture, éducation, administration, ...)
@@ -122,7 +122,7 @@ Nous essaierons d’affiner notre analyse en croisant nos résultats avec d’au
 
 Enfin, nous nous attacherons à essayer de comprendre les inégalités économiques. Pour cela nous nous pencherons sur les données structurelles : 
 - Le niveau scolaire; La poursuite d’études permet-elle l’accès aux plus hauts revenus ? Élimine-t-elle le travail précaire ?
-- La qualité de l’emploi (nombre de semaines travaillées, salaire horaire, cause du chômage, domaine d’activité, syndicat,); L’ethnie a-t-elle un impact sur les postes occupés et la rémunération des individus ? 
+- La qualité de l’emploi (nombre de semaines travaillées, salaire mensuel, cause du chômage, domaine d’activité, syndicat,); L’ethnie a-t-elle un impact sur les postes occupés et la rémunération des individus ? 
 - Le capital
 
 
@@ -379,13 +379,13 @@ ggplot(data = average_wph_by_age_sex, aes(
 )) +
   geom_smooth(se = FALSE, formula = y ~ x, method = "loess") +
   labs(
-    title = "Salaire horaire moyen en fonction de l'âge et du genre",
-    x = "Age", y = "Salaire horaire moyen",
+    title = "Salaire mensuel moyen en fonction de l'âge et du genre",
+    x = "Age", y = "Salaire mensuel moyen",
     color = "Genre"
   )
 ```
 
-Cet écart de revenu entre les hommes et les femmes peut s'expliquer de plusieurs manières. Premièrement, le salaire horaire d'une femme est souvent inférieur à celui d'un homme - à poste équivalent, âge équivalent, expérience et formation équivalentes. En effet il est intériosé que les femmes vont avoir des enfants et seront donc moins impliquées dans leur travail. De plus, lorsque ces mêmes enfants seront malades, il y a de fortes chances que cela soit la conjointe qui prenne des congés pour s'occuper d'eux.
+Cet écart de revenu entre les hommes et les femmes peut s'expliquer de plusieurs manières. Premièrement, le salaire mensuel d'une femme est souvent inférieur à celui d'un homme - à poste équivalent, âge équivalent, expérience et formation équivalentes. En effet il est intériosé que les femmes vont avoir des enfants et seront donc moins impliquées dans leur travail. De plus, lorsque ces mêmes enfants seront malades, il y a de fortes chances que cela soit la conjointe qui prenne des congés pour s'occuper d'eux.
 
 ```{r wage_sex}
 wage <- data %>%
@@ -399,8 +399,8 @@ ggplot(data = average_wph_by_age_sex, aes(
 )) +
   geom_smooth(se = FALSE, formula = y ~ x, method = "loess") +
   labs(
-    title = "Salaire horaire moyen en fonction de l'âge et du genre",
-    x = "Age", y = "Salaire horaire moyen",
+    title = "Salaire mensuel moyen en fonction de l'âge et du genre",
+    x = "Age", y = "Salaire mensuel moyen",
     color = "Genre"
   )
 ```
@@ -449,10 +449,11 @@ education <- data %>%
 ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
   geom_bar(stat = "summary") +
   labs(
-    title = "Salaire horaire par branche",
-    x = "Salaire horaire moyen", y = "Branche"
+    title = "Salaire mensuel moyen par branche",
+    x = "Salaire mensuel moyen", y = "Branche"
   )  
 ```
+
 Nous pouvons constater ici que les femmes sont majoritairement présentes dans les domaines tels que les services sociaux, l’hôpital et plus généralement le domaine médical (souvent dans des postes d’infirmières), ainsi que dans le domaine éducatif. Le domaine des services sociaux est peu rémunérateur, mais ceux de la médecine (en hôpital ou en dehors des hôpitaux) sont dans les plus rémunérateur. Cependant ce secteur représente une grande variété de métiers. 
 Cependant, il convient tout de même de noter que les femmes sont aussi majoritaires présentes dans le domaine regroupant finance, assurance et immobilier qui est généralement très rémunérateur. 
 
@@ -460,14 +461,14 @@ Cependant, il convient tout de même de noter que les femmes sont aussi majorita
 ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
     geom_boxplot() +
     labs(
-        title = "Variance du salaire horaire en fonction du secteur d’activité",
-        x = "Variance du salaire horaire", y = "Secteur d’activité"
+        title = "Variance du salaire mensuel en fonction du secteur d’activité",
+        x = "Variance du salaire mensuel", y = "Secteur d’activité"
     )
 ```
 
 En effet, les branches médicales en hôpital et hors hôpital ont une grande variance, et nous pouvons supposer que les femmes occupent des métiers d’infirmières moins rémunérés que leurs collègues médecins. Cette supposition peut être appuyée par la suite du fait de la faible proportion de femme détenant un diplôme MD (qui est nécessaire pour exercer en tant que médecin).
 
-```{r gender-sector-precisely}
+```{r gender-sector-precisely, fig.width=10}
 
 education <- data %>%
     filter(wage_per_hour != 0) %>%
@@ -487,13 +488,14 @@ ggplot(education, aes(x = major_industry_recode, y = wage_per_hour, fill = major
     facet_wrap(~sex) +
     labs(
         title = "Salaire moyen par heure en fonction du sexe et du secteur d'activité",
-        x = "Secteur d'activité", y = "Salaire moyen par heure"
+        x = "Secteur d'activité", y = "Salaire moyen par heure",
+        fill = "secteur d'activité"
     )
 ```
 
-On constate en effet que pour deux des trois secteurs, les salaires moyens des femmes sont effectivement plus faibles que ceux des hommes. Cette différence est très visible sur le salaire horaire, ce qui suppose donc une différence importante de salaire en fin de mois. En supposant que les hommes et les femmes travaillent le même nombre d’heures. 
+On constate en effet que pour deux des trois secteurs, les salaires moyens des femmes sont effectivement plus faibles que ceux des hommes. Cette différence est très visible sur le salaire mensuel, ce qui suppose donc une différence importante de salaire en fin de mois. En supposant que les hommes et les femmes travaillent le même nombre d’heures. 
 
-Troisième, les femmes ont tendance à plus être en temps partiel que les hommes. En effet, ces dernières doivent généralement s'occuper des enfants et du travail domestique en plus de leur travail rémunéré. De plus, en reprenant nos précédentes explications (salaire horaire inférieur), il est plus rationnel que cela soit la femme qui renonce à une partie du travail rémunéré car le coût d'opportunité sera moindre. (expliqué par Gary Becker, 1981, A Treaty on the Family).
+Troisième, les femmes ont tendance à plus être en temps partiel que les hommes. En effet, ces dernières doivent généralement s'occuper des enfants et du travail domestique en plus de leur travail rémunéré. De plus, en reprenant nos précédentes explications (salaire mensuel inférieur), il est plus rationnel que cela soit la femme qui renonce à une partie du travail rémunéré car le coût d'opportunité sera moindre. (expliqué par Gary Becker, 1981, A Treaty on the Family).
 
 ```{r employment-time}
 employment_stat <- data %>%
@@ -605,16 +607,16 @@ ggplot(data = average_income_by_age_race, aes(
   geom_vline(xintercept = 40, linetype = "dashed", color = "red") +
   geom_vline(xintercept = 55, linetype = "dashed", color = "red") +
   labs(
-    title = "Salaire horaire moyen en fonction de l'âge et de l'ethnie",
-    x = "Age", y = "Salaire horaire",
+    title = "Salaire mensuel moyen en fonction de l'âge et de l'ethnie",
+    x = "Age", y = "Salaire mensuel",
     color = "Ethnie"
   )
 ```
 
-Plusieurs phénomènes apparaissent sur ce graphique. Nous allons tout d'abord nous intéresser à l'allure globale des courbes. Nous pouvons en effet noter que les courbes sont concaves. Il semblerait ainsi que le salaire horaire croit jusqu'à un certain âge puis décroit. Cette décroissance peut être analysée comme une anomalie car, dans de nombreuses études, il est montré que le salaire horaire croit jusqu'à l'âge de la retraite, ce qui n'est pas le cas ici. Il semblerait cependant que nous soyons ici face à un effet de génération. En effet si l'on se renseigne sur l'évolution du salaire moyen aux États-Unis, nous apprenons que le salaire horaire moyen a progressivement évolué pendant la Seconde Guerre Mondiale avant de connaître une importante hausse dans les années 60. Les personnes entrées dans l'emploi dans ces années là correspondent, de manière générale, aux personnes nées entre 1940 et 1955. Ces personnes sont donc agées, lors de l'enquête, de 40 à 55 ans. Ces âges correspondent aux points hauts de trois de courbes. Ces personnes ont bénéficié d'un salaire horaire de départ plus important que leurs prédécesseurs qui n'a cessé de progresser avec l'expérience. 
+Plusieurs phénomènes apparaissent sur ce graphique. Nous allons tout d'abord nous intéresser à l'allure globale des courbes. Nous pouvons en effet noter que les courbes sont concaves. Il semblerait ainsi que le salaire mensuel croit jusqu'à un certain âge puis décroit. Cette décroissance peut être analysée comme une anomalie car, dans de nombreuses études, il est montré que le salaire mensuel croit jusqu'à l'âge de la retraite, ce qui n'est pas le cas ici. Il semblerait cependant que nous soyons ici face à un effet de génération. En effet si l'on se renseigne sur l'évolution du salaire moyen aux États-Unis, nous apprenons que le salaire mensuel moyen a progressivement évolué pendant la Seconde Guerre Mondiale avant de connaître une importante hausse dans les années 60. Les personnes entrées dans l'emploi dans ces années là correspondent, de manière générale, aux personnes nées entre 1940 et 1955. Ces personnes sont donc agées, lors de l'enquête, de 40 à 55 ans. Ces âges correspondent aux points hauts de trois de courbes. Ces personnes ont bénéficié d'un salaire mensuel de départ plus important que leurs prédécesseurs qui n'a cessé de progresser avec l'expérience. 
 Ce phénomène d'augmentation du salaire avec l'âge est visible sur la partie montante de la courbe concave. En effet, le salaire augmente souvent avec l'expérience. 
 
-Nous allons maintenant nous intéresser aux différences entre les ethnies. Tout d'abord nous constatons que le salaire horaire moyen maximum des personnes Afro-Américaines est plus faible que celui des autres ethnies. Cela peut s'expliquer par un racisme encore bien ancré dans la société américaine des années 90 qui se traduit par une discrimination à l'emploi. De plus, les personnes Afro-américaines nous pouvons supposer plus représentées dans des secteurs peu rémunérateurs. 
+Nous allons maintenant nous intéresser aux différences entre les ethnies. Tout d'abord nous constatons que le salaire mensuel moyen maximum des personnes Afro-Américaines est plus faible que celui des autres ethnies. Cela peut s'expliquer par un racisme encore bien ancré dans la société américaine des années 90 qui se traduit par une discrimination à l'emploi. De plus, les personnes Afro-américaines nous pouvons supposer plus représentées dans des secteurs peu rémunérateurs. 
 
 ```{r industry_race}
 industry <- data %>%
@@ -649,8 +651,8 @@ education <- data %>%
 ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
   geom_bar(stat = "summary") +
   labs(
-    title = "Salaire horaire moyen par industrie",
-    x = "Salaire horaire moyen", y = "Type de branche")  
+    title = "Salaire mensuel moyen par industrie",
+    x = "Salaire mensuel moyen", y = "Type de branche")  
 ```
 
 Nous pouvons constater que les branches où travaillent majoritairement les personnes racisées (retail trade, public administration, manufacturing non-durable and durable goods, education) ne sont pas les branches les plus rémunératrices. Nous allons alors nous intéresser à la variance des salaires dans ces branches. 
@@ -659,8 +661,8 @@ Nous pouvons constater que les branches où travaillent majoritairement les pers
 ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
   geom_boxplot() +
   labs(
-    title = "Salaire horaire par branche",
-    x = "Salaire horaire", y = "Branche"
+    title = "Salaire mensuel par branche",
+    x = "Salaire mensuel", y = "Branche"
   )
 ```
 
