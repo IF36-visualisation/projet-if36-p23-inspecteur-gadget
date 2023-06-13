@@ -155,7 +155,8 @@ ggplot(income_percent, aes(x = income_level, y = percentage, fill = race)) +
         fill = "Ethnie",
         x = "Niveau de revenu",
         y = "Distribution (%)"
-    )
+    ) +
+    theme(text = element_text(size = 24))
 
 
 # EMPLOYMENT
@@ -554,3 +555,46 @@ ggplot(education, aes(x = major_industry_recode, y = wage_per_hour, fill = major
     ) +
     theme(text = element_text(size = 20)) +
     scale_x_discrete(labels = function(x) str_wrap(x, width = 10))
+
+
+# -salaire horaire des habitants de la Sunbelt (je détaillerai les États) en fonction de l’âge,
+# avec une deuxième courbe qui représente tous les US
+wage <- data %>%
+    filter(wage_per_hour != 0 & age <= 70)
+
+average_wph_by_age <-
+    aggregate(wage_per_hour ~ age + migration_previous_residence_in_sunbelt, data = wage, FUN = mean)
+
+wage_sunbelt <- average_wph_by_age %>%
+    filter(migration_previous_residence_in_sunbelt == "Yes")
+
+ggplot() +
+    geom_smooth(data = wage_sunbelt, aes(x = age, y = wage_per_hour, color = "Sunbelt"), se = FALSE) +
+    geom_smooth(data = wage, aes(x = age, y = wage_per_hour, color = "US"), se = FALSE) +
+    labs(
+        title = "Salaire mensuel moyen en fonction de l'âge et du lieu de résidence",
+        x = "Âge", y = "Salaire mensuel moyen",
+        color = "Lieu de résidence"
+    )
+
+# salaire horaire en fonction de l’âge avec 2 courbes : personnes nées hors US,
+# personnes nées aux US avec au moins un des deux parents nés hors US
+average_wph_by_age_country <-
+    aggregate(wage_per_hour ~ age + country_of_birth_self + country_of_birth_father + country_of_birth_mother, data = wage, FUN = mean)
+
+hors_us <- average_wph_by_age_country %>%
+    filter(country_of_birth_self != "United-States")
+
+us_parents <- average_wph_by_age_country %>%
+    filter(country_of_birth_self == "United-States" &
+        (country_of_birth_father != "United-States" |
+            country_of_birth_mother != "United-States"))
+
+ggplot() +
+    geom_smooth(data = hors_us, aes(x = age, y = wage_per_hour, color = "Hors US"), se = FALSE) +
+    geom_smooth(data = us_parents, aes(x = age, y = wage_per_hour, color = "US dont au moins 1 des parents est né hors US"), se = FALSE) +
+    labs(
+        title = "Salaire mensuel moyen en fonction de l'âge et du lieu de naissance",
+        x = "Âge", y = "Salaire mensuel moyen",
+        color = "Lieu de naissance"
+    )
