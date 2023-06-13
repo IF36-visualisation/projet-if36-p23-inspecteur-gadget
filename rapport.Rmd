@@ -205,7 +205,7 @@ A titre de comparaison, la population américaine en 1995 était répartie de la
 -3% de la population était asiatique
 
 * *hispanique est ici utilisé comme un abus de language pour parler des populations originaire d'Amérique Latine*
-L’échantillon semble donc être globalement de la population américaine en 1994, avec tout de même une proportion de personnes noires légèrement moindre. 
+L’échantillon semble donc être globalement représentatif de la population américaine en 1994, avec tout de même une proportion de personnes noires légèrement moindre. 
 
 
 On s'intéresse désormais aux pays de naissance des personnes interrogées dans notre échantillon.
@@ -228,22 +228,6 @@ ggplot(data = graph_data, aes(x = Fréquence, y = Pays, fill = Pays)) +
 ```
 
 On constate, sans surprise, que l'écrasante majorité de la population interrogée est née aux États-Unis. 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ## Migrations vers les US et entre les Etats. 
@@ -308,7 +292,7 @@ plot_usmap(
         fill = "Number of people"
     )
 ```
-
+*Nous n'avions pas assez de données sur les États de Wasgington et Hawaï, et ils sont donc en gris sur la carte*
 
 La Californie, l'Utah, la Floride et la Caroline du Nord comptent pour les Etats les plus représentés dans la population sondée.
 
@@ -319,32 +303,6 @@ On peut faire plusieurs conjonctures pour expliquer cette carte. Tout d'abord, i
 Deuxième piste, les données portaient sur l'Etat de "précédente résidence" ; on peut donc faire l'hypothèse que les habitants de l'Utah et de la Caroline du Nord sont plus souvent partis de ces Etats pour s'installer dans d'autres. La forte population dans certains Etats ne seraient pas donc dû à un solde naturel positif de naissance inter-étatique, mais bien à des mobilités de population à l'échelle nationale.
 
 Ces suppositions sont évidemment insuffisantes pour expliquer ce décalage, mais elles nous permettent de nous apporter quelques pistes de réflexions, et surtout de garder à l'esprit de toujours s'interroger sur la provenance des données.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ### Inégalités de genre
@@ -388,25 +346,11 @@ ggplot(data = average_wph_by_age_sex, aes(
 
 Cet écart de revenu entre les hommes et les femmes peut s'expliquer de plusieurs manières. Premièrement, le salaire mensuel d'une femme est souvent inférieur à celui d'un homme - à poste équivalent, âge équivalent, expérience et formation équivalentes. En effet il est intériosé que les femmes vont avoir des enfants et seront donc moins impliquées dans leur travail. De plus, lorsque ces mêmes enfants seront malades, il y a de fortes chances que cela soit la conjointe qui prenne des congés pour s'occuper d'eux.
 
-```{r wage_sex}
-wage <- data %>%
-  filter(wage_per_hour != 0 & race != "Other" & age < 76)
-average_wph_by_age_sex <-
-  aggregate(wage_per_hour ~ age + sex, data = wage, FUN = mean)
-
-ggplot(data = average_wph_by_age_sex, aes(
-  x = age, y = wage_per_hour,
-  color = sex
-)) +
-  geom_smooth(se = FALSE, formula = y ~ x, method = "loess") +
-  labs(
-    title = "Salaire mensuel moyen en fonction de l'âge et du genre",
-    x = "Age", y = "Salaire mensuel moyen",
-    color = "Genre"
-  )
+```{r}
+insertion autre graph
 ```
 
-Deuxièmement, l'éducation est très souvent genrée. De ce fait, les femmes sont souvent orientées vers des filières qui leur "correspondent" (stéréotype de genres) comme par exemple les métiers du "care" - car bien évidement, les femmes sont naturellement douées pour s'occuper des autres. Or ces filières genrées avec des métiers identifiés comme féminins sont les filières peu rémunératrices. 
+Deuxièmement, l'éducation est très souvent genrée. De ce fait, les femmes sont souvent orientées vers des filières qui leur "correspondent" (stéréotype de genres) comme par exemple les métiers du "care" - car les femmes sont vues comme naturellement douées pour s'occuper des autres. Or ces filières genrées avec des métiers identifiés comme féminins sont les filières peu rémunératrices. 
 
 ```{r industry-genre}
 industry <- data %>%
@@ -496,7 +440,7 @@ ggplot(education, aes(x = major_industry_recode, y = wage_per_hour, fill = major
 
 On constate en effet que pour deux des trois secteurs, les salaires moyens des femmes sont effectivement plus faibles que ceux des hommes. Cette différence est très visible sur le salaire mensuel, ce qui suppose donc une différence importante de salaire en fin de mois. En supposant que les hommes et les femmes travaillent le même nombre d’heures. 
 
-Troisième, les femmes ont tendance à plus être en temps partiel que les hommes. En effet, ces dernières doivent généralement s'occuper des enfants et du travail domestique en plus de leur travail rémunéré. De plus, en reprenant nos précédentes explications (salaire mensuel inférieur), il est plus rationnel que cela soit la femme qui renonce à une partie du travail rémunéré car le coût d'opportunité sera moindre. (expliqué par Gary Becker, 1981, A Treaty on the Family).
+Troisième, les femmes ont tendance à plus être en temps partiel que les hommes. En effet, ces dernières doivent généralement s'occuper des enfants et du travail domestique en plus de leur travail rémunéré. De plus, en reprenant nos précédentes explications (salaire mensuel inférieur), il est plus rationnel que cela soit la femme qui renonce à une partie du travail rémunéré car le coût d'opportunité sera moindre. (expliqué par Gary Becker, 1981, *A Treaty on the Family*).
 
 ```{r employment-time}
 employment_stat <- data %>%
@@ -515,7 +459,8 @@ ggplot(employment_stat, aes(x = full_or_part_time_employment_stat, fill = sex)) 
 ```
 
 Ce coût d’opportunité peut aussi expliquer une auto-censure des femmes dans leurs études. En effet, pourquoi investir (avec du temps et surtout de l’argent) alors qu’on gagnera moins que son mari ? 
-On constate que la part de femme en fonction du niveau d’étude va en diminuant, et qu’une large majorité des personnes qui ont arrêté leurs études au 1st grade (école élémentaire) sont… des femmes. La plus grande disparité entre hommes et femmes se fait au niveau PhD. 
+On constate que la part de femme en fonction du niveau d’étude va en diminuant, et qu’une large majorité des personnes qui ont arrêté leurs études au 1st grade (école élémentaire) sont… des femmes. Au vu des prix de l'éducation aux États-Unis, les parents peuvent aussi choisir d'éduquer et d'investir sur un enfant en particulier, en général un garçon, au détriment du reste de sa fratrie.
+La plus grande disparité entre hommes et femmes se fait au niveau PhD. 
 
 ```{r education-sex}
 education <- data %>%
@@ -543,21 +488,6 @@ ggplot(education, aes(x = wage_per_hour, y = education)) +
     )
 ```
 Cependant, nous pouvons aussi dire que, au-delà de questions pécuniaires, un haut niveau de diplôme va avoir un certain prestige social (capital symbolique pour reprendre les notions de Bourdieu). De ce prisme, nous pouvons constater de nouvelles inégalités entre hommes et femmes du fait de la moindre présence féminine dans les docteurs (diplômes d’un doctorat (PhD)).
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 Nous allons ensuite nous intéresser à l'impact de l'ethnie sur le niveau de revenu. 
@@ -617,7 +547,7 @@ ggplot(data = average_income_by_age_race, aes(
 Plusieurs phénomènes apparaissent sur ce graphique. Nous allons tout d'abord nous intéresser à l'allure globale des courbes. Nous pouvons en effet noter que les courbes sont concaves. Il semblerait ainsi que le salaire mensuel croit jusqu'à un certain âge puis décroit. Cette décroissance peut être analysée comme une anomalie car, dans de nombreuses études, il est montré que le salaire mensuel croit jusqu'à l'âge de la retraite, ce qui n'est pas le cas ici. Il semblerait cependant que nous soyons ici face à un effet de génération. En effet si l'on se renseigne sur l'évolution du salaire moyen aux États-Unis, nous apprenons que le salaire mensuel moyen a progressivement évolué pendant la Seconde Guerre Mondiale avant de connaître une importante hausse dans les années 60. Les personnes entrées dans l'emploi dans ces années là correspondent, de manière générale, aux personnes nées entre 1940 et 1955. Ces personnes sont donc agées, lors de l'enquête, de 40 à 55 ans. Ces âges correspondent aux points hauts de trois de courbes. Ces personnes ont bénéficié d'un salaire mensuel de départ plus important que leurs prédécesseurs qui n'a cessé de progresser avec l'expérience. 
 Ce phénomène d'augmentation du salaire avec l'âge est visible sur la partie montante de la courbe concave. En effet, le salaire augmente souvent avec l'expérience. 
 
-Nous allons maintenant nous intéresser aux différences entre les ethnies. Tout d'abord nous constatons que le salaire mensuel moyen maximum des personnes Afro-Américaines est plus faible que celui des autres ethnies. Cela peut s'expliquer par un racisme encore bien ancré dans la société américaine des années 90 qui se traduit par une discrimination à l'emploi. De plus, les personnes Afro-américaines nous pouvons supposer plus représentées dans des secteurs peu rémunérateurs. 
+Nous allons maintenant nous intéresser aux différences entre les ethnies. Tout d'abord nous constatons que le salaire mensuel moyen maximum des personnes Afro-Américaines est plus faible que celui des autres ethnies. Cela peut s'expliquer par un racisme encore bien ancré dans la société américaine des années 90 qui se traduit par une discrimination à l'emploi. De plus, nous pouvons supposer que les personnes Afro-américaines sont plus représentées dans des secteurs peu rémunérateurs. 
 
 ```{r industry_race}
 industry <- data %>%
@@ -627,7 +557,7 @@ ggplot(industry, aes(y = major_industry_recode, fill = race)) +
   geom_bar() +
   labs(x = "Nombre", y = "Type de branche")
 ```
-On constate encore une fois que le nombre de personnes blanches du jeu de données nuit à la lisibilité de nos graphiques axés sur les personnes racisées. Nous allons donc sélectionner seulement les personnes racisées. 
+On constate encore une fois que le nombre de personnes caucasiennes du jeu de données nuit à la lisibilité de nos graphiques axés sur les personnes racisées. Nous allons donc sélectionner seulement les personnes racisées. 
 
 ```{r industry_race2}
 industry2 <- data %>%
@@ -688,7 +618,10 @@ ggplot(occupation, aes(y = major_occupation_recode, fill = race)) +
   labs(x = "Nombre", y = "Type de branche")
 ```
 
-On constate que les personnes racisées sont très présentes dans certains secteurs, et dans des proportions toujours similaires en fonction des ethnies, blancs compris. (à voir si on laisse ou pas parce que c’est pas très intéressant du coup). 
+On constate que les personnes racisées sont très présentes dans certains secteurs, et dans des proportions toujours similaires en fonction des ethnies, caucasiens compris.
+(non ? on regardera ensemble mais j'pense il y a des choses à analyser) (à voir si on laisse ou pas parce que c’est pas très intéressant du coup). 
+!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!
 
 Nous allons pouvoir nous intéresser à l’aspect scolaire des inégalités entre les ethnies. 
 
@@ -697,7 +630,7 @@ ggplot(education, aes(y = education, fill = race)) +
     geom_bar(position = "fill")
 ```
 
-On constate ici que jusqu’au High school diploma les personnes racisées sont autant présentes que les personnes blanches, voir même sont majoritaires dans certains cas. Cependant cette tendance s’inverse pour les diplômes les plus valorisés (et les plus longs à obtenir) que sont les prof school degree, master degree ou bien encore phD. Or nous avons vu tout à l’heure que ces diplômes étaient les plus rémunérateurs. 
+On constate ici que jusqu’au High school diploma les personnes racisées sont autant présentes que les personnes caucasiennes, voir même sont majoritaires dans certains cas. Cependant cette tendance s’inverse pour les diplômes les plus valorisés (et les plus longs à obtenir) que sont les prof school degree, master degree ou bien encore phD. Or nous avons vu tout à l’heure que ces diplômes étaient les plus rémunérateurs. 
 
 
  
