@@ -17,7 +17,6 @@ ggplot(data, aes(x = age)) +
     labs(title = "Age distribution", x = "Age", y = "Count")
 
 # distribution des ethnies sur le jeu de données
-
 data$race <- gsub("Asian or Pacific Islander", "Asian/Pacific", data$race)
 data$race <- gsub("Amer Indian Aleut or Eskimo", "Natives", data$race)
 
@@ -414,8 +413,14 @@ plot_usmap(data = previous_residence_data, values = "count") +
     scale_fill_continuous(
         low = "white", high = "#D2042D",
     ) +
-    labs(title = "State of Previous Residence") +
-    theme(legend.position = "right", text = element_text(size = 25))
+    labs(
+        title = "État de résidence précédent des individus (si différent de l'actuel)",
+        fill = "Effectif"
+    ) +
+    theme(
+        legend.position = "right",
+        text = element_text(size = 20), legend.title = element_text(size = 25)
+    )
 
 # us map BUT BETTER
 previous_residence_data$code <- state.abb[match(
@@ -598,3 +603,36 @@ ggplot() +
         x = "Âge", y = "Salaire mensuel moyen",
         color = "Lieu de naissance"
     )
+
+# courbe avec salaires mensuels pour
+# les hommes blancs, les femmes blanches, les hommes noirs et les femmes noires
+wage_nozero_young <- data %>%
+    filter(wage_per_hour != 0) %>%
+    filter(age <= 67)
+
+avg_wph_last <-
+    aggregate(wage_per_hour ~ age + sex + race, data = wage_nozero_young, FUN = mean)
+
+white_men <- avg_wph_last %>%
+    filter(race == "White" & sex == "Male")
+
+white_women <- avg_wph_last %>%
+    filter(race == "White" & sex == "Female")
+
+black_men <- avg_wph_last %>%
+    filter(race == "Black" & sex == "Male")
+
+black_women <- avg_wph_last %>%
+    filter(race == "Black" & sex == "Female")
+
+ggplot() +
+    geom_smooth(data = white_men, se = FALSE, aes(x = age, y = wage_per_hour, color = "Hommes caucasiens")) +
+    geom_smooth(data = white_women, se = FALSE, aes(x = age, y = wage_per_hour, color = "Femmes caucasiennes")) +
+    geom_smooth(data = black_men, se = FALSE, aes(x = age, y = wage_per_hour, color = "Hommes noirs")) +
+    geom_smooth(data = black_women, se = FALSE, aes(x = age, y = wage_per_hour, color = "Femmes noires")) +
+    labs(
+        title = "Salaire mensuel moyen des différentes ethnies en fonction de l'âge",
+        x = "Âge", y = "Salaire mensuel moyen",
+        color = "Ethnies"
+    ) +
+    theme(text = element_text(size = 20))
