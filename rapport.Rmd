@@ -631,10 +631,59 @@ ggplot(education, aes(y = education, fill = race)) +
     geom_bar(position = "fill")
 ```
 
-On constate ici que jusqu’au High school diploma les personnes racisées sont autant présentes que les personnes caucasiennes, voir même sont majoritaires dans certains cas. Cependant cette tendance s’inverse pour les diplômes les plus valorisés (et les plus longs à obtenir) que sont les prof school degree, master degree ou bien encore phD. Or nous avons vu tout à l’heure que ces diplômes étaient les plus rémunérateurs. 
+On constate ici que jusqu’au High school diploma les personnes racisées sont autant présentes que les personnes caucasiennes, voir même sont majoritaires dans certains cas. Cependant cette tendance s’inverse pour les diplômes les plus valorisés (et les plus longs à obtenir) que sont les prof school degree, master degree ou bien encore phD. Or nous avons vu tout à l’heure que ces diplômes étaient les plus rémunérateurs. De plus, certaines populations comme les amérindiens ne sont pas représentés dans les niveaux de diplomes les plus élevés. 
 
+### Immigration et génération
+Nous allons nous intéresser à l'insertion des personnes issues de l'immigration. 
 
- 
+```{r insertion_race}
+average_wph_by_age_country <-
+    aggregate(wage_per_hour ~ age + country_of_birth_self + country_of_birth_father + country_of_birth_mother, data = wage, FUN = mean)
+
+hors_us <- average_wph_by_age_country %>%
+    filter(country_of_birth_self != "United-States")
+
+us_parents <- average_wph_by_age_country %>%
+    filter(country_of_birth_self == "United-States" &
+        (country_of_birth_father != "United-States" |
+            country_of_birth_mother != "United-States"))
+
+ggplot() +
+    geom_smooth(data = hors_us, aes(x = age, y = wage_per_hour, color = "Hors US"), se = FALSE) +
+    geom_smooth(data = us_parents, aes(x = age, y = wage_per_hour, color = "US dont au moins 1 des parents est né hors US"), se = FALSE) +
+    labs(
+        title = "Salaire mensuel moyen en fonction de l'âge et du lieu de naissance",
+        x = "Âge", y = "Salaire mensuel moyen",
+        color = "Lieu de naissance"
+    )
+ ```
+    
+Nous remarquons ici que les personnes qui viennent d'immigrer aux Etats-Unis ont un salaire inférieur aux personnes dont au moins un des deux parents a immigré aux Etats-Unis. Ainsi on constate que l'intégration des personnes issues de pays autres que les Etats-Unis se fait dans le temps et sur plusieurs générations. "L'American Dream" prendre plus de temps que prévu. 
+
+### La Sunbelt
+```{r sunbelt}
+wage <- data %>%
+    filter(wage_per_hour != 0 & age <= 70)
+
+average_wph_by_age <-
+    aggregate(wage_per_hour ~ age + migration_previous_residence_in_sunbelt, data = wage, FUN = mean)
+
+wage_sunbelt <- average_wph_by_age %>%
+    filter(migration_previous_residence_in_sunbelt == "Yes")
+
+ggplot() +
+    geom_smooth(data = wage_sunbelt, aes(x = age, y = wage_per_hour, color = "Sunbelt"), se = FALSE) +
+    geom_smooth(data = wage, aes(x = age, y = wage_per_hour, color = "US"), se = FALSE) +
+    labs(
+        title = "Salaire mensuel moyen en fonction de l'âge et du lieu de résidence",
+        x = "Âge", y = "Salaire mensuel moyen",
+        color = "Lieu de résidence"
+    )
+ ```
+Nous pouvons constater que les personnes ayant habités dans la SunBelt ont un salaire moyen inférieur à celui de l'ensemble des Américains. Cela peut s'expliquer par plusieurs choses. D'une part, notre jeu de données ne nous permet pas de connaître l'Etat de résidence de chaque personne intérrogée. En revanche, nous connaissons leur Etat précédent de résidence. Ainsi nous nous sommes focalisés sur les personnes ayant habitées dans la Sunbelt pour faire ce graphique. Or la Sunbelt est une terre qui a un passé esclavagiste. Encore aujourd'hui, 158ans après la fin de la guerre de Secession, ces racines sont encore présentes. Les Républicains sont relativement bien implantés dans ces Etats, encore de nos jours. 
+Cet aspect politique a pu entrainer des migrations des personnes racisées, qui, nous l'avons dit tout à l'heure, ont un salaire moins élevés que leurs homologues blancs. 
+La deuxième explication vient du fait que les Etats de la Sunbelt, dans les années 90, avait pour activité économique principale l'agriculture qui génère de moindre revenus. A cela s'ajoutait le tourisme et la pêche. L'industrie automobile venait de faire son apparition dans ces Etats, tout comme le domaine des hautes technologies qui n'était qu'à ses balbutiements. 
+
 
 # Conclusion
 Après avoir étudié le profil de notre échantillon et l'avoir mis en perspective avec les données démographiques de l'époque, il nous a semblé pertinent de nous interroger sur les dicriminations pouvant exister aux États-Unis, notamment celles basées sur l'ethnie ou le sexe.
