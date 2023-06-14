@@ -41,7 +41,7 @@ library(scales)
 ```
 
 ```{r data, include=FALSE}
-data <- read_csv("../data/census-income.csv")
+data <- read_csv("data/census-income.csv")
 ```
 
 # Introduction
@@ -347,7 +347,7 @@ ggplot(data = average_wph_by_age_sex, aes(
 Cet écart de revenu entre les hommes et les femmes peut s'expliquer de plusieurs manières. Premièrement, le salaire mensuel d'une femme est souvent inférieur à celui d'un homme - à poste équivalent, âge équivalent, expérience et formation équivalentes. En effet il est intériosé que les femmes vont avoir des enfants et seront donc moins impliquées dans leur travail. De plus, lorsque ces mêmes enfants seront malades, il y a de fortes chances que cela soit la conjointe qui prenne des congés pour s'occuper d'eux.
 
 ```{r}
-insertion autre graph
+# insertion autre graph
 ```
 
 Deuxièmement, l'éducation est très souvent genrée. De ce fait, les femmes sont souvent orientées vers des filières qui leur "correspondent" (stéréotype de genres) comme par exemple les métiers du "care" - car les femmes sont vues comme naturellement douées pour s'occuper des autres. Or ces filières genrées avec des métiers identifiés comme féminins sont les filières peu rémunératrices. 
@@ -656,7 +656,7 @@ ggplot() +
         x = "Âge", y = "Salaire mensuel moyen",
         color = "Lieu de naissance"
     )
- ```
+```
     
 Nous remarquons ici que les personnes qui viennent d'immigrer aux Etats-Unis ont un salaire inférieur aux personnes dont au moins un des deux parents a immigré aux Etats-Unis. Ainsi on constate que l'intégration des personnes issues de pays autres que les Etats-Unis se fait dans le temps et sur plusieurs générations. "L'American Dream" prendre plus de temps que prévu. 
 
@@ -679,7 +679,8 @@ ggplot() +
         x = "Âge", y = "Salaire mensuel moyen",
         color = "Lieu de résidence"
     )
- ```
+```
+
 Nous pouvons constater que les personnes ayant habités dans la SunBelt ont un salaire moyen inférieur à celui de l'ensemble des Américains. Cela peut s'expliquer par plusieurs choses. D'une part, notre jeu de données ne nous permet pas de connaître l'Etat de résidence de chaque personne intérrogée. En revanche, nous connaissons leur Etat précédent de résidence. Ainsi nous nous sommes focalisés sur les personnes ayant habitées dans la Sunbelt pour faire ce graphique. Or la Sunbelt est une terre qui a un passé esclavagiste. Encore aujourd'hui, 158ans après la fin de la guerre de Secession, ces racines sont encore présentes. Les Républicains sont relativement bien implantés dans ces Etats, encore de nos jours. 
 Cet aspect politique a pu entrainer des migrations des personnes racisées, qui, nous l'avons dit tout à l'heure, ont un salaire moins élevés que leurs homologues blancs. 
 La deuxième explication vient du fait que les Etats de la Sunbelt, dans les années 90, avait pour activité économique principale l'agriculture qui génère de moindre revenus. A cela s'ajoutait le tourisme et la pêche. L'industrie automobile venait de faire son apparition dans ces Etats, tout comme le domaine des hautes technologies qui n'était qu'à ses balbutiements. 
@@ -689,10 +690,10 @@ La deuxième explication vient du fait que les Etats de la Sunbelt, dans les ann
 Après avoir étudié le profil de notre échantillon et l'avoir mis en perspective avec les données démographiques de l'époque, il nous a semblé pertinent de nous interroger sur les dicriminations pouvant exister aux États-Unis, notamment celles basées sur l'ethnie ou le sexe.
 Les résultats sont sans équivoque ; ces facteurs ont une importance sur l'éducation, le choix de domaine d'activité, et le salaire.
 Il est néanmoins intéressant de voir que cetaines minorités ethniques ont malgré tout réussi à optenir de hauts salaires moyens, et à accumuler du capital économique, voire scolaire. Au delà de l'ethnie, il pourrait donc y avoir un vrai enjeu à soutenir les populations les plus défavorisés en leur permettant l'accès à l'éducation, qui elle-même peut aider à obtenir de meilleurs salaires.
-Malheureusement, presque 30 ans plus tard, les choses ne semblent pas avoir énormément évoluées. Les populations noires sont toujours les plus touchés par la pauvreté, et ont un revenu médian bien inférieur à d'autres groupes ethniques ( caucasiens, asiatiques).
-La situation prends même un tournant innatendu avec l'apparition des nouvelles technologies, comme l'intelligence artificielle. Ce jeu de données par exemple, à été utilisé à des fins de machine learning. En analysant ces données, l'IA pourraient donc considérer que ces différences ethniques sont une norme sociale qu'il convient d'appliquer.
- Il y a donc un vrai risque qu'elle reproduise et accentue ces discriminations.
- Nous devons donc impérativement prendre conscience de ces nouveaux enjeux, afin de pas accentuer un cercle vicieux qui viserait à perpétuer ces discriminations.
+Malheureusement, presque 30 ans plus tard, les choses ne semblent pas avoir énormément évoluées. Les populations noires sont toujours les plus touchés par la pauvreté, et ont un revenu médian bien inférieur à d'autres groupes ethniques (caucasiens, asiatiques).
+La situation prends même un tournant innatendu avec l'apparition des nouvelles technologies, comme l'intelligence artificielle. Ce jeu de données par exemple, à été utilisé à des fins de machine learning. En analysant ces données, l'IA pourrait donc considérer que ces différences ethniques sont une norme sociale qu'il convient d'appliquer.
+Il y a donc un vrai risque qu'elle reproduise et accentue ces discriminations.
+Nous devons donc impérativement prendre conscience de ces nouveaux enjeux, afin de pas accentuer un cercle vicieux qui viserait à perpétuer ces discriminations.
  
 
 
