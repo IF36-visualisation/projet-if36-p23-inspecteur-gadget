@@ -548,6 +548,7 @@ Plusieurs phénomènes apparaissent sur ce graphique. Nous allons tout d'abord n
 Ce phénomène d'augmentation du salaire avec l'âge est visible sur la partie montante de la courbe concave. En effet, le salaire augmente souvent avec l'expérience. 
 
 Nous allons maintenant nous intéresser aux différences entre les ethnies. Tout d'abord nous constatons que le salaire mensuel moyen maximum des personnes Afro-Américaines est plus faible que celui des autres ethnies. Cela peut s'expliquer par un racisme encore bien ancré dans la société américaine des années 90 qui se traduit par une discrimination à l'emploi. De plus, nous pouvons supposer que les personnes Afro-américaines sont plus représentées dans des secteurs peu rémunérateurs. 
+Néanmoins les population asiatiques ont le plus haut salaire mensuel moyen, dépassant ainsi le seuil des 1250 dollars mensuels après 40 ans. Cette différence pourrait s'expliquer par plusieurs facteurs. Tout d'abord une immigration sélective : seules les populations au plus haut capital social, culturel et économique ont eu les moyens d'immigrer aux États-Unis. La tontine, sorte d'épargne communautaire aidant à financer les projets des membres, est aussi bien développé. On peut aussi supposer que ce haut salaire est corrélé à un plus fort taux d'études, dans des secteurs mieux rémunérés. C'est ce que nous allons vérifier.
 
 ```{r industry_race}
 industry <- data %>%
@@ -586,7 +587,8 @@ ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
     x = "Salaire mensuel moyen", y = "Type de branche")  
 ```
 
-Nous pouvons constater que les branches où travaillent majoritairement les personnes racisées (retail trade, public administration, manufacturing non-durable and durable goods, education) ne sont pas les branches les plus rémunératrices. Nous allons alors nous intéresser à la variance des salaires dans ces branches. 
+Nous pouvons constater que les branches où travaillent majoritairement les personnes racisées (retail trade, public administration, manufacturing non-durable and durable goods, education) ne sont pas les branches les plus rémunératrices.
+Nous allons alors nous intéresser à la variance des salaires dans ces branches. 
 
 ```{r industry_wage3}
 ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
@@ -618,10 +620,9 @@ ggplot(occupation, aes(y = major_occupation_recode, fill = race)) +
   labs(x = "Nombre", y = "Type de branche")
 ```
 
-On constate que les personnes racisées sont très présentes dans certains secteurs, et dans des proportions toujours similaires en fonction des ethnies, caucasiens compris.
-(non ? on regardera ensemble mais j'pense il y a des choses à analyser) (à voir si on laisse ou pas parce que c’est pas très intéressant du coup). 
-!!!!!!!!!!!!!!!!!!!!!!!
-!!!!!!!!!!!!!!!!!!!!!!
+Pour comprendre l'écart de salaire moyen que nous avions pu constater plus tôt, entre les populations noires et asiatiques par exemple, il peut être intéressant d'analyser leur domaine d'activité. Les populations asiatiques sont en effet sureprésentées dans la catégorie "spécialité professionnel". Même si le terme reste flou, on peut comprendre que c'est un domaine d'expertise bien précis, qui demande des connaissances bien précises - et qui est sûrement mieux rémunérés que les autres emplois.
+Les populations noires sont elles plutôt représentés dans le support administratif, domaine qui paye peut-être moins bien.
+Le secteur d'activité peut donc avoir un rôle déterminant sur les perspectives de salaire, et est l'une des causes des différences salariales entre ethnies.
 
 Nous allons pouvoir nous intéresser à l’aspect scolaire des inégalités entre les ethnies. 
 
@@ -635,8 +636,15 @@ On constate ici que jusqu’au High school diploma les personnes racisées sont 
 
  
 
-
-
+# Conclusion
+Après avoir étudié le profil de notre échantillon et l'avoir mis en perspective avec les données démographiques de l'époque, il nous a semblé pertinent de nous interroger sur les dicriminations pouvant exister aux États-Unis, notamment celles basées sur l'ethnie ou le sexe.
+Les résultats sont sans équivoque ; ces facteurs ont une importance sur l'éducation, le choix de domaine d'activité, et le salaire.
+Il est néanmoins intéressant de voir que cetaines minorités ethniques ont malgré tout réussi à optenir de hauts salaires moyens, et à accumuler du capital économique, voire scolaire. Au delà de l'ethnie, il pourrait donc y avoir un vrai enjeu à soutenir les populations les plus défavorisés en leur permettant l'accès à l'éducation, qui elle-même peut aider à obtenir de meilleurs salaires.
+Malheureusement, presque 30 ans plus tard, les choses ne semblent pas avoir énormément évoluées. Les populations noires sont toujours les plus touchés par la pauvreté, et ont un revenu médian bien inférieur à d'autres groupes ethniques ( caucasiens, asiatiques).
+La situation prends même un tournant innatendu avec l'apparition des nouvelles technologies, comme l'intelligence artificielle. Ce jeu de données par exemple, à été utilisé à des fins de machine learning. En analysant ces données, l'IA pourraient donc considérer que ces différences ethniques sont une norme sociale qu'il convient d'appliquer.
+ Il y a donc un vrai risque qu'elle reproduise et accentue ces discriminations.
+ Nous devons donc impérativement prendre conscience de ces nouveaux enjeux, afin de pas accentuer un cercle vicieux qui viserait à perpétuer ces discriminations.
+ 
 
 
 
