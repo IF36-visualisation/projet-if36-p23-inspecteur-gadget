@@ -1,10 +1,20 @@
 library(dplyr)
 library(readr)
 library(ggplot2)
+library(threejs)
+library(maps)
 library(plotly)
+library(scales)
 library(shiny)
+library(shiny.i18n)
 
 data <- read_csv("../data/census-income.csv")
+
+
+# ----------------- wage per hour without 0 -----------------
+wph_nozero <- data %>%
+    filter(wage_per_hour != 0)
+# -----------------------------------------------------------
 
 
 # ----------------- income level by race -----------------
@@ -46,22 +56,20 @@ state_map <- state_map %>% add_trace(
     color = ~count, colors = "Reds"
 )
 
-state_map <- state_map %>% colorbar(title = "Count")
+state_map <- state_map %>% colorbar(
+    title = "Effectif",
+    # position to bottom
+    y = 0.9
+)
 
-state_map <- state_map %>% layout(geo = g)
+state_map <- state_map %>% layout(
+    geo = g,
+    margin = list(l = 0, r = 0, b = 0, t = 0)
+)
 # -----------------------------------------------------------------
 
 
-# ----------------- wage per hour without 0 -----------------
-wph_nozero <- data %>%
-    filter(wage_per_hour != 0)
-# -----------------------------------------------------------
-
-
-# --------------------- globe ---------------------
-library(threejs)
-library(maps)
-library(tidyverse)
+# -------------------------- globe --------------------------
 
 globe_data <- data %>%
     select(country_of_birth_self) %>%
@@ -111,7 +119,28 @@ globe <- globejs(
     arcsOpacity = 0.5,
     arcsColor = "white"
 )
-# -------------------------------------------------
+# -----------------------------------------------------------
+
+
+# ------------- pyramide des âges -------------
+ages <- data %>%
+    mutate(age_range = cut(age,
+        breaks = seq(min(data$age), max(data$age), 5), include.lowest = TRUE
+    ))
+
+ages_pyramid <- ggplot(data = ages, aes(x = as.factor(age_range), fill = sex)) +
+    geom_bar(data = subset(ages, sex == "Female")) +
+    geom_bar(
+        data = subset(ages, sex == "Male"),
+        aes(y = after_stat(count) * (-1))
+    ) +
+    coord_flip() +
+    labs(
+        title = "Pyramide des âges",
+        x = "Âge", y = "Nombre de personnes",
+        fill = "Genre"
+    )
+# -----------------------------------------------------------------
 
 
 server <- function(input, output) {
@@ -132,5 +161,19 @@ server <- function(input, output) {
     })
     output$state_map <- renderPlotly({
         state_map
+    })
+    output$ages_pyramid <- renderPlotly({
+        ages_pyramid
+    })
+    output$race_distribution <- renderPlotly({
+        race_modified <- data
+        race_modified$race <- gsub("Asian or Pacific Islander", "Asian/Pacific", race_modified$race)
+        race_modified$race <- gsub("Amer Indian Aleut or Eskimo", "Natives", race_modified$race)
+
+        race_distribution <- ggplot(data = race_modified, aes(x = race)) +
+            geom_bar() +
+            labs(x = "Ethnies", y = "Nombre de personnes", fill = "Ethnies")
+
+        ggplotly(race_distribution)
     })
 }

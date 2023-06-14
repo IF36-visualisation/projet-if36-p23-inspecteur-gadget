@@ -96,11 +96,31 @@ dashboardPage(
                 )
             ),
             tabItem(
+                tabName = "demographie",
+                fluidRow(
+                    box(
+                        title = "Pyramide des âges",
+                        withSpinner(
+                            plotlyOutput("ages_pyramid"),
+                            type = 8
+                        )
+                    ),
+                    box(
+                        title = "Répartition des ethies",
+                        withSpinner(
+                            plotlyOutput("race_distribution"),
+                            type = 8
+                        ),
+                        sliderInput("age_slider_ethnie", "Âge :", 0, 90, 90)
+                    )
+                )
+            ),
+            tabItem(
                 tabName = "cartes",
                 fluidRow(
                     box(
-                        title = "Le melting-pot américain :
-                            Visualisation des origines internationales des résidents actuels aux États-Unis",
+                        title = "Le melting-pot américain : visualisation des origines internationales
+                        des résidents actuels aux États-Unis à l'aide d'un globe terrestre interactif",
                         withSpinner(
                             globeOutput("globe"),
                             type = 8
@@ -108,7 +128,7 @@ dashboardPage(
                     ),
                     box(
                         title = "Cartographie des migrations internes aux États-Unis :
-                        les origines des résidents actuels par État de départ",
+                        les États d'origine des populations interrogées",
                         withSpinner(
                             plotlyOutput("state_map"),
                             type = 8
