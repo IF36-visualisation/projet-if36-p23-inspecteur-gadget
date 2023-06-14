@@ -141,9 +141,7 @@ Pour commencer, comme ce jeu de données est d'abord un recencement de la popula
 
 ### Répartition par âge
 
-
 Commençons donc avec la répartition par âge de notre échantillon.
-
 
 ```{r age_distribution}
 ggplot(data, aes(x = age)) +
@@ -180,6 +178,7 @@ ggplot(data = ages, aes(x = as.factor(age_range), fill = sex)) +
 On peut aussi constater que les femmes vivent plus longtemps que les hommes, puisqu'elles représentent par exemple 3/4 de la classe d'âge 85-90 ans. Une hygiène de vie plus favorable, avec moins de tabac ou d'alcool, peut en partie expliquer cet écart.
 
 ### Ethnies et pays de naissance
+
 ```{r race}
 race_percent <- data %>%
     mutate(race = gsub("Asian or Pacific Islander", "Asian/Pacific", race)) %>%
@@ -197,7 +196,6 @@ ggplot(race_percent, aes(x = race, y = percentage)) +
 
 On constate que l'écrasante majorité de la population interrogée est caucasienne. 
 
-
 A titre de comparaison, la population américaine en 1995 était répartie de la manière suivante (source : Census) : 
 -+70% de la population était causasienne
 -12% de la population était noire
@@ -206,7 +204,6 @@ A titre de comparaison, la population américaine en 1995 était répartie de la
 
 * *hispanique est ici utilisé comme un abus de language pour parler des populations originaire d'Amérique Latine*
 L’échantillon semble donc être globalement représentatif de la population américaine en 1994, avec tout de même une proportion de personnes noires légèrement moindre. 
-
 
 On s'intéresse désormais aux pays de naissance des personnes interrogées dans notre échantillon.
 
@@ -229,7 +226,6 @@ ggplot(data = graph_data, aes(x = Fréquence, y = Pays, fill = Pays)) +
 
 On constate, sans surprise, que l'écrasante majorité de la population interrogée est née aux États-Unis. 
 
-
 ## Migrations vers les US et entre les Etats. 
 
 ```{r birthcountry, fig.height=8}
@@ -241,8 +237,10 @@ ggplot(data, aes(y = country_of_birth_self)) +
     )
 ```
 
-Les pays de naissance des personnes interrogées sont donc variés, avec une large majorité de personnes nées aux Etats-Unis. 
+Les pays de naissance des personnes interrogées sont donc variés, avec une large majorité de personnes nées aux Etats-Unis.
+
 Quelques pays comme le Mexique semblent néanmoins se distinguer du fait de sa proximité avec les États-Unis (frontière commune). Il convient aussi de noter que le Mexique traverse une grave crise économique qui débute fin 1994. Cette information peut être mise en perspective avec les débats des années 2010 sur la construction d'un mur à la frontière entre les États-Unis et le Mexique pour endiguer le flux migratoire venant du Mexique mais aussi de l'Amérique latine.  
+
 Pour mieux appréhender la pluralité des pays d'origine de ces immigrés, voici donc un autre graphique, qui exclut cette fois-ci les États-Unis.
 
 ### Pays de naissance - Hors États-Unis
@@ -266,10 +264,10 @@ Le rayonnement culturel des États-Unis, accentué par les politiques mises en p
 
 La forte présence de population née en Allemagne pourrait, elle, être expliquée par une émigration durant et post-2nde guerre mondiale, notamment chez les populations de confession juive. 
 
-
 Après avoir étudié la répartition internationale des lieux de naissance, intéressons-nous maintenant aux lieux de résidence intra-étatique.
 
 ### Carte des États-Unis représentant les Etats précédents de résidence
+
 ```{r maptwo}
 previous_residence_data <- data %>%
     filter(state_of_previous_residence != "Not in universe" &
@@ -292,6 +290,7 @@ plot_usmap(
         fill = "Number of people"
     )
 ```
+
 *Nous n'avions pas assez de données sur les États de Wasgington et Hawaï, et ils sont donc en gris sur la carte*
 
 La Californie, l'Utah, la Floride et la Caroline du Nord comptent pour les Etats les plus représentés dans la population sondée.
@@ -322,9 +321,6 @@ Si on analyse néanmoins les résultats, on constate qu'une majeure partie des s
 Même si hommes et femmes travaillent, on constate tout de même que la répartition des salaires entre les deux genres n'est pas la même. Parmi les populations les plus favorisés (plus de 50 000 dollars par an), seul un quart sont des femmes. Au contraire, elles représentent plus de la moitié de ceux gagnant moins de 50 000 dollars par mois. 
 
 Il faudra donc essayer de trouver les causes de cette inégalité de revenus ; on s'intéressera dans la suite à l'impact de l'éducation, mais aussi du choix du secteur d'activité, qui pourraient apporter des pistes d'explications.
-
-
-
 
 ```{r wagesex}
  wage <- data %>%
@@ -414,7 +410,6 @@ ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
 En effet, les branches médicales en hôpital et hors hôpital ont une grande variance, et nous pouvons supposer que les femmes occupent des métiers d’infirmières moins rémunérés que leurs collègues médecins. Cette supposition peut être appuyée par la suite du fait de la faible proportion de femme détenant un diplôme MD (qui est nécessaire pour exercer en tant que médecin).
 
 ```{r gender-sector-precisely, fig.width=10}
-
 education <- data %>%
     filter(wage_per_hour != 0) %>%
     filter(education != "Children") %>%
@@ -440,7 +435,7 @@ ggplot(education, aes(x = major_industry_recode, y = wage_per_hour, fill = major
 
 On constate en effet que pour deux des trois secteurs, les salaires moyens des femmes sont effectivement plus faibles que ceux des hommes. Cette différence est très visible sur le salaire mensuel, ce qui suppose donc une différence importante de salaire en fin de mois. En supposant que les hommes et les femmes travaillent le même nombre d’heures. 
 
-Troisième, les femmes ont tendance à plus être en temps partiel que les hommes. En effet, ces dernières doivent généralement s'occuper des enfants et du travail domestique en plus de leur travail rémunéré. De plus, en reprenant nos précédentes explications (salaire mensuel inférieur), il est plus rationnel que cela soit la femme qui renonce à une partie du travail rémunéré car le coût d'opportunité sera moindre. (expliqué par Gary Becker, 1981, *A Treaty on the Family*).
+Troisième, les femmes ont tendance à plus être en temps partiel que les hommes. En effet, ces dernières doivent généralement s'occuper des enfants et du travail domestique en plus de leur travail rémunéré. De plus, en reprenant nos précédentes explications (salaire mensuel inférieur), il est plus rationnel que cela soit la femme qui renonce à une partie du travail rémunéré car le coût d'opportunité sera moindre (expliqué par Gary Becker, 1981, *A Treaty on the Family*).
 
 ```{r employment-time}
 employment_stat <- data %>%
@@ -459,7 +454,9 @@ ggplot(employment_stat, aes(x = full_or_part_time_employment_stat, fill = sex)) 
 ```
 
 Ce coût d’opportunité peut aussi expliquer une auto-censure des femmes dans leurs études. En effet, pourquoi investir (avec du temps et surtout de l’argent) alors qu’on gagnera moins que son mari ? 
+
 On constate que la part de femme en fonction du niveau d’étude va en diminuant, et qu’une large majorité des personnes qui ont arrêté leurs études au 1st grade (école élémentaire) sont… des femmes. Au vu des prix de l'éducation aux États-Unis, les parents peuvent aussi choisir d'éduquer et d'investir sur un enfant en particulier, en général un garçon, au détriment du reste de sa fratrie.
+
 La plus grande disparité entre hommes et femmes se fait au niveau PhD. 
 
 ```{r education-sex}
@@ -478,7 +475,8 @@ ggplot(education, aes(y = education, fill = sex)) +
 geom_vline(xintercept = 0.5, linetype = "dashed", color = "yellow")
 ```
 
-Pour ce qui est de la corrélation entre diplôme et salaire par heure, on constate que le salaire croit en fonction du niveau du diplôme. Or, comme nous l’avons dit précédemment, les femmes sont moins enclines à continuer leurs études du fait d’un coût d’opportunité plus élevé que leurs homologues masculins. C’est en quelques sorte le serpent qui se mord la queue.  
+Pour ce qui est de la corrélation entre diplôme et salaire par heure, on constate que le salaire croit en fonction du niveau du diplôme. Or, comme nous l’avons dit précédemment, les femmes sont moins enclines à continuer leurs études du fait d’un coût d’opportunité plus élevé que leurs homologues masculins. C’est en quelques sorte le serpent qui se mord la queue.
+
 ```{r wage_education}
 ggplot(education, aes(x = wage_per_hour, y = education)) +
     geom_bar(stat = "summary") +
@@ -488,7 +486,6 @@ ggplot(education, aes(x = wage_per_hour, y = education)) +
     )
 ```
 Cependant, nous pouvons aussi dire que, au-delà de questions pécuniaires, un haut niveau de diplôme va avoir un certain prestige social (capital symbolique pour reprendre les notions de Bourdieu). De ce prisme, nous pouvons constater de nouvelles inégalités entre hommes et femmes du fait de la moindre présence féminine dans les docteurs (diplômes d’un doctorat (PhD)).
-
 
 Nous allons ensuite nous intéresser à l'impact de l'ethnie sur le niveau de revenu. 
  
@@ -521,7 +518,8 @@ ggplot(income_percent, aes(x = income_level, y = percentage, fill = race)) +
 ```
 
 Avec ce graphisme, on constate qu'il existe bien des inégalités raciales au niveau du salaire. Alors que les populations caucasiennes sont, en proportion, plus représentés dans les salaires supérieurs à 50 000 dollars mensuels, c'est l'inverse pour les populations noires. Leur proportion est réduite en effet presque de moitié.
-De l'autre côté, les populations en provenance d'Asie sont un peu mieux représentées dans les salaires à +50000dollars que dans les salaires à -50000dollars. 
+
+De l'autre côté, les populations en provenance d'Asie sont un peu mieux représentées dans les salaires à +50000 dollars que dans les salaires à -50000 dollars. 
 
 ```{r wage_per_hour}
 wage <- data %>%
@@ -545,9 +543,11 @@ ggplot(data = average_income_by_age_race, aes(
 ```
 
 Plusieurs phénomènes apparaissent sur ce graphique. Nous allons tout d'abord nous intéresser à l'allure globale des courbes. Nous pouvons en effet noter que les courbes sont concaves. Il semblerait ainsi que le salaire mensuel croit jusqu'à un certain âge puis décroit. Cette décroissance peut être analysée comme une anomalie car, dans de nombreuses études, il est montré que le salaire mensuel croit jusqu'à l'âge de la retraite, ce qui n'est pas le cas ici. Il semblerait cependant que nous soyons ici face à un effet de génération. En effet si l'on se renseigne sur l'évolution du salaire moyen aux États-Unis, nous apprenons que le salaire mensuel moyen a progressivement évolué pendant la Seconde Guerre Mondiale avant de connaître une importante hausse dans les années 60. Les personnes entrées dans l'emploi dans ces années là correspondent, de manière générale, aux personnes nées entre 1940 et 1955. Ces personnes sont donc agées, lors de l'enquête, de 40 à 55 ans. Ces âges correspondent aux points hauts de trois de courbes. Ces personnes ont bénéficié d'un salaire mensuel de départ plus important que leurs prédécesseurs qui n'a cessé de progresser avec l'expérience. 
+
 Ce phénomène d'augmentation du salaire avec l'âge est visible sur la partie montante de la courbe concave. En effet, le salaire augmente souvent avec l'expérience. 
 
 Nous allons maintenant nous intéresser aux différences entre les ethnies. Tout d'abord nous constatons que le salaire mensuel moyen maximum des personnes Afro-Américaines est plus faible que celui des autres ethnies. Cela peut s'expliquer par un racisme encore bien ancré dans la société américaine des années 90 qui se traduit par une discrimination à l'emploi. De plus, nous pouvons supposer que les personnes Afro-américaines sont plus représentées dans des secteurs peu rémunérateurs. 
+
 Néanmoins les population asiatiques ont le plus haut salaire mensuel moyen, dépassant ainsi le seuil des 1250 dollars mensuels après 40 ans. Cette différence pourrait s'expliquer par plusieurs facteurs. Tout d'abord une immigration sélective : seules les populations au plus haut capital social, culturel et économique ont eu les moyens d'immigrer aux États-Unis. La tontine, sorte d'épargne communautaire aidant à financer les projets des membres, est aussi bien développé. On peut aussi supposer que ce haut salaire est corrélé à un plus fort taux d'études, dans des secteurs mieux rémunérés. C'est ce que nous allons vérifier.
 
 ```{r industry_race}
@@ -588,6 +588,7 @@ ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
 ```
 
 Nous pouvons constater que les branches où travaillent majoritairement les personnes racisées (retail trade, public administration, manufacturing non-durable and durable goods, education) ne sont pas les branches les plus rémunératrices.
+
 Nous allons alors nous intéresser à la variance des salaires dans ces branches. 
 
 ```{r industry_wage3}
@@ -600,6 +601,7 @@ ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
 ```
 
 Nous pouvons remarquer ici, sur les branches qui nous intéressent (retail trade, public administration, manufacturing non-durable and durable goods, education) les salaires médians sont loin d’être les plus conséquents. 
+
 Maintenant que nous avons vu que les secteurs d’activités étaient répartis de manière inégales entre population racisée et non racisée, nous allons pouvoir nous concentrer sur la position des personnes dans leur travail. 
 
 ```{r occupation_race_W}
@@ -621,6 +623,7 @@ ggplot(occupation, aes(y = major_occupation_recode, fill = race)) +
 ```
 
 Pour comprendre l'écart de salaire moyen que nous avions pu constater plus tôt, entre les populations noires et asiatiques par exemple, il peut être intéressant d'analyser leur domaine d'activité. Les populations asiatiques sont en effet sureprésentées dans la catégorie "spécialité professionnel". Même si le terme reste flou, on peut comprendre que c'est un domaine d'expertise bien précis, qui demande des connaissances bien précises - et qui est sûrement mieux rémunérés que les autres emplois.
+
 Les populations noires sont elles plutôt représentés dans le support administratif, domaine qui paye peut-être moins bien.
 Le secteur d'activité peut donc avoir un rôle déterminant sur les perspectives de salaire, et est l'une des causes des différences salariales entre ethnies.
 
@@ -682,18 +685,20 @@ ggplot() +
 ```
 
 Nous pouvons constater que les personnes ayant habités dans la SunBelt ont un salaire moyen inférieur à celui de l'ensemble des Américains. Cela peut s'expliquer par plusieurs choses. D'une part, notre jeu de données ne nous permet pas de connaître l'Etat de résidence de chaque personne intérrogée. En revanche, nous connaissons leur Etat précédent de résidence. Ainsi nous nous sommes focalisés sur les personnes ayant habitées dans la Sunbelt pour faire ce graphique. Or la Sunbelt est une terre qui a un passé esclavagiste. Encore aujourd'hui, 158ans après la fin de la guerre de Secession, ces racines sont encore présentes. Les Républicains sont relativement bien implantés dans ces Etats, encore de nos jours. 
-Cet aspect politique a pu entrainer des migrations des personnes racisées, qui, nous l'avons dit tout à l'heure, ont un salaire moins élevés que leurs homologues blancs. 
+Cet aspect politique a pu entrainer des migrations des personnes racisées, qui, nous l'avons dit tout à l'heure, ont un salaire moins élevés que leurs homologues blancs.
+
 La deuxième explication vient du fait que les Etats de la Sunbelt, dans les années 90, avait pour activité économique principale l'agriculture qui génère de moindre revenus. A cela s'ajoutait le tourisme et la pêche. L'industrie automobile venait de faire son apparition dans ces Etats, tout comme le domaine des hautes technologies qui n'était qu'à ses balbutiements. 
 
 
 # Conclusion
 Après avoir étudié le profil de notre échantillon et l'avoir mis en perspective avec les données démographiques de l'époque, il nous a semblé pertinent de nous interroger sur les dicriminations pouvant exister aux États-Unis, notamment celles basées sur l'ethnie ou le sexe.
 Les résultats sont sans équivoque ; ces facteurs ont une importance sur l'éducation, le choix de domaine d'activité, et le salaire.
+
 Il est néanmoins intéressant de voir que cetaines minorités ethniques ont malgré tout réussi à optenir de hauts salaires moyens, et à accumuler du capital économique, voire scolaire. Au delà de l'ethnie, il pourrait donc y avoir un vrai enjeu à soutenir les populations les plus défavorisés en leur permettant l'accès à l'éducation, qui elle-même peut aider à obtenir de meilleurs salaires.
+
 Malheureusement, presque 30 ans plus tard, les choses ne semblent pas avoir énormément évoluées. Les populations noires sont toujours les plus touchés par la pauvreté, et ont un revenu médian bien inférieur à d'autres groupes ethniques (caucasiens, asiatiques).
-La situation prends même un tournant innatendu avec l'apparition des nouvelles technologies, comme l'intelligence artificielle. Ce jeu de données par exemple, à été utilisé à des fins de machine learning. En analysant ces données, l'IA pourrait donc considérer que ces différences ethniques sont une norme sociale qu'il convient d'appliquer.
-Il y a donc un vrai risque qu'elle reproduise et accentue ces discriminations.
-Nous devons donc impérativement prendre conscience de ces nouveaux enjeux, afin de pas accentuer un cercle vicieux qui viserait à perpétuer ces discriminations.
+
+La situation prends même un tournant innatendu avec l'apparition des nouvelles technologies, comme l'intelligence artificielle. Ce jeu de données par exemple, à été utilisé à des fins de machine learning. En analysant ces données, l'IA pourrait donc considérer que ces différences ethniques sont une norme sociale qu'il convient d'appliquer. Il y a donc un vrai risque qu'elle reproduise et accentue ces discriminations. Nous devons donc impérativement prendre conscience de ces nouveaux enjeux, afin de pas accentuer un cercle vicieux qui viserait à perpétuer ces discriminations.
  
 
 
