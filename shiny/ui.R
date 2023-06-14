@@ -2,14 +2,16 @@ library(shiny)
 library(shinydashboard)
 library(shinydashboardPlus)
 library(bs4Dash)
+library(shinyWidgets)
 library(shinycssloaders)
 library(plotly)
 library(threejs)
 
 dashboardPage(
     dark = TRUE,
+    scrollToTop = TRUE,
     dashboardHeader(
-        title = "Census Income",
+        title = "Census Income - Exploration",
         tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
     ),
     dashboardSidebar(
@@ -45,9 +47,16 @@ dashboardPage(
         )
     ),
     dashboardBody(
+        chooseSliderSkin("Round"),
         tabItems(
             tabItem(
                 tabName = "stats",
+                fluidRow(
+                    tags$h1("Statistiques")
+                ),
+                fluidRow(
+                    tags$br()
+                ),
                 fluidRow(
                     infoBox(
                         title = "Observations",
@@ -103,15 +112,22 @@ dashboardPage(
                         withSpinner(
                             plotlyOutput("ages_pyramid"),
                             type = 8
+                        ),
+                        tags$br(),
+                        prettyRadioButtons(
+                            inputId = "race_selector",
+                            label = "Ethnie :",
+                            choices = c("Toutes", "White", "Black", "Natives", "Asian/Pacific", "Other"),
+                            icon = icon("user"),
+                            animation = "tada"
                         )
                     ),
                     box(
-                        title = "Répartition des ethies",
+                        title = "Répartition des ethnies",
                         withSpinner(
                             plotlyOutput("race_distribution"),
                             type = 8
-                        ),
-                        sliderInput("age_slider_ethnie", "Âge :", 0, 90, 90)
+                        )
                     )
                 )
             ),

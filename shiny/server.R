@@ -9,6 +9,8 @@ library(shiny)
 library(shiny.i18n)
 
 data <- read_csv("../data/census-income.csv")
+data$race <- gsub("Asian or Pacific Islander", "Asian/Pacific", data$race)
+data$race <- gsub("Amer Indian Aleut or Eskimo", "Natives", data$race)
 
 
 # ----------------- wage per hour without 0 -----------------
@@ -122,28 +124,27 @@ globe <- globejs(
 # -----------------------------------------------------------
 
 
-# ------------- pyramide des âges -------------
-ages <- data %>%
-    mutate(age_range = cut(age,
-        breaks = seq(min(data$age), max(data$age), 5), include.lowest = TRUE
-    ))
-
-ages_pyramid <- ggplot(data = ages, aes(x = as.factor(age_range), fill = sex)) +
-    geom_bar(data = subset(ages, sex == "Female")) +
-    geom_bar(
-        data = subset(ages, sex == "Male"),
-        aes(y = after_stat(count) * (-1))
-    ) +
-    coord_flip() +
-    labs(
-        title = "Pyramide des âges",
-        x = "Âge", y = "Nombre de personnes",
-        fill = "Genre"
-    )
-# -----------------------------------------------------------------
-
-
 server <- function(input, output) {
+    # -------------- pyramides des âges ---------------
+    ages <- data %>%
+        mutate(age_range = cut(age,
+            breaks = seq(min(data$age), max(data$age), 5), include.lowest = TRUE
+        ))
+
+    pyramid_filtered <- reactive({
+        selected_race <- input$race_selector
+        if (selected_race == "Toutes") {
+            return(ages)
+        }
+
+        filtered_ages <- ages %>%
+            filter(
+                race == input$race_selector
+            )
+        return(filtered_ages)
+    })
+    # -------------------------------------------------
+
     output$nb_observations <- renderText({
         nrow(data)
     })
@@ -163,17 +164,21 @@ server <- function(input, output) {
         state_map
     })
     output$ages_pyramid <- renderPlotly({
-        ages_pyramid
+        ggplot(data = pyramid_filtered(), aes(x = as.factor(age_range), fill = sex)) +
+            geom_bar(data = subset(pyramid_filtered(), sex == "Female")) +
+            geom_bar(
+                data = subset(pyramid_filtered(), sex == "Male"),
+                aes(y = after_stat(count) * (-1))
+            ) +
+            coord_flip() +
+            labs(
+                x = "Âge", y = "Nombre de personnes",
+                fill = "Genre"
+            )
     })
     output$race_distribution <- renderPlotly({
-        race_modified <- data
-        race_modified$race <- gsub("Asian or Pacific Islander", "Asian/Pacific", race_modified$race)
-        race_modified$race <- gsub("Amer Indian Aleut or Eskimo", "Natives", race_modified$race)
-
-        race_distribution <- ggplot(data = race_modified, aes(x = race)) +
+        ggplot(data, aes(x = race)) +
             geom_bar() +
             labs(x = "Ethnies", y = "Nombre de personnes", fill = "Ethnies")
-
-        ggplotly(race_distribution)
     })
 }
