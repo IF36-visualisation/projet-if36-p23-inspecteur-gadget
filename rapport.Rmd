@@ -388,24 +388,6 @@ ggplot(education, aes(x = major_industry_recode, y = wage_per_hour, fill = major
 ```
 
 On constate en effet que pour deux des trois secteurs, les salaires moyens des femmes sont effectivement plus faibles que ceux des hommes. Cette différence est très visible sur le salaire mensuel. En supposant que les hommes et les femmes travaillent le même nombre d’heures. 
-
-### Type d'activité en fonction du genre
-
-```{r typeactivitesgenre}
-employment_stat <- data %>%
-    filter(full_or_part_time_employment_stat != "Not in labor force" &
-        full_or_part_time_employment_stat != "Unemployed full-time" &
-        full_or_part_time_employment_stat != "Unemployed part- time" &
-        full_or_part_time_employment_stat != "Children or Armed Forces") %>%
-    mutate(full_or_part_time_employment_stat = gsub("PT for non-econ reasons usually FT", "Part-time", full_or_part_time_employment_stat)) %>%
-    mutate(full_or_part_time_employment_stat = gsub("PT for econ reasons usually PT", "Part-time", full_or_part_time_employment_stat)) %>%
-    mutate(full_or_part_time_employment_stat = gsub("PT for econ reasons usually FT", "Part-time", full_or_part_time_employment_stat)) %>%
-    mutate(full_or_part_time_employment_stat = gsub("Full-time schedules", "Full-time", full_or_part_time_employment_stat))
-
-ggplot(employment_stat, aes(x = full_or_part_time_employment_stat, fill = sex)) +
-    geom_bar(position = "fill") +
-    labs(title = "Type d'activité en fonction du genre", x = "Type d'activité", y = "Nombre de personnes")
-```
     
 Or, comme on le constate ici, les femmes ont tendance à plus être en temps partiel que les hommes. En effet, ces dernières doivent généralement s'occuper des enfants et du travail domestique en plus de leur travail rémunéré. Cela explique aussi en partie leur choix de s'orienter vers des métiers plus pratiques (Duru-Bellat, 1990, *L'Ecole des filles*).  De plus, en reprenant nos précédentes explications (salaire mensuel inférieur), il est plus rationnel que cela soit la femme qui renonce à une partie du travail rémunéré car le coût d'opportunité sera moindre (expliqué par Gary Becker, 1981, *A Treaty on the Family*).
 
@@ -431,7 +413,7 @@ Ce coût d’opportunité peut aussi expliquer une auto-censure des femmes dans 
 ### Femmes et niveau scolaire
 On constate que la part de femme en fonction du niveau d’étude va en diminuant, et qu’une large majorité des personnes qui ont arrêté leurs études au 1st grade (école élémentaire) sont… des femmes. Au vu des prix de l'éducation aux États-Unis, les parents peuvent aussi choisir d'éduquer et d'investir sur un enfant en particulier, en général un garçon, au détriment du reste de sa fratrie.
 
-La plus grande disparité entre hommes et femmes se fait au niveau PhD. 
+La plus grande disparité entre hommes et femmes se fait au niveau MD et au niveau PhD, les deux niveaux d'études les plus rémunérateurs. 
 
 ```{r education-sex}
 education <- data %>%
@@ -625,7 +607,7 @@ ggplot(education, aes(y = education, fill = race)) +
 ```
 
 On constate ici que jusqu’au High school diploma les personnes racisées sont autant présentes que les personnes caucasiennes, voir même sont majoritaires dans certains cas. Cependant cette tendance s’inverse pour les diplômes les plus valorisés (et les plus longs à obtenir) que sont les prof school degree, master degree ou bien encore phD. Or nous avons vu tout à l’heure que ces diplômes étaient les plus rémunérateurs. De plus, certaines populations comme les amérindiens ne sont pas représentés dans les niveaux de diplomes les plus élevés. 
-La présence des personnes noires dans les études allant de master à doctorat s'explique principalement par la mise en place de quotats par les universités (discrimination positive) dès les années 1960. De plus, la minorité afro-américaine est la plus grosse minorité des Etats-Unis, ce qui signifie qu'elle a un poids électoral indéniable. Ce n'est pas le cas des populations natives qui n'ont pas pu bénéficier de cette discrimination positive. 
+La présence des personnes noires dans les études allant de master à doctorat s'explique principalement par la mise en place de quotats par les universités (discrimination positive) dès les années 1960. De plus, la minorité afro-américaine est la plus grosse minorité des Etats-Unis, ce qui signifie qu'elle a un poids électoral indéniable. De même pour les populations hispaniques et latinos. Cependant ce n'est pas le cas des populations natives qui n'ont pas pu bénéficier de cette discrimination positive. 
 
 
 ## Etats-Unis et migrations
