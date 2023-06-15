@@ -109,7 +109,9 @@ Pour chaque variable, les personnes recensées les ont remplies si elles étaien
 
 Plus d'informations sur la signification des variables sont disponibles sur le site du [Census Bureau](https://www.census.gov/).
 
+
 ##Présentation du jeu de données
+
 
 ### Répartition par âge
 
@@ -168,11 +170,15 @@ ggplot(race_percent, aes(x = race, y = percentage)) +
 
 On constate que l'écrasante majorité de la population interrogée est caucasienne. 
 
-A titre de comparaison, la population américaine en 1995 était répartie de la manière suivante (source : Census) : 
--+70% de la population était causasienne
--12% de la population était noire
--10% de la population était hispanique*
--3% de la population était asiatique
+A titre de comparaison, la population américaine en 1995 était répartie de la manière suivante (source : Census) :
+
+- +70% de la population était causasienne
+
+- 12% de la population était noire
+
+- 10% de la population était hispanique**
+
+- 3% de la population était asiatique
 
 * *hispanique est ici utilisé comme un abus de language pour parler des populations originaire d'Amérique Latine et Centrale.*
 
@@ -208,16 +214,25 @@ La présence de données ethniques est une des spécificités de ce jeu de donn�
 
 
 Nous avons donc décidé de profiter de la présence de l’attribut ethnique ("race") pour étudier l’impact de l’appartenance à un groupe racisé* sur la situation économique de la personne, et plus particulièrement sur son revenu.
+
 Nous essaierons d’affiner notre analyse en croisant nos résultats avec d’autres données: 
+
 - Le sexe ; Est-ce un facteur d’aggravation des inégalités raciales ?
+
 - La situation géographique ; Le lieu de résidence (la Sunbelt par exemple) influe-t-il sur le niveau de vie et la qualité des emplois ?
+
 - Le statut marital et la situation familiale ; Le mariage profite-t-il économiquement aux individus ? On pourra aussi pondérer les revenus en fonction du nombre de personnes composant les foyers.
+
 - temporel (générations); Les enfants américains nés de parents étrangers sont-ils mieux intégrés au marché de l’emploi que leurs parents avant eux ?
 
 
-Enfin, nous nous attacherons à essayer de comprendre les inégalités économiques. Pour cela nous nous pencherons sur les données structurelles : 
+
+Enfin, nous nous attacherons à essayer de comprendre les inégalités économiques. Pour cela nous nous pencherons sur les données structurelles :
+
 - Le niveau scolaire; La poursuite d’études permet-elle l’accès aux plus hauts revenus ? Élimine-t-elle le travail précaire ?
-- La qualité de l’emploi (nombre de semaines travaillées, salaire mensuel, cause du chômage, domaine d’activité, syndicat,); L’ethnie a-t-elle un impact sur les postes occupés et la rémunération des individus ? 
+
+- La qualité de l’emploi (nombre de semaines travaillées, salaire mensuel, cause du chômage, domaine d’activité, syndicat,); L’ethnie a-t-elle un impact sur les postes occupés et la rémunération des individus ?
+ 
 - Le capital
 
 
@@ -242,7 +257,7 @@ Quand nous pensons aux inégalités aux Etats-Unis, nous pensons tout d'abord au
 ## Les inégalités raciales
 ### Niveau de revenu en fonction de l'ethnie
 
-```{r levelrace}
+```{r levelrace, fig.width = 7}
 ggplot(data, aes(x = income_level, fill = race)) +
     geom_bar(position = "fill") +
     labs(
@@ -325,6 +340,7 @@ ggplot(industry2, aes(y = major_industry_recode, fill = race)) +
   labs(x = "Nombre", y = "Type de branche")
 ```
 
+
 ```{r industry_wage2}
 education_order <- c(
     "Less than 1st grade",
@@ -381,7 +397,7 @@ Maintenant que nous avons vu que les secteurs d’activités étaient répartis 
 
 ### Ethnie et type d'activité
 
-```{r occupation_race_W}
+```{r occupation_race_W, fig.width = 5}
 occupation <- data %>%
   filter(major_occupation_recode != "Not in universe or children" & major_occupation_recode != "Not in universe" & major_occupation_recode != "Other service"  &  major_occupation_recode != "Armed Forces")
 
@@ -393,7 +409,7 @@ ggplot(occupation, aes(y = major_occupation_recode, fill = race)) +
 Pour une meilleure lisibilité, on analyse ce même schéma, mais sans les populations caucasiennes : 
 
 
-```{r occupation_race}
+```{r occupation_race, fig.width = 5}
 occupation <- data %>%
   filter(major_occupation_recode != "Not in universe or children" & major_occupation_recode != "Not in universe" & major_occupation_recode != "Other service"  &  major_occupation_recode != "Armed Forces" & race != "White")
 
@@ -617,11 +633,8 @@ ggplot(data = average_wph_by_age_sex, aes(
 
 Cet écart de revenu entre les hommes et les femmes peut ainsi s'expliquer de plusieurs manières. Premièrement, le salaire mensuel d'une femme est souvent inférieur à celui d'un homme - à poste équivalent, âge équivalent, expérience et formation équivalentes. En effet il est intériosé que les femmes vont avoir des enfants et seront donc moins impliquées dans leur travail. De plus, lorsque ces mêmes enfants seront malades, il y a de fortes chances que cela soit la conjointe qui prenne des congés pour s'occuper d'eux.
 
-```{r}
-# insertion autre graph
-```
-
 ### Le genre du travail
+
 Deuxièmement, l'éducation est très souvent genrée. De ce fait, les femmes sont souvent orientées vers des filières qui leur "correspondent" (stéréotype de genres) comme par exemple les métiers du "care" - car les femmes sont vues comme naturellement douées pour s'occuper des autres. Or ces filières genrées avec des métiers identifiés comme féminins sont les filières peu rémunératrices. (Duru Bellat, Kieffer, Marry, 2001, *La dynamique des scolarités des filles*. 
 
 ```{r industry-genre}
@@ -650,7 +663,7 @@ ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
 En effet, les branches médicales en hôpital et hors hôpital ont une grande variance, et nous pouvons supposer que les femmes occupent des métiers d’infirmières moins rémunérés que leurs collègues médecins. Cette supposition peut être appuyée par la suite du fait de la faible proportion de femme détenant un diplôme MD (qui est nécessaire pour exercer en tant que médecin).
 
 
-```{r gender-sector-precisely, fig.width=10}
+```{r gender-sector-precisely, fig.width=7}
 education <- data %>%
     filter(wage_per_hour != 0) %>%
     filter(education != "Children") %>%
@@ -731,6 +744,7 @@ ggplot(education, aes(x = wage_per_hour, y = education)) +
         x = "Salaire mensuel", y = "Niveau scolaire"
     )
 ```
+
 Cependant, nous pouvons aussi dire que, au-delà de questions pécuniaires, un haut niveau de diplôme va avoir un certain prestige social (capital symbolique pour reprendre les notions de Bourdieu). De ce prisme, nous pouvons constater de nouvelles inégalités entre hommes et femmes du fait de la moindre présence féminine dans les docteurs (diplômes d’un doctorat (PhD)).
 
 
