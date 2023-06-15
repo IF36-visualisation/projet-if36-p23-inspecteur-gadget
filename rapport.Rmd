@@ -110,7 +110,7 @@ Pour chaque variable, les personnes recensées les ont remplies si elles étaien
 Plus d'informations sur la signification des variables sont disponibles sur le site du [Census Bureau](https://www.census.gov/).
 
 
-##Présentation du jeu de données
+## Présentation du jeu de données
 
 
 ### Répartition par âge
