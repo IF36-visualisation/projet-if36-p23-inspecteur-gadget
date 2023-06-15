@@ -5,12 +5,15 @@ library(threejs)
 library(maps)
 library(plotly)
 library(scales)
+library(forcats)
 library(shiny)
 library(shiny.i18n)
 
 data <- read_csv("../data/census-income.csv")
 data$race <- gsub("Asian or Pacific Islander", "Asian/Pacific", data$race)
 data$race <- gsub("Amer Indian Aleut or Eskimo", "Natives", data$race)
+hispanic_latino <- c("Mexican (Mexicano)", "Puerto Rican", "Cuban", "Central or South American", "Other Spanish", "Chicano", "Mexican-American")
+data$race <- ifelse(data$hispanic_origin %in% hispanic_latino, "Hispanic/Latino", data$race)
 
 
 # ----------------- wage per hour without 0 -----------------
@@ -60,7 +63,6 @@ state_map <- state_map %>% add_trace(
 
 state_map <- state_map %>% colorbar(
     title = "Effectif",
-    # position to bottom
     y = 0.9
 )
 
@@ -132,16 +134,79 @@ server <- function(input, output) {
         ))
 
     pyramid_filtered <- reactive({
-        selected_race <- input$race_selector
+        selected_race <- input$demog_race_selector
         if (selected_race == "Toutes") {
             return(ages)
         }
 
         filtered_ages <- ages %>%
             filter(
-                race == input$race_selector
+                race == input$demog_race_selector
             )
         return(filtered_ages)
+    })
+    # -------------------------------------------------
+
+    # -------------- distribution des ethnies et des genres  ---------------
+    race_sex_distribution_filtered <- reactive({
+        if (input$demog_format_selector == "Pourcentage") {
+            plot <- ggplot(data, aes(x = sex, fill = race)) +
+                geom_bar(position = "fill") +
+                scale_y_continuous(labels = percent_format()) +
+                labs(
+                    x = "Genres", y = "Distribution",
+                    fill = "Ethnies"
+                )
+        } else {
+            plot <- ggplot(data, aes(x = sex, fill = race)) +
+                geom_bar() +
+                labs(
+                    x = "Genres", y = "Distribution",
+                    fill = "Ethnies"
+                )
+        }
+
+        return(plot)
+    })
+    # -------------------------------------------------
+
+    # -------------- pays de naissance  ---------------
+    birth_country_filtered <- reactive({
+        if (input$demog_country_selector == "Tous") {
+            if (input$demog_country_order == "Croissant") {
+                birth_countries <- ggplot(data, aes(y = fct_infreq(country_of_birth_self))) +
+                    geom_bar() +
+                    labs(
+                        x = "Nombre de personnes", y = "Pays de naissance"
+                    )
+                return(birth_countries)
+            } else {
+                birth_countries <- ggplot(data, aes(y = fct_rev(fct_infreq(country_of_birth_self)))) +
+                    geom_bar() +
+                    labs(
+                        x = "Nombre de personnes", y = "Pays de naissance"
+                    )
+                return(birth_countries)
+            }
+        } else {
+            filtered_data <- data %>%
+                filter(country_of_birth_self != "United-States")
+            if (input$demog_country_order == "Croissant") {
+                birth_countries <- ggplot(filtered_data, aes(y = fct_infreq(country_of_birth_self))) +
+                    geom_bar() +
+                    labs(
+                        x = "Nombre de personnes", y = "Pays de naissance"
+                    )
+                return(birth_countries)
+            } else {
+                birth_countries <- ggplot(filtered_data, aes(y = fct_rev(fct_infreq(country_of_birth_self)))) +
+                    geom_bar() +
+                    labs(
+                        x = "Nombre de personnes", y = "Pays de naissance"
+                    )
+                return(birth_countries)
+            }
+        }
     })
     # -------------------------------------------------
 
@@ -176,9 +241,10 @@ server <- function(input, output) {
                 fill = "Genre"
             )
     })
-    output$race_distribution <- renderPlotly({
-        ggplot(data, aes(x = race)) +
-            geom_bar() +
-            labs(x = "Ethnies", y = "Nombre de personnes", fill = "Ethnies")
+    output$race_sex_distribution <- renderPlotly({
+        race_sex_distribution_filtered()
+    })
+    output$birth_country <- renderPlotly({
+        birth_country_filtered()
     })
 }

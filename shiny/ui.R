@@ -11,8 +11,9 @@ dashboardPage(
     dark = TRUE,
     scrollToTop = TRUE,
     dashboardHeader(
-        title = "Census Income - Exploration",
-        tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
+        title = "Census Income Dashboard",
+        tags$link(rel = "stylesheet", type = "text/css", href = "style.css"),
+        tags$link(rel = "icon", type = "image/png", href = "favicon.png")
     ),
     dashboardSidebar(
         sidebarMenu(
@@ -115,7 +116,7 @@ dashboardPage(
                         ),
                         tags$br(),
                         prettyRadioButtons(
-                            inputId = "race_selector",
+                            inputId = "demog_race_selector",
                             label = "Ethnie :",
                             choices = c("Toutes", "White", "Black", "Natives", "Asian/Pacific", "Other"),
                             icon = icon("user"),
@@ -123,10 +124,51 @@ dashboardPage(
                         )
                     ),
                     box(
-                        title = "Répartition des ethnies",
+                        title = "Distribution des genres et des ethnies",
                         withSpinner(
-                            plotlyOutput("race_distribution"),
+                            plotlyOutput("race_sex_distribution"),
                             type = 8
+                        ),
+                        tags$br(),
+                        prettyRadioButtons(
+                            inputId = "demog_format_selector",
+                            label = "Format :",
+                            choices = c("Nombre", "Pourcentage"),
+                            icon = icon("filter"),
+                            animation = "tada",
+                            inline = TRUE
+                        )
+                    ),
+                    box(
+                        title = "Pays de naissance des interrogés",
+                        withSpinner(
+                            plotlyOutput("birth_country", height = "600px"),
+                            type = 8
+                        ),
+                        tags$br(),
+                        fluidRow(
+                            column(
+                                width = 6,
+                                prettyRadioButtons(
+                                    inputId = "demog_country_selector",
+                                    label = "Pays à afficher : ",
+                                    choices = c("Tous", "Hors USA"),
+                                    icon = icon("filter"),
+                                    animation = "tada",
+                                    inline = TRUE
+                                )
+                            ),
+                            column(
+                                width = 6,
+                                prettyRadioButtons(
+                                    inputId = "demog_country_order",
+                                    label = "Ordre : ",
+                                    choices = c("Croissant", "Décroissant"),
+                                    icon = icon("sort-amount-up"),
+                                    animation = "tada",
+                                    inline = TRUE
+                                )
+                            )
                         )
                     )
                 )
