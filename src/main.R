@@ -163,20 +163,23 @@ ggplot(income_percent, aes(x = income_level, y = percentage, fill = race)) +
 # EMPLOYMENT
 # employment rate by age
 # version se base sur population totale
+adults <- data %>% filter(education != "Children")
+
 employment_rate <- aggregate(
-    data$full_or_part_time_employment_stat,
-    by = list(data$age), FUN = function(x) {
+    adults$full_or_part_time_employment_stat,
+    by = list(adults$age), FUN = function(x) {
         sum(x == "Full-time schedules" |
             x == "PT for econ reasons usually PT" |
             x == "PT for econ reasons usually FT" |
-            x == "PT for non-econ reasons usually FT") / length(x)
+            x == "PT for non-econ reasons usually FT" |
+            x == "Children or Armed Forces") / length(x)
     }
 )
 
 colnames(employment_rate) <- c("age", "employment_rate")
 
 ggplot(data = employment_rate, aes(x = age, y = employment_rate)) +
-    geom_line(color = "blue") +
+    geom_smooth(color = "blue", se = FALSE) +
     labs(title = "Taux d'emploi par âge", x = "Age", y = "Taux d'emploi")
 
 # version se basant sur la population active (en prenant en compte enfants et militaires)
