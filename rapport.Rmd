@@ -170,7 +170,8 @@ A titre de comparaison, la population américaine en 1995 était répartie de la
 -10% de la population était hispanique*
 -3% de la population était asiatique
 
-* *hispanique est ici utilisé comme un abus de language pour parler des populations originaire d'Amérique Latine*
+* *hispanique est ici utilisé comme un abus de language pour parler des populations originaire d'Amérique Latine.*
+
 L’échantillon semble donc être globalement représentatif de la population américaine en 1994, avec tout de même une proportion de personnes noires légèrement moindre. 
 
 On s'intéresse désormais aux pays de naissance des personnes interrogées dans notre échantillon.
@@ -362,7 +363,23 @@ ggplot(education, aes(x = major_industry_recode, y = wage_per_hour, fill = major
 On constate en effet que pour deux des trois secteurs, les salaires moyens des femmes sont effectivement plus faibles que ceux des hommes. Cette différence est très visible sur le salaire mensuel, ce qui suppose donc une différence importante de salaire en fin de mois. En supposant que les hommes et les femmes travaillent le même nombre d’heures. 
 
 ### Femmes et temps de travail (rémunéré)
-Troisième, les femmes ont tendance à plus être en temps partiel que les hommes. En effet, ces dernières doivent généralement s'occuper des enfants et du travail domestique en plus de leur travail rémunéré. De plus, en reprenant nos précédentes explications (salaire mensuel inférieur), il est plus rationnel que cela soit la femme qui renonce à une partie du travail rémunéré car le coût d'opportunité sera moindre (expliqué par Gary Becker, 1981, *A Treaty on the Family*).
+
+# type d'activité en fonction du genre
+employment_stat <- data %>%
+    filter(full_or_part_time_employment_stat != "Not in labor force" &
+        full_or_part_time_employment_stat != "Unemployed full-time" &
+        full_or_part_time_employment_stat != "Unemployed part- time" &
+        full_or_part_time_employment_stat != "Children or Armed Forces") %>%
+    mutate(full_or_part_time_employment_stat = gsub("PT for non-econ reasons usually FT", "Part-time", full_or_part_time_employment_stat)) %>%
+    mutate(full_or_part_time_employment_stat = gsub("PT for econ reasons usually PT", "Part-time", full_or_part_time_employment_stat)) %>%
+    mutate(full_or_part_time_employment_stat = gsub("PT for econ reasons usually FT", "Part-time", full_or_part_time_employment_stat)) %>%
+    mutate(full_or_part_time_employment_stat = gsub("Full-time schedules", "Full-time", full_or_part_time_employment_stat))
+
+ggplot(employment_stat, aes(x = full_or_part_time_employment_stat, fill = sex)) +
+    geom_bar(position = "fill") +
+    labs(title = "Type d'activité en fonction du genre", x = "Type d'activité", y = "Nombre de personnes")
+    
+Or, comme on le constate ici, les femmes ont tendance à plus être en temps partiel que les hommes. En effet, ces dernières doivent généralement s'occuper des enfants et du travail domestique en plus de leur travail rémunéré. De plus, en reprenant nos précédentes explications (salaire mensuel inférieur), il est plus rationnel que cela soit la femme qui renonce à une partie du travail rémunéré car le coût d'opportunité sera moindre (expliqué par Gary Becker, 1981, *A Treaty on the Family*).
 
 ```{r employment-time}
 employment_stat <- data %>%
