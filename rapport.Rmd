@@ -120,7 +120,7 @@ Commençons donc avec la répartition par âge de notre échantillon.
 ```{r age_distribution}
 ggplot(data, aes(x = age)) +
     geom_histogram(binwidth = 5) +
-    labs(title = "Age distribution", x = "Age", y = "Nombre")
+    labs(title = "Répartition des âges", x = "Âge", y = "Nombre de personnes")
 ```
 
 
@@ -142,7 +142,7 @@ ages <- data %>%
 ggplot(data = ages, aes(x = as.factor(age_range), fill = sex)) +
     geom_bar(data = subset(ages, sex == "Female")) +
     geom_bar(
-        data = subset(ages, sex == "Male")),
+        data = subset(ages, sex == "Male"),
         aes(y = after_stat(count) * (-1))
     ) +
     coord_flip() +
@@ -267,7 +267,7 @@ ggplot(income_percent, aes(x = income_level, y = percentage, fill = race)) +
   geom_bar(position = "dodge", stat = "identity") +
   scale_y_continuous(labels = percent_format()) +
   labs(
-    title = "Repartition des ethnies en fonction du niveau de revenu",
+    title = "Répartition des ethnies en fonction du niveau de revenu",
     fill = "Ethnies",
     x = "Niveau de revenu",
     y = "Pourcentage"
@@ -296,7 +296,7 @@ ggplot(data = average_income_by_age_race, aes(
   geom_vline(xintercept = 55, linetype = "dashed", color = "red") +
   labs(
     title = "Salaire mensuel moyen en fonction de l'âge et de l'ethnie",
-    x = "Age", y = "Salaire mensuel",
+    x = "Âge", y = "Salaire mensuel",
     color = "Ethnie"
   )
 ```
@@ -420,8 +420,8 @@ Nous allons pouvoir nous intéresser à l’aspect scolaire des inégalités ent
 
 ```{r education_race}
 ggplot(education, aes(y = education, fill = race)) +
-    geom_bar(position = "fill")+
-    labs(fill = "Ethnie)
+    geom_bar(position = "fill") +
+    labs(fill = "Ethnie")
 ```
 
 On constate ici que jusqu’au High school diploma les personnes racisées sont autant présentes que les personnes caucasiennes, voir même sont majoritaires dans certains cas. Cependant cette tendance s’inverse pour les diplômes les plus valorisés (et les plus longs à obtenir) que sont les prof school degree, master degree ou bien encore phD. Or nous avons vu tout à l’heure que ces diplômes étaient les plus rémunérateurs. De plus, certaines populations comme les amérindiens ne sont pas représentés dans les niveaux de diplomes les plus élevés. 
@@ -566,6 +566,7 @@ Passons maintenant au deuxième type d'inégalités qui sont présentes dans nos
 
 
 ## Inégalités de genre
+
 ### Niveau de revenu en fonction du genre
 
 ```{r incomesex}
@@ -618,7 +619,7 @@ ggplot(data = average_wph_by_age_sex, aes(
   geom_smooth(se = FALSE, formula = y ~ x, method = "loess") +
   labs(
     title = "Salaire mensuel moyen en fonction de l'âge et du genre",
-    x = "Age", y = "Salaire mensuel moyen",
+    x = "Âge", y = "Salaire mensuel moyen",
     color = "Genre"
   )
 ```
@@ -795,8 +796,5 @@ ggplot() +
 La situation prend même un tournant innatendu avec l'apparition des nouvelles technologies, comme l'intelligence artificielle. Ce jeu de données par exemple, a été utilisé à des fins de machine learning. En analysant ces données, l'IA pourrait donc considérer que ces différences ethniques sont une norme sociale qu'il convient d'appliquer. Il y a donc un vrai risque qu'elle reproduise et accentue ces discriminations. Nous devons donc impérativement prendre conscience de ces nouveaux enjeux, afin de pas accentuer un cercle vicieux qui viserait à perpétuer ces inégalités. 
 
 Pour conclure et pour expliciter cela, nous reprendrons une citation de Giuseppe Tomasi di Lampedusa qui s'adapte bien aux limites de cette révolution qu'est l'intelligence artificielle : "Se vogliamo che tutto rimanga come è, bisogna che tutto cambi" / "Si nous voulons que tout reste pareil, il faut que tout change".
- 
-
-
 
 
