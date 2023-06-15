@@ -245,7 +245,22 @@ Le revenu moyen d'un foyer américain en 1990 était en effet de 50 000 dollars 
  
 Si on analyse néanmoins les résultats, on constate qu'une majeure partie des sondés gagne moins de 50 000 dollars par an, et qu'une minorité seulement arrive à avoir un travail plus rémunérateur. Lorsqu'on parlait plus tôt de "foyer", on peut néanmoins préciser que ceux-ci sont en général constitués de plus d'une personne, et quand plus de 70% des femmes travaillent en 1990, le revenu du foyer est en général constitué de 2 salaires. Cette distinction peut permettre de mieux comprendre pourquoi une large partie de la population interrogées demeure donc sous le seuil des 50 000 dollars de revenus annuel.
 
-Même si hommes et femmes travaillent, on constate tout de même que la répartition des salaires entre les deux genres n'est pas la même. Parmi les populations les plus favorisés (plus de 50 000 dollars par an), seul un quart sont des femmes. Au contraire, elles représentent plus de la moitié de ceux gagnant moins de 50 000 dollars par mois. 
+On constate tout de même que la répartition des salaires entre les deux genres n'est pas la même. Parmi les populations les plus favorisés (plus de 50 000 dollars par an), seul un quart sont des femmes. Au contraire, elles représentent plus de la moitié de ceux gagnant moins de 50 000 dollars par mois. 
+
+# taux d'emploi par genre
+taux_emploi <- aggregate(full_or_part_time_employment_stat ~ sex, data = major, FUN = function(x) {
+    taux <- sum(x == "Full-time schedules" |
+        x == "PT for econ reasons usually PT" |
+        x == "PT for econ reasons usually FT" |
+        x == "PT for non-econ reasons usually FT") / length(x)
+})
+
+ggplot(data = taux_emploi) +
+    geom_bar(aes(x = sex, y = full_or_part_time_employment_stat), stat = "identity", fill = "Purple", width = 0.5) +
+    xlab("Genre") +
+    ylab("Taux d'emploi (%)") +
+    ggtitle("Taux d'emploi chez les hommes et les femmes")
+
 
 Il faudra donc essayer de trouver les causes de cette inégalité de revenus ; on s'intéressera dans la suite à l'impact de l'éducation, mais aussi du choix du secteur d'activité, qui pourraient apporter des pistes d'explications.
 
