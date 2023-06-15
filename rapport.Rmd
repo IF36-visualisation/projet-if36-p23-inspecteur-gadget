@@ -251,7 +251,7 @@ Si on analyse néanmoins les résultats, on constate qu'une majeure partie des s
 
 On constate tout de même que la répartition des salaires entre les deux genres n'est pas la même. Parmi les populations les plus favorisés (plus de 50 000 dollars par an), seul un quart sont des femmes. Au contraire, elles représentent plus de la moitié de ceux gagnant moins de 50 000 dollars par mois. 
 
-### taux d'emploi par genre
+### Taux d'emploi par genre
 
 ```{r incomesexgender}
 taux_emploi <- aggregate(full_or_part_time_employment_stat ~ sex, data = major, FUN = function(x) {
@@ -295,7 +295,7 @@ Cet écart de revenu entre les hommes et les femmes peut ainsi s'expliquer de pl
 # insertion autre graph
 ```
 ###Le genre du travail
-Deuxièmement, l'éducation est très souvent genrée. De ce fait, les femmes sont souvent orientées vers des filières qui leur "correspondent" (stéréotype de genres) comme par exemple les métiers du "care" - car les femmes sont vues comme naturellement douées pour s'occuper des autres. Or ces filières genrées avec des métiers identifiés comme féminins sont les filières peu rémunératrices. 
+Deuxièmement, l'éducation est très souvent genrée. De ce fait, les femmes sont souvent orientées vers des filières qui leur "correspondent" (stéréotype de genres) comme par exemple les métiers du "care" - car les femmes sont vues comme naturellement douées pour s'occuper des autres. Or ces filières genrées avec des métiers identifiés comme féminins sont les filières peu rémunératrices. (Duru Bellat, Kieffer, Marry, 2001, *La dynamique des scolarités des filles*. 
 
 ```{r industry-genre}
 industry <- data %>%
@@ -383,9 +383,9 @@ ggplot(education, aes(x = major_industry_recode, y = wage_per_hour, fill = major
     )
 ```
 
-On constate en effet que pour deux des trois secteurs, les salaires moyens des femmes sont effectivement plus faibles que ceux des hommes. Cette différence est très visible sur le salaire mensuel, ce qui suppose donc une différence importante de salaire en fin de mois. En supposant que les hommes et les femmes travaillent le même nombre d’heures. 
+On constate en effet que pour deux des trois secteurs, les salaires moyens des femmes sont effectivement plus faibles que ceux des hommes. Cette différence est très visible sur le salaire mensuel. En supposant que les hommes et les femmes travaillent le même nombre d’heures. 
 
-### type d'activité en fonction du genre
+### Type d'activité en fonction du genre
 
 ```{r typeactivitesgenre}
 employment_stat <- data %>%
@@ -403,7 +403,7 @@ ggplot(employment_stat, aes(x = full_or_part_time_employment_stat, fill = sex)) 
     labs(title = "Type d'activité en fonction du genre", x = "Type d'activité", y = "Nombre de personnes")
  ```
     
-Or, comme on le constate ici, les femmes ont tendance à plus être en temps partiel que les hommes. En effet, ces dernières doivent généralement s'occuper des enfants et du travail domestique en plus de leur travail rémunéré. De plus, en reprenant nos précédentes explications (salaire mensuel inférieur), il est plus rationnel que cela soit la femme qui renonce à une partie du travail rémunéré car le coût d'opportunité sera moindre (expliqué par Gary Becker, 1981, *A Treaty on the Family*).
+Or, comme on le constate ici, les femmes ont tendance à plus être en temps partiel que les hommes. En effet, ces dernières doivent généralement s'occuper des enfants et du travail domestique en plus de leur travail rémunéré. Cela explique aussi en partie leur choix de s'orienter vers des métiers plus pratiques (Duru-Bellat, 1990, *L'Ecole des filles*).  De plus, en reprenant nos précédentes explications (salaire mensuel inférieur), il est plus rationnel que cela soit la femme qui renonce à une partie du travail rémunéré car le coût d'opportunité sera moindre (expliqué par Gary Becker, 1981, *A Treaty on the Family*).
 
 ### Femmes et temps de travail (rémunéré)
 ```{r employment-time}
@@ -422,7 +422,7 @@ ggplot(employment_stat, aes(x = full_or_part_time_employment_stat, fill = sex)) 
     labs(title = "Type d'activité en fonction du genre", x = "Type d'activité", y = "Nombre de personnes")
 ```
 
-Ce coût d’opportunité peut aussi expliquer une auto-censure des femmes dans leurs études. En effet, pourquoi investir (avec du temps et surtout de l’argent) alors qu’on gagnera moins que son mari ? 
+Ce coût d’opportunité peut aussi expliquer une auto-censure des femmes dans leurs études. En effet, pourquoi investir (avec du temps et surtout de l’argent) dans l'éducation alors qu’on gagnera moins que son mari ? 
 
 ###Femmes et niveau scolaire
 On constate que la part de femme en fonction du niveau d’étude va en diminuant, et qu’une large majorité des personnes qui ont arrêté leurs études au 1st grade (école élémentaire) sont… des femmes. Au vu des prix de l'éducation aux États-Unis, les parents peuvent aussi choisir d'éduquer et d'investir sur un enfant en particulier, en général un garçon, au détriment du reste de sa fratrie.
@@ -445,7 +445,7 @@ ggplot(education, aes(y = education, fill = sex)) +
 geom_vline(xintercept = 0.5, linetype = "dashed", color = "yellow")
 ```
 
-Pour ce qui est de la corrélation entre diplôme et salaire par heure, on constate que le salaire croit en fonction du niveau du diplôme. Or, comme nous l’avons dit précédemment, les femmes sont moins enclines à continuer leurs études du fait d’un coût d’opportunité plus élevé que leurs homologues masculins. C’est en quelques sorte le serpent qui se mord la queue.
+Pour ce qui est de la corrélation entre diplôme et salaire par mensuel, on constate que le salaire croit en fonction du niveau du diplôme. Or, comme nous l’avons dit précédemment, les femmes sont moins enclines à continuer leurs études du fait d’un coût d’opportunité plus élevé que leurs homologues masculins. C’est en quelques sorte le serpent qui se mord la queue.
 
 ```{r wage_education}
 ggplot(education, aes(x = wage_per_hour, y = education)) +
@@ -618,10 +618,10 @@ ggplot(education, aes(y = education, fill = race)) +
 ```
 
 On constate ici que jusqu’au High school diploma les personnes racisées sont autant présentes que les personnes caucasiennes, voir même sont majoritaires dans certains cas. Cependant cette tendance s’inverse pour les diplômes les plus valorisés (et les plus longs à obtenir) que sont les prof school degree, master degree ou bien encore phD. Or nous avons vu tout à l’heure que ces diplômes étaient les plus rémunérateurs. De plus, certaines populations comme les amérindiens ne sont pas représentés dans les niveaux de diplomes les plus élevés. 
+La présence des personnes noires dans les études allant de master à doctorat s'explique principalement par la mise en place de quotats par les universités (discrimination positive) dès les années 1960. De plus, la minorité afro-américaine est la plus grosse minorité des Etats-Unis, ce qui signifie qu'elle a un poids électoral indéniable. Ce n'est pas le cas des populations natives qui n'ont pas pu bénéficier de cette discrimination positive. 
 
 
 ## Etats-Unis et migrations
-
 ### La Sunbelt
 ```{r sunbelt}
 wage <- data %>%
