@@ -274,7 +274,7 @@ ggplot(income_percent, aes(x = income_level, y = percentage, fill = race)) +
   )
 ```
 
-Avec ce graphisme, on constate qu'il existe bien des inégalités raciales au niveau du salaire. Alors que les populations caucasiennes sont, en proportion, plus représentés dans les salaires supérieurs à 50 000 dollars mensuels, c'est l'inverse pour les populations noires. Leur proportion est réduite en effet presque de moitié.
+Avec ce graphique, on constate qu'il existe bien des inégalités raciales au niveau du salaire. Alors que les populations caucasiennes sont, en proportion, plus représentés dans les salaires supérieurs à 50 000 dollars mensuels, c'est l'inverse pour les populations noires. Leur proportion est réduite en effet presque de moitié.
 
 De l'autre côté, les populations en provenance d'Asie sont un peu mieux représentées dans les salaires à +50000 dollars que dans les salaires à -50000 dollars. 
 
@@ -328,7 +328,7 @@ industry2 <- data %>%
 
 ggplot(industry2, aes(y = major_industry_recode, fill = race)) +
   geom_bar() +
-  labs(x = "Nombre", y = "Type de branche", fill = "Race")
+  labs(x = "Nombre", y = "Type de branche", fill = "Ethnie")
 ```
 
 
