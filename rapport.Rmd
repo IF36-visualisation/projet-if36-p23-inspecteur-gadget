@@ -508,7 +508,7 @@ La forte présence de population née en Allemagne pourrait, elle, être expliqu
 
 Nous allons nous intéresser à l'insertion des personnes issues de l'immigration. 
 
-```{r insertion_race}
+```{r insertion_race, fig.width = 9}
 average_wph_by_age_country <-
     aggregate(wage_per_hour ~ age + country_of_birth_self + country_of_birth_father + country_of_birth_mother, data = wage, FUN = mean)
 
