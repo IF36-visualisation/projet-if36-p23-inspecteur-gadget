@@ -267,9 +267,9 @@ ggplot(data = taux_emploi) +
     ylab("Taux d'emploi (%)") +
     ggtitle("Taux d'emploi chez les hommes et les femmes")
  ```
+Pour expliquer cette différence, on constate d'abord que le taux d'emploi des femmes est inférieur à celui des hommes. Cela pourrait en partie expliquer l'écart salarial remarqué plus haut. 
 
-
-Il faudra donc essayer de trouver les causes de cette inégalité de revenus ; on s'intéressera dans la suite à l'impact de l'éducation, mais aussi du choix du secteur d'activité, qui pourraient apporter des pistes d'explications.
+Néanmoins cette première explication n'est pas entièrement suffissante, et nous tenterons donc de trouver les causes de cette inégalité de revenus ; on s'intéressera dans la suite à l'impact de l'éducation, mais aussi du choix du secteur d'activité, qui pourraient apporter des pistes d'explications.
 
 ```{r wagesex}
  wage <- data %>%
