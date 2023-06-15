@@ -655,7 +655,7 @@ Cet aspect politique a pu entrainer des migrations des personnes racisées, qui,
 
 La deuxième explication vient du fait que les Etats de la Sunbelt, dans les années 90, avait pour activité économique principale l'agriculture qui génère de moindre revenus. A cela s'ajoutait le tourisme et la pêche. L'industrie automobile venait de faire son apparition dans ces Etats, tout comme le domaine des hautes technologies qui n'était qu'à ses balbutiements. 
 
-###Pays de naissance
+### Pays de naissance
 
 ```{r birthcountry, fig.height=8}
 ggplot(data, aes(y = country_of_birth_self)) +
