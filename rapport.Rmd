@@ -274,7 +274,7 @@ ggplot(income_percent, aes(x = income_level, y = percentage, fill = race)) +
   )
 ```
 
-Avec ce graphique, on constate qu'il existe bien des inégalités raciales au niveau du salaire. Alors que les populations caucasiennes sont, en proportion, plus représentés dans les salaires supérieurs à 50 000 dollars mensuels, c'est l'inverse pour les populations noires. Leur proportion est réduite en effet presque de moitié.
+Avec ce graphique, on constate qu'il existe bien des inégalités raciales au niveau du salaire. Alors que les populations caucasiennes sont, en proportion, plus représentés dans les salaires supérieurs à 50 000 dollars mensuels, c'est l'inverse pour les populations noires et latinos/hispaniques. En effet, leur proportion triple dans la tranche des -50000$ annuels par rapport à celle des +50000$ annuels. Ces deux types de populations sont celles qui semblent être les plus touchées par les inégalités de revenus. 
 
 De l'autre côté, les populations en provenance d'Asie sont un peu mieux représentées dans les salaires à +50000 dollars que dans les salaires à -50000 dollars. 
 
@@ -301,11 +301,13 @@ ggplot(data = average_income_by_age_race, aes(
   )
 ```
 
-Plusieurs phénomènes apparaissent sur ce graphique. Nous allons tout d'abord nous intéresser à l'allure globale des courbes. Nous pouvons en effet noter que les courbes sont concaves. Il semblerait ainsi que le salaire mensuel croit jusqu'à un certain âge puis décroit. Cette décroissance peut être analysée comme une anomalie car, dans de nombreuses études, il est montré que le salaire mensuel croit jusqu'à l'âge de la retraite, ce qui n'est pas le cas ici. Il semblerait cependant que nous soyons ici face à un effet de génération. En effet si l'on se renseigne sur l'évolution du salaire moyen aux États-Unis, nous apprenons que le salaire mensuel moyen a progressivement évolué pendant la Seconde Guerre Mondiale avant de connaître une importante hausse dans les années 60. Les personnes entrées dans l'emploi dans ces années là correspondent, de manière générale, aux personnes nées entre 1940 et 1955. Ces personnes sont donc agées, lors de l'enquête, de 40 à 55 ans. Ces âges correspondent aux points hauts de trois de courbes. Ces personnes ont bénéficié d'un salaire mensuel de départ plus important que leurs prédécesseurs qui n'a cessé de progresser avec l'expérience. 
+Plusieurs phénomènes apparaissent sur ce graphique. Nous allons tout d'abord nous intéresser à l'allure globale des courbes. Nous pouvons en effet noter que les courbes sont concaves. Il semblerait ainsi que le salaire mensuel croit jusqu'à un certain âge puis décroit. Cette décroissance peut être analysée comme une anomalie car, dans de nombreuses études, il est montré que le salaire mensuel croit jusqu'à l'âge de la retraite, ce qui n'est pas le cas ici. Il semblerait cependant que nous soyons ici face à un effet de génération. En effet si l'on se renseigne sur l'évolution du salaire moyen aux États-Unis, nous apprenons que le salaire mensuel moyen a progressivement évolué pendant la Seconde Guerre Mondiale avant de connaître une importante hausse dans les années 60. Les personnes entrées dans l'emploi dans ces années là correspondent, de manière générale, aux personnes nées entre 1940 et 1955. Ces personnes sont donc agées, lors de l'enquête, de 40 à 55 ans. Ces âges correspondent aux points hauts de quatre courbes. Ces personnes ont bénéficié d'un salaire mensuel de départ plus important que leurs prédécesseurs qui n'a cessé de progresser avec l'expérience. 
 
 Ce phénomène d'augmentation du salaire avec l'âge est visible sur la partie montante de la courbe concave. En effet, le salaire augmente souvent avec l'expérience. 
 
-Nous allons maintenant nous intéresser aux différences entre les ethnies. Tout d'abord nous constatons que le salaire mensuel moyen maximum des personnes Afro-Américaines est plus faible que celui des autres ethnies. Cela peut s'expliquer par un racisme encore bien ancré dans la société américaine des années 90 qui se traduit par une discrimination à l'emploi. De plus, nous pouvons supposer que les personnes Afro-américaines sont plus représentées dans des secteurs peu rémunérateurs. 
+Nous allons maintenant nous intéresser aux différences entre les ethnies. Tout d'abord nous constatons que le salaire mensuel moyen maximum des personnes Afro-Américaines est plus faible que celui des autres ethnies. Cela peut s'expliquer par un racisme encore bien ancré dans la société américaine des années 90 qui se traduit par une discrimination à l'emploi. De même, les personnes latinos/hispaniques ont des revenus peu supérieurs à ceux des personnes Afro-Américaines. L'important flux migratoire venant de l'Amérique Centrale et du Sud a fait paraître ces individus comme des indésirables pour de nombreux Americains blancs qui sont plus fréquemment à la tête d'entreprises. De plus, nous pouvons supposer que les personnes Afro-américaines et latinos/hispaniques sont plus représentées dans des secteurs peu rémunérateurs.
+
+Pour ce qui est du salaire moyen des populations amérindiennes, leur faible représentation dans notre jeu de données peut amener à des valeurs faussées ou peu représentatives de la réalité. 
 
 Néanmoins les population asiatiques ont le plus haut salaire mensuel moyen, dépassant ainsi le seuil des 1250 dollars mensuels après 40 ans. Cette différence pourrait s'expliquer par plusieurs facteurs. Tout d'abord une immigration sélective : seules les populations au plus haut capital social, culturel et économique ont eu les moyens d'immigrer aux États-Unis. La tontine, sorte d'épargne communautaire aidant à financer les projets des membres, est aussi bien développé. On peut aussi supposer que ce haut salaire est corrélé à un plus fort taux d'études, dans des secteurs mieux rémunérés. C'est ce que nous allons vérifier.
 
@@ -369,7 +371,7 @@ ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
     x = "Salaire mensuel moyen", y = "Type de branche")  
 ```
 
-Nous pouvons constater que les branches où travaillent majoritairement les personnes racisées (retail trade, public administration, manufacturing non-durable and durable goods, education) ne sont pas les branches les plus rémunératrices.
+Nous pouvons constater que les branches où travaillent majoritairement les personnes racisées qui subissent le plus les inégalités de salaire ne sont pas les branches les plus rémunératrices (retail trade, public administration, manufacturing non-durable and durable goods, education).
 
 Nous allons alors nous intéresser à la variance des salaires dans ces branches. 
 
@@ -382,7 +384,7 @@ ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
   )
 ```
 
-Nous pouvons remarquer ici, sur les branches qui nous intéressent (retail trade, public administration, manufacturing non-durable and durable goods, education) les salaires médians sont loin d’être les plus conséquents. 
+Nous pouvons remarquer ici, sur les branches qui nous intéressent (retail trade, public administration, manufacturing non-durable and durable goods, education) les salaires médians sont loin d’être les plus conséquents, avec des points isolés qui montrent une variance importante entre les quelques gros salaires et le reste. Nous pouvons supposer ici que les personnes afro-américaines ou latinos/hispaniques se situent sous le salaire médian. 
 
 Maintenant que nous avons vu que les secteurs d’activités étaient répartis de manière inégales entre population racisée et non racisée, nous allons pouvoir nous concentrer sur la position des personnes dans leur travail. 
 
@@ -409,10 +411,11 @@ ggplot(occupation, aes(y = major_occupation_recode, fill = race)) +
   labs(x = "Nombre", y = "Type d'activité", fill = "Ethnie")
 ```
 
-Pour comprendre l'écart de salaire moyen que nous avions pu constater plus tôt, entre les populations noires et asiatiques par exemple, il peut être intéressant d'analyser leur domaine d'activité. Les populations asiatiques sont en effet sureprésentées dans la catégorie "spécialité professionnel". Même si le terme reste flou, on peut comprendre que c'est un domaine d'expertise bien précis, qui demande des connaissances bien précises - et qui est sûrement mieux rémunérés que les autres emplois.
+Pour comprendre l'écart de salaire moyen que nous avions pu constater plus tôt, entre les populations noires et asiatiques par exemple, il peut être intéressant d'analyser leur domaine d'activité. Les populations asiatiques sont en effet sureprésentées dans la catégorie "spécialité professionnel". Même si le terme reste flou, on peut comprendre que c'est un domaine d'expertise bien précis, qui demande des connaissances bien précises - et qui est sûrement mieux rémunéré que les autres emplois.
 
 Les populations noires sont elles plutôt représentés dans le support administratif, domaine qui paye peut-être moins bien.
 Le secteur d'activité peut donc avoir un rôle déterminant sur les perspectives de salaire, et est l'une des causes des différences salariales entre ethnies.
+Les populations latinos hispaniques sont elles plus présentes dans le domaine administratif, dans les emplois de supervision dans les usines (contre-maîtres) mais aussi dans la mécanique de précision. Comme nous l'avons dit plus haut, le domaine administratif, même aux Etats-Unis, n'est pas celui qui paie le mieux. De même, les contre-maîtres dans l'industrie américaine ne sont pas des postes à forte valeur ajoutée, ainsi les salaires restent faibles. Enfin, la mécanique de précision est un domaine peu valorisé d'un point de vue salarial. 
 
 Nous allons pouvoir nous intéresser à l’aspect scolaire des inégalités entre les ethnies. 
 
@@ -425,7 +428,7 @@ ggplot(education, aes(y = education, fill = race)) +
 ```
 
 On constate ici que jusqu’au High school diploma les personnes racisées sont autant présentes que les personnes caucasiennes, voir même sont majoritaires dans certains cas. Cependant cette tendance s’inverse pour les diplômes les plus valorisés (et les plus longs à obtenir) que sont les prof school degree, master degree ou bien encore phD. Or nous avons vu tout à l’heure que ces diplômes étaient les plus rémunérateurs. De plus, certaines populations comme les amérindiens ne sont pas représentés dans les niveaux de diplomes les plus élevés. 
-La présence des personnes noires dans les études allant de master à doctorat s'explique principalement par la mise en place de quotats par les universités (discrimination positive) dès les années 1960. De plus, la minorité afro-américaine est la plus grosse minorité des Etats-Unis, ce qui signifie qu'elle a un poids électoral indéniable. De même pour les populations hispaniques et latinos. Cependant ce n'est pas le cas des populations natives qui n'ont pas pu bénéficier de cette discrimination positive. 
+La présence des personnes noires dans les études allant de master à doctorat s'explique principalement par la mise en place de quotas par les universités (discrimination positive) dès les années 1960. De plus, la minorité afro-américaine est la plus grosse minorité des Etats-Unis, ce qui signifie qu'elle a un poids électoral indéniable. De même pour les populations hispaniques et latinos, qui bénéficient ainsi elles aussi des systèmes de quotas. Cependant ce n'est pas le cas des populations natives qui n'ont pas été intégrées au système de discrimination positive dans le domaine éducatif américain. 
 
 
 ## Etats-Unis et migrations
@@ -453,9 +456,9 @@ ggplot() +
 ```
 
 Nous pouvons constater que les personnes ayant habités dans la SunBelt ont un salaire moyen inférieur à celui de l'ensemble des Américains. Cela peut s'expliquer par plusieurs choses. D'une part, notre jeu de données ne nous permet pas de connaître l'Etat de résidence de chaque personne intérrogée. En revanche, nous connaissons leur Etat précédent de résidence. Ainsi nous nous sommes focalisés sur les personnes ayant habitées dans la Sunbelt pour faire ce graphique. Or la Sunbelt est une terre qui a un passé esclavagiste. Encore aujourd'hui, 158ans après la fin de la guerre de Secession, ces racines sont encore présentes. Les Républicains sont relativement bien implantés dans ces Etats, encore de nos jours. 
-Cet aspect politique a pu entrainer des migrations des personnes racisées, qui, nous l'avons dit tout à l'heure, ont un salaire moins élevés que leurs homologues blancs.
+Ces aspects politique et culturel ont pu entrainer des migrations des personnes racisées qui apparaissent comme seules personnes reliées à un Etat de la Sunbelt dans notre jeu de données (du fait de l'absence de l'Etat de résidence). 
 
-La deuxième explication vient du fait que les Etats de la Sunbelt, dans les années 90, avait pour activité économique principale l'agriculture qui génère de moindre revenus. A cela s'ajoutait le tourisme et la pêche. L'industrie automobile venait de faire son apparition dans ces Etats, tout comme le domaine des hautes technologies qui n'était qu'à ses balbutiements. 
+La deuxième explication vient du fait que les Etats de la Sunbelt, dans les années 90, avaient pour activité économique principale l'agriculture qui génère de moindres revenus. A cela s'ajoutait le tourisme et la pêche, qui emploient des personnes avec des salaires relativement faibles.  L'industrie automobile venait de faire son apparition dans ces Etats, tout comme le domaine des hautes technologies qui n'était qu'à son balbutiement. 
 
 ### Pays de naissance
 
@@ -470,9 +473,9 @@ ggplot(data, aes(y = country_of_birth_self)) +
 
 Les pays de naissance des personnes interrogées sont donc variés, avec une large majorité de personnes nées aux Etats-Unis.
 
-Quelques pays comme le Mexique semblent néanmoins se distinguer du fait de sa proximité avec les États-Unis (frontière commune). Il convient aussi de noter que le Mexique traverse une grave crise économique qui débute fin 1994. Cette information peut être mise en perspective avec les débats des années 2010 sur la construction d'un mur à la frontière entre les États-Unis et le Mexique pour endiguer le flux migratoire venant du Mexique mais aussi de l'Amérique latine.  
+Quelques pays comme le Mexique semblent néanmoins se distinguer du fait de sa proximité avec les États-Unis (frontière commune). Il convient aussi de noter que le Mexique traverse une grave crise économique qui débute fin 1994. Cette information peut être mise en perspective avec les débats des années 2010 sur la construction d'un mur à la frontière entre les États-Unis et le Mexique pour endiguer le flux migratoire venant du Mexique et plus généralement de l'Amérique latine.  
 
-Pour mieux appréhender la pluralité des pays d'origine de ces immigrés, voici donc un autre graphique, qui exclut cette fois-ci les États-Unis.
+Pour mieux appréhender la pluralité des pays d'origine des immigrés, voici donc un autre graphique, qui exclut cette fois-ci les États-Unis.
 
 ### Pays de naissance - Hors États-Unis
 
@@ -494,7 +497,7 @@ Au niveau des proportions, le Mexique s'impose assez largement comme 1er pays de
 
 Le rayonnement culturel des États-Unis, accentué par les politiques mises en place durant la Guerre Froide, a fait apparaître le pays comme un nouvel Eldorado, et a attiré les populations du monde entier en quête d'un avenir meilleur.
 
-La forte présence de population née en Allemagne pourrait, elle, être expliquée par une émigration durant et post-2nde guerre mondiale, notamment chez les populations de confession juive. 
+La forte présence de population née en Allemagne pourrait, elle, être expliquée par une émigration durant la 2nde Guerre mondiale, notamment chez les populations de confession juive. A cela s'ajoutent les Allemands souhaitant prendre un nouveau départ au crépuscule de la 2nd Guerre mondiale et à l'aube de la Guerre froide qui divise leur pays. 
 
 ### Immigration et génération
 
@@ -522,7 +525,7 @@ ggplot() +
     )
 ```
     
-Nous remarquons ici que les personnes qui viennent d'immigrer aux Etats-Unis ont un salaire inférieur aux personnes dont au moins un des deux parents a immigré aux Etats-Unis. Ainsi on constate que l'intégration des personnes issues de pays autres que les Etats-Unis se fait dans le temps et sur plusieurs générations. "L'American Dream" prendre plus de temps que prévu. 
+Nous remarquons ici que les personnes qui viennent d'immigrer aux Etats-Unis ont un salaire inférieur aux personnes dont au moins un des deux parents a immigré aux Etats-Unis. Ainsi on constate que l'intégration des personnes issues de pays autres que les Etats-Unis se fait dans le temps et sur plusieurs générations. Le temps de vie dans le pays influence donc les inégalités. "L'American Dream" n'est pas à effet immédiat. 
 
 ### Carte des États-Unis représentant les Etats précédents de résidence
 
