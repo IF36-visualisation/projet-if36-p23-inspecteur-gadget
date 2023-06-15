@@ -698,11 +698,47 @@ Ces suppositions sont évidemment insuffisantes pour expliquer ce décalage, mai
 Après avoir étudié le profil de notre échantillon et l'avoir mis en perspective avec les données démographiques de l'époque, il nous a semblé pertinent de nous interroger sur les dicriminations pouvant exister aux États-Unis, notamment celles basées sur l'ethnie ou le sexe.
 Les résultats sont sans équivoque ; ces facteurs ont une importance sur l'éducation, le choix de domaine d'activité, et le salaire.
 
-Il est néanmoins intéressant de voir que cetaines minorités ethniques ont malgré tout réussi à optenir de hauts salaires moyens, et à accumuler du capital économique, voire scolaire. Au delà de l'ethnie, il pourrait donc y avoir un vrai enjeu à soutenir les populations les plus défavorisés en leur permettant l'accès à l'éducation, qui elle-même peut aider à obtenir de meilleurs salaires.
+Il est néanmoins intéressant de voir que cetaines minorités ethniques ont malgré tout réussi à optenir de hauts salaires moyens, et à accumuler du capital économique, voire scolaire. Au delà de l'ethnie, il pourrait donc y avoir un vrai enjeu à soutenir les populations les plus défavorisées en leur permettant l'accès à l'éducation, qui elle-même peut aider à obtenir de meilleurs salaires.
 
 Malheureusement, presque 30 ans plus tard, les choses ne semblent pas avoir énormément évoluées. Les populations noires sont toujours les plus touchés par la pauvreté, et ont un revenu médian bien inférieur à d'autres groupes ethniques (caucasiens, asiatiques).
 
-La situation prends même un tournant innatendu avec l'apparition des nouvelles technologies, comme l'intelligence artificielle. Ce jeu de données par exemple, à été utilisé à des fins de machine learning. En analysant ces données, l'IA pourrait donc considérer que ces différences ethniques sont une norme sociale qu'il convient d'appliquer. Il y a donc un vrai risque qu'elle reproduise et accentue ces discriminations. Nous devons donc impérativement prendre conscience de ces nouveaux enjeux, afin de pas accentuer un cercle vicieux qui viserait à perpétuer ces discriminations.
+De plus, il convient de remarquer que les inégalités de genre et de races non seulement s'accumulent, mais elles peuvent aussi se multiplier. Les femmes noires sont par exemple sujettes à plus d'inégalités, d'une part parce que ce sont des femmes, et d'autre part parce qu'elles sont noires. En témoigne cette courbe représentant les salaires mensuels selon l'âge, le genre et l'ethnie. µ
+
+```{r intersectionnalité}
+wage_nozero_young <- data %>%
+    filter(wage_per_hour != 0) %>%
+    filter(age <= 67)
+
+avg_wph_last <-
+    aggregate(wage_per_hour ~ age + sex + race, data = wage_nozero_young, FUN = mean)
+
+white_men <- avg_wph_last %>%
+    filter(race == "White" & sex == "Male")
+
+white_women <- avg_wph_last %>%
+    filter(race == "White" & sex == "Female")
+
+black_men <- avg_wph_last %>%
+    filter(race == "Black" & sex == "Male")
+
+black_women <- avg_wph_last %>%
+    filter(race == "Black" & sex == "Female")
+
+ggplot() +
+    geom_smooth(data = white_men, se = FALSE, aes(x = age, y = wage_per_hour, color = "Hommes caucasiens")) +
+    geom_smooth(data = white_women, se = FALSE, aes(x = age, y = wage_per_hour, color = "Femmes caucasiennes")) +
+    geom_smooth(data = black_men, se = FALSE, aes(x = age, y = wage_per_hour, color = "Hommes noirs")) +
+    geom_smooth(data = black_women, se = FALSE, aes(x = age, y = wage_per_hour, color = "Femmes noires")) +
+    labs(
+        title = "Salaire mensuel moyen des différentes ethnies en fonction de l'âge",
+        x = "Âge", y = "Salaire mensuel moyen",
+        color = "Ethnies"
+    ) +
+    theme(text = element_text(size = 20))
+  ```
+
+
+La situation prend même un tournant innatendu avec l'apparition des nouvelles technologies, comme l'intelligence artificielle. Ce jeu de données par exemple, a été utilisé à des fins de machine learning. En analysant ces données, l'IA pourrait donc considérer que ces différences ethniques sont une norme sociale qu'il convient d'appliquer. Il y a donc un vrai risque qu'elle reproduise et accentue ces discriminations. Nous devons donc impérativement prendre conscience de ces nouveaux enjeux, afin de pas accentuer un cercle vicieux qui viserait à perpétuer ces discriminations. Pour conclure et pour expliciter cela, je reprendrai une citation de Giuseppe Tomasi di Lampedusa qui s'adapte bien aux limites de cette innovation qu'est l'intelligence artificielle : "Se vogliamo che tutto rimanga come è, bisogna che tutto cambi" / "Si nous voulons que tout reste pareil, il faut que tout change".
  
 
 
