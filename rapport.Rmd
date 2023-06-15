@@ -598,6 +598,9 @@ ggplot(occupation, aes(y = major_occupation_recode, fill = race)) +
   labs(x = "Nombre", y = "Type de branche")
 ```
 
+Pour une meilleure lisibilité, on analyse ce même schéma, mais sans les populations caucasiennes : 
+
+
 ```{r occupation_race}
 occupation <- data %>%
   filter(major_occupation_recode != "Not in universe or children" & major_occupation_recode != "Not in universe" & major_occupation_recode != "Other service"  &  major_occupation_recode != "Armed Forces" & race != "White")
@@ -614,7 +617,7 @@ Le secteur d'activité peut donc avoir un rôle déterminant sur les perspective
 
 Nous allons pouvoir nous intéresser à l’aspect scolaire des inégalités entre les ethnies. 
 
-###Ethnie et capital scolaire
+### Ethnie et capital scolaire
 
 ```{r education_race}
 ggplot(education, aes(y = education, fill = race)) +
