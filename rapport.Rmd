@@ -390,7 +390,7 @@ Maintenant que nous avons vu que les secteurs d’activités étaient répartis 
 
 ### Ethnie et type d'activité
 
-```{r occupation_race_W, fig.width = 5}
+```{r occupation_race_W, fig.width = 9}
 occupation <- data %>%
   filter(major_occupation_recode != "Not in universe or children" & major_occupation_recode != "Not in universe" & major_occupation_recode != "Other service"  &  major_occupation_recode != "Armed Forces")
 
@@ -402,7 +402,7 @@ ggplot(occupation, aes(y = major_occupation_recode, fill = race)) +
 Pour une meilleure lisibilité, on analyse ce même schéma, mais sans les populations caucasiennes : 
 
 
-```{r occupation_race, fig.width = 5}
+```{r occupation_race, fig.width = 9}
 occupation <- data %>%
   filter(major_occupation_recode != "Not in universe or children" & major_occupation_recode != "Not in universe" & major_occupation_recode != "Other service"  &  major_occupation_recode != "Armed Forces" & race != "White")
 
@@ -421,10 +421,10 @@ Nous allons pouvoir nous intéresser à l’aspect scolaire des inégalités ent
 
 ### Ethnie et capital scolaire
 
-```{r education_race}
+```{r education_race, fig.width = 10}
 ggplot(education, aes(y = education, fill = race)) +
     geom_bar(position = "fill") +
-    labs(fill = "Ethnie")
+    labs(fill = "Ethnie", x = "Nombre=)
 ```
 
 On constate ici que jusqu’au High school diploma les personnes racisées sont autant présentes que les personnes caucasiennes, voir même sont majoritaires dans certains cas. Cependant cette tendance s’inverse pour les diplômes les plus valorisés (et les plus longs à obtenir) que sont les prof school degree, master degree ou bien encore phD. Or nous avons vu tout à l’heure que ces diplômes étaient les plus rémunérateurs. De plus, certaines populations comme les amérindiens ne sont pas représentés dans les niveaux de diplomes les plus élevés. 
