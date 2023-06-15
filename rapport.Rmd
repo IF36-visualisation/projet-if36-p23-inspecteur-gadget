@@ -251,7 +251,9 @@ Si on analyse néanmoins les résultats, on constate qu'une majeure partie des s
 
 On constate tout de même que la répartition des salaires entre les deux genres n'est pas la même. Parmi les populations les plus favorisés (plus de 50 000 dollars par an), seul un quart sont des femmes. Au contraire, elles représentent plus de la moitié de ceux gagnant moins de 50 000 dollars par mois. 
 
-# taux d'emploi par genre
+### taux d'emploi par genre
+
+```{r incomesexgender}
 taux_emploi <- aggregate(full_or_part_time_employment_stat ~ sex, data = major, FUN = function(x) {
     taux <- sum(x == "Full-time schedules" |
         x == "PT for econ reasons usually PT" |
@@ -264,6 +266,7 @@ ggplot(data = taux_emploi) +
     xlab("Genre") +
     ylab("Taux d'emploi (%)") +
     ggtitle("Taux d'emploi chez les hommes et les femmes")
+ ```
 
 
 Il faudra donc essayer de trouver les causes de cette inégalité de revenus ; on s'intéressera dans la suite à l'impact de l'éducation, mais aussi du choix du secteur d'activité, qui pourraient apporter des pistes d'explications.
@@ -381,9 +384,8 @@ ggplot(education, aes(x = major_industry_recode, y = wage_per_hour, fill = major
 
 On constate en effet que pour deux des trois secteurs, les salaires moyens des femmes sont effectivement plus faibles que ceux des hommes. Cette différence est très visible sur le salaire mensuel, ce qui suppose donc une différence importante de salaire en fin de mois. En supposant que les hommes et les femmes travaillent le même nombre d’heures. 
 
-### Femmes et temps de travail (rémunéré)
+### type d'activité en fonction du genre
 
-# type d'activité en fonction du genre
 employment_stat <- data %>%
     filter(full_or_part_time_employment_stat != "Not in labor force" &
         full_or_part_time_employment_stat != "Unemployed full-time" &
@@ -400,6 +402,7 @@ ggplot(employment_stat, aes(x = full_or_part_time_employment_stat, fill = sex)) 
     
 Or, comme on le constate ici, les femmes ont tendance à plus être en temps partiel que les hommes. En effet, ces dernières doivent généralement s'occuper des enfants et du travail domestique en plus de leur travail rémunéré. De plus, en reprenant nos précédentes explications (salaire mensuel inférieur), il est plus rationnel que cela soit la femme qui renonce à une partie du travail rémunéré car le coût d'opportunité sera moindre (expliqué par Gary Becker, 1981, *A Treaty on the Family*).
 
+### Femmes et temps de travail (rémunéré)
 ```{r employment-time}
 employment_stat <- data %>%
     filter(full_or_part_time_employment_stat != "Not in labor force" &
