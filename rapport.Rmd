@@ -235,221 +235,9 @@ Il est tout de même important de noter que les données datent des années 90 e
 
 Pour commencer, comme ce jeu de données est d'abord un recencement de la population américaine, il nous semble important d'en comprendre les principales caractéristiques (âge, sexe, origine) afin de dresser un portrait de l'américain moyen en 1994.
 
-## Inégalités de genre
-### Niveau de revenu en fonction du genre
-
-```{r incomesex}
-ggplot(data, aes(x = income_level, fill = sex)) +
-    geom_bar(position = "fill") +
-    labs(x = "Niveau de revenu", y = "Nombre d'individus", fill = "Genre")
-```
-
-Les catégories de revenu sont divisées en deux, soit moins de 50 000 dollars par an, soit plus que 50 000 dollars par an, puisque le jeu de données ne comporte pas de données plus précises.
-Le revenu moyen d'un foyer américain en 1990 était en effet de 50 000 dollars annuel, ce qui rend le choix de cette valeur pertinent pour avoir un rapide aperçu de la situation financière des personnes interrogés dans le cadre de cette étude. On suppose donc que c'est pour cette raison qu'elle a été incluse dans le jeu de données.
- 
-Si on analyse néanmoins les résultats, on constate qu'une majeure partie des sondés gagne moins de 50 000 dollars par an, et qu'une minorité seulement arrive à avoir un travail plus rémunérateur. Lorsqu'on parlait plus tôt de "foyer", on peut néanmoins préciser que ceux-ci sont en général constitués de plus d'une personne, et quand plus de 70% des femmes travaillent en 1990, le revenu du foyer est en général constitué de 2 salaires. Cette distinction peut permettre de mieux comprendre pourquoi une large partie de la population interrogées demeure donc sous le seuil des 50 000 dollars de revenus annuel.
-
-On constate tout de même que la répartition des salaires entre les deux genres n'est pas la même. Parmi les populations les plus favorisés (plus de 50 000 dollars par an), seul un quart sont des femmes. Au contraire, elles représentent plus de la moitié de ceux gagnant moins de 50 000 dollars par mois. 
-
-### Taux d'emploi par genre
-
-```{r incomesexgender}
-major <- data %>%
-  filter(age > 14)
-
-taux_emploi <- aggregate(full_or_part_time_employment_stat ~ sex, data = major, FUN = function(x) {
-    taux <- sum(x == "Full-time schedules" |
-        x == "PT for econ reasons usually PT" |
-        x == "PT for econ reasons usually FT" |
-        x == "PT for non-econ reasons usually FT") / length(x)
-})
-
-ggplot(data = taux_emploi) +
-    geom_bar(aes(x = sex, y = full_or_part_time_employment_stat), stat = "identity", fill = "Purple", width = 0.5) +
-    xlab("Genre") +
-    ylab("Taux d'emploi (%)") +
-    ggtitle("Taux d'emploi chez les hommes et les femmes")
-```
-
-Pour expliquer cette différence, on constate d'abord que le taux d'emploi des femmes est inférieur à celui des hommes. Cela pourrait en partie expliquer l'écart salarial remarqué plus haut. 
-
-Néanmoins cette première explication n'est pas entièrement suffissante, et nous tenterons donc de trouver les causes de cette inégalité de revenus ; on s'intéressera dans la suite à l'impact de l'éducation, mais aussi du choix du secteur d'activité, qui pourraient apporter des pistes d'explications.
-
-```{r wagesex}
- wage <- data %>%
-  filter(wage_per_hour != 0 & race != "Other" & age < 76)
-average_wph_by_age_sex <-
-  aggregate(wage_per_hour ~ age + sex, data = wage, FUN = mean)
-
-ggplot(data = average_wph_by_age_sex, aes(
-  x = age, y = wage_per_hour,
-  color = sex
-)) +
-  geom_smooth(se = FALSE, formula = y ~ x, method = "loess") +
-  labs(
-    title = "Salaire mensuel moyen en fonction de l'âge et du genre",
-    x = "Age", y = "Salaire mensuel moyen",
-    color = "Genre"
-  )
-```
-
-Cet écart de revenu entre les hommes et les femmes peut ainsi s'expliquer de plusieurs manières. Premièrement, le salaire mensuel d'une femme est souvent inférieur à celui d'un homme - à poste équivalent, âge équivalent, expérience et formation équivalentes. En effet il est intériosé que les femmes vont avoir des enfants et seront donc moins impliquées dans leur travail. De plus, lorsque ces mêmes enfants seront malades, il y a de fortes chances que cela soit la conjointe qui prenne des congés pour s'occuper d'eux.
-
-```{r}
-# insertion autre graph
-```
-###Le genre du travail
-Deuxièmement, l'éducation est très souvent genrée. De ce fait, les femmes sont souvent orientées vers des filières qui leur "correspondent" (stéréotype de genres) comme par exemple les métiers du "care" - car les femmes sont vues comme naturellement douées pour s'occuper des autres. Or ces filières genrées avec des métiers identifiés comme féminins sont les filières peu rémunératrices. (Duru Bellat, Kieffer, Marry, 2001, *La dynamique des scolarités des filles*. 
-
-```{r industry-genre}
-industry <- data %>%
-    filter(major_industry_recode != "Not in universe or children")
-
-ggplot(industry, aes(y = major_industry_recode, fill = sex)) +
-    geom_bar() +
-    labs(x = "Nombre d'invividus", y = "Secteur d'activité")
-```
-
-```{r industry-wage}
-education_order <- c(
-  "Less than 1st grade",
-  "1st 2nd 3rd or 4th grade",
-  "5th or 6th grade",
-  "7th and 8th grade",
-  "9th grade",
-  "10th grade",
-  "11th grade",
-  "12th grade no diploma",
-  "High school graduate",
-  "Some college but no degree",
-  "Associates degree-occup /vocational",
-  "Associates degree-academic program",
-  "Bachelors degree(BA AB BS)",
-  "Masters degree(MA MS MEng MEd MSW MBA)",
-  "Prof school degree (MD DDS DVM LLB JD)",
-  "Doctorate degree(PhD EdD)"
-)
-
-education <- data %>%
-  filter(wage_per_hour != 0) %>%
-  filter(education != "Children") %>%
-  mutate(education = factor(
-    education,
-    levels = education_order
-  )) %>%
-  group_by(education, race, sex, major_industry_recode) %>%
-  summarise(wage_per_hour = mean(wage_per_hour))
-
-ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
-  geom_bar(stat = "summary") +
-  labs(
-    title = "Salaire mensuel moyen par branche",
-    x = "Salaire mensuel moyen", y = "Branche"
-  )  
-```
-
-Nous pouvons constater ici que les femmes sont majoritairement présentes dans les domaines tels que les services sociaux, l’hôpital et plus généralement le domaine médical (souvent dans des postes d’infirmières), ainsi que dans le domaine éducatif - du fait de stéréotype de genre qui font qu'elles sont considérées comme plus à même d'éduquer des enfants du fait de "l'instinct maternel". Le domaine des services sociaux est peu rémunérateur, mais ceux de la médecine (en hôpital ou en dehors des hôpitaux) sont dans les plus rémunérateur. Cependant ce secteur représente une grande variété de métiers. 
-
-Il convient tout de même de noter que les femmes sont aussi majoritaires présentes dans le domaine regroupant finance, assurance et immobilier qui est généralement très rémunérateur. 
-
-```{r industrie-wage-boxplot}
-ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
-    geom_boxplot() +
-    labs(
-        title = "Variance du salaire mensuel en fonction du secteur d’activité",
-        x = "Variance du salaire mensuel", y = "Secteur d’activité"
-    )
-```
-
-En effet, les branches médicales en hôpital et hors hôpital ont une grande variance, et nous pouvons supposer que les femmes occupent des métiers d’infirmières moins rémunérés que leurs collègues médecins. Cette supposition peut être appuyée par la suite du fait de la faible proportion de femme détenant un diplôme MD (qui est nécessaire pour exercer en tant que médecin).
-
-```{r gender-sector-precisely, fig.width=10}
-education <- data %>%
-    filter(wage_per_hour != 0) %>%
-    filter(education != "Children") %>%
-    filter(major_industry_recode == "Education" |
-        major_industry_recode == "Hospital services" |
-        major_industry_recode == "Medical except hospital") %>%
-    mutate(education = factor(
-        education,
-        levels = education_order
-    )) %>%
-    group_by(education, race, sex, major_industry_recode) %>%
-    summarise(wage_per_hour = mean(wage_per_hour), count = n())
-
-ggplot(education, aes(x = major_industry_recode, y = wage_per_hour, fill = major_industry_recode)) +
-    geom_bar(stat = "summary") +
-    facet_wrap(~sex) +
-    labs(
-        title = "Salaire mensuel moyen en fonction du genre et du secteur d'activité",
-        x = "Secteur d'activité", y = "Salaire mensuel moyen",
-        fill = "Secteur d'activité"
-    )
-```
-
-On constate en effet que pour deux des trois secteurs, les salaires moyens des femmes sont effectivement plus faibles que ceux des hommes. Cette différence est très visible sur le salaire mensuel. En supposant que les hommes et les femmes travaillent le même nombre d’heures. 
-    
-Or, comme on le constate ici, les femmes ont tendance à plus être en temps partiel que les hommes. En effet, ces dernières doivent généralement s'occuper des enfants et du travail domestique en plus de leur travail rémunéré. Cela explique aussi en partie leur choix de s'orienter vers des métiers plus pratiques (Duru-Bellat, 1990, *L'Ecole des filles*).  De plus, en reprenant nos précédentes explications (salaire mensuel inférieur), il est plus rationnel que cela soit la femme qui renonce à une partie du travail rémunéré car le coût d'opportunité sera moindre (expliqué par Gary Becker, 1981, *A Treaty on the Family*).
-
-### Femmes et temps de travail (rémunéré)
-```{r employment-time}
-employment_stat <- data %>%
-    filter(full_or_part_time_employment_stat != "Not in labor force" &
-        full_or_part_time_employment_stat != "Unemployed full-time" &
-        full_or_part_time_employment_stat != "Unemployed part- time" &
-        full_or_part_time_employment_stat != "Children or Armed Forces") %>%
-    mutate(full_or_part_time_employment_stat = gsub("PT for non-econ reasons usually FT", "Part-time", full_or_part_time_employment_stat)) %>%
-    mutate(full_or_part_time_employment_stat = gsub("PT for econ reasons usually PT", "Part-time", full_or_part_time_employment_stat)) %>%
-    mutate(full_or_part_time_employment_stat = gsub("PT for econ reasons usually FT", "Part-time", full_or_part_time_employment_stat)) %>%
-    mutate(full_or_part_time_employment_stat = gsub("Full-time schedules", "Full-time", full_or_part_time_employment_stat))
-
-ggplot(employment_stat, aes(x = full_or_part_time_employment_stat, fill = sex)) +
-    geom_bar(position = "fill") +
-    labs(title = "Type d'activité en fonction du genre", x = "Type d'activité", y = "Nombre de personnes")
-```
-
-Ce coût d’opportunité peut aussi expliquer une auto-censure des femmes dans leurs études. En effet, pourquoi investir (avec du temps et surtout de l’argent) dans l'éducation alors qu’on gagnera moins que son mari ? 
-
-### Femmes et niveau scolaire
-On constate que la part de femme en fonction du niveau d’étude va en diminuant, et qu’une large majorité des personnes qui ont arrêté leurs études au 1st grade (école élémentaire) sont… des femmes. Au vu des prix de l'éducation aux États-Unis, les parents peuvent aussi choisir d'éduquer et d'investir sur un enfant en particulier, en général un garçon, au détriment du reste de sa fratrie.
-
-La plus grande disparité entre hommes et femmes se fait au niveau MD et au niveau PhD, les deux niveaux d'études les plus rémunérateurs. 
-
-```{r education-sex}
-education <- data %>%
-    filter(wage_per_hour != 0) %>%
-    filter(education != "Children") %>%
-    mutate(education = factor(
-        education,
-        levels = education_order
-    )) %>%
-    group_by(education, race, sex, major_occupation_recode) %>%
-    summarise(wage_per_hour = mean(wage_per_hour))
-
-ggplot(education, aes(y = education, fill = sex)) +
-  geom_bar(position = "fill")+
-geom_vline(xintercept = 0.5, linetype = "dashed", color = "yellow")
-```
-
-Pour ce qui est de la corrélation entre diplôme et salaire par mensuel, on constate que le salaire croit en fonction du niveau du diplôme. Or, comme nous l’avons dit précédemment, les femmes sont moins enclines à continuer leurs études du fait d’un coût d’opportunité plus élevé que leurs homologues masculins. C’est en quelques sorte le serpent qui se mord la queue.
-
-```{r wage_education}
-ggplot(education, aes(x = wage_per_hour, y = education)) +
-    geom_bar(stat = "summary") +
-    labs(
-        title = "Salaire mensuel par niveau scolaire",
-        x = "Salaire mensuel", y = "Niveau scolaire"
-    )
-```
-Cependant, nous pouvons aussi dire que, au-delà de questions pécuniaires, un haut niveau de diplôme va avoir un certain prestige social (capital symbolique pour reprendre les notions de Bourdieu). De ce prisme, nous pouvons constater de nouvelles inégalités entre hommes et femmes du fait de la moindre présence féminine dans les docteurs (diplômes d’un doctorat (PhD)).
+Quand nous pensons aux inégalités aux Etats-Unis, nous pensons tout d'abord aux inégalités raciales qui touchent les populations afro-américaines. Nous allons donc commencer notre exploration par cet aspect des inégalités. 
 
 
-
-
-Les différences salariales entre les femmes et les hommes sont donc dues à de multiples facteurs. Tout d'abord, les femmes sont moins nombreuses à avoir un emploi rémunéré que les hommes. Quand elles en ont un, celui-ci est plus à temps partiel, et est effectué dans des secteurs d'activité peu rémunérateur. De plus, leur plus faible taux de poursuite d'études ne les aide pas à atteindre des postes aux salaires plus attractifs.
-
-
-Nous allons ensuite nous intéresser à l'impact de l'ethnie sur le niveau de revenu. 
  
 ## Les inégalités raciales
 ### Niveau de revenu en fonction de l'ethnie
@@ -657,7 +445,7 @@ Pour mieux appréhender la pluralité des pays d'origine de ces immigrés, voici
 ### Pays de naissance - Hors États-Unis
 ```{r birthcountrynous, fig.height=8}
 no_us <- data %>%
-    filter(country_of_birth_self != "United-States")
+    filter(country_of_birth_self != "United-States" & country_of_birth != "?")
 
 ggplot(no_us, aes(y = country_of_birth_self)) +
     geom_bar() +
@@ -740,6 +528,190 @@ Deuxième piste, les données portaient sur l'Etat de "précédente résidence" 
 Ces suppositions sont évidemment insuffisantes pour expliquer ce décalage, mais elles nous permettent de nous apporter quelques pistes de réflexions, et surtout de garder à l'esprit de toujours s'interroger sur la provenance des données.
 
 
+Passons maintenant au deuxième type d'inégalités qui sont présentes dans nos sociétés: les inégalités de genre. 
+
+
+## Inégalités de genre
+### Niveau de revenu en fonction du genre
+
+```{r incomesex}
+ggplot(data, aes(x = income_level, fill = sex)) +
+    geom_bar(position = "fill") +
+    labs(x = "Niveau de revenu", y = "Nombre d'individus", fill = "Genre")
+```
+
+Les catégories de revenu sont divisées en deux, soit moins de 50 000 dollars par an, soit plus que 50 000 dollars par an, puisque le jeu de données ne comporte pas de données plus précises.
+Le revenu moyen d'un foyer américain en 1990 était en effet de 50 000 dollars annuel, ce qui rend le choix de cette valeur pertinent pour avoir un rapide aperçu de la situation financière des personnes interrogés dans le cadre de cette étude. On suppose donc que c'est pour cette raison qu'elle a été incluse dans le jeu de données.
+ 
+Si on analyse néanmoins les résultats, on constate qu'une majeure partie des sondés gagne moins de 50 000 dollars par an, et qu'une minorité seulement arrive à avoir un travail plus rémunérateur. Lorsqu'on parlait plus tôt de "foyer", on peut néanmoins préciser que ceux-ci sont en général constitués de plus d'une personne, et quand plus de 70% des femmes travaillent en 1990, le revenu du foyer est en général constitué de 2 salaires. Cette distinction peut permettre de mieux comprendre pourquoi une large partie de la population interrogées demeure donc sous le seuil des 50 000 dollars de revenus annuel.
+
+On constate tout de même que la répartition des salaires entre les deux genres n'est pas la même. Parmi les populations les plus favorisés (plus de 50 000 dollars par an), seul un quart sont des femmes. Au contraire, elles représentent plus de la moitié de ceux gagnant moins de 50 000 dollars par mois. 
+
+### Taux d'emploi par genre
+
+```{r incomesexgender}
+major <- data %>%
+  filter(age > 14)
+
+taux_emploi <- aggregate(full_or_part_time_employment_stat ~ sex, data = major, FUN = function(x) {
+    taux <- sum(x == "Full-time schedules" |
+        x == "PT for econ reasons usually PT" |
+        x == "PT for econ reasons usually FT" |
+        x == "PT for non-econ reasons usually FT") / length(x)
+})
+
+ggplot(data = taux_emploi) +
+    geom_bar(aes(x = sex, y = full_or_part_time_employment_stat), stat = "identity", fill = "Purple", width = 0.5) +
+    xlab("Genre") +
+    ylab("Taux d'emploi (%)") +
+    ggtitle("Taux d'emploi chez les hommes et les femmes")
+```
+
+Pour expliquer cette différence, on constate d'abord que le taux d'emploi des femmes est inférieur à celui des hommes. Cela pourrait en partie expliquer l'écart salarial remarqué plus haut. 
+
+Néanmoins cette première explication n'est pas entièrement suffissante, et nous tenterons donc de trouver les causes de cette inégalité de revenus ; on s'intéressera dans la suite à l'impact de l'éducation, mais aussi du choix du secteur d'activité, qui pourraient apporter des pistes d'explications.
+
+```{r wagesex}
+ wage <- data %>%
+  filter(wage_per_hour != 0 & race != "Other" & age < 76)
+average_wph_by_age_sex <-
+  aggregate(wage_per_hour ~ age + sex, data = wage, FUN = mean)
+
+ggplot(data = average_wph_by_age_sex, aes(
+  x = age, y = wage_per_hour,
+  color = sex
+)) +
+  geom_smooth(se = FALSE, formula = y ~ x, method = "loess") +
+  labs(
+    title = "Salaire mensuel moyen en fonction de l'âge et du genre",
+    x = "Age", y = "Salaire mensuel moyen",
+    color = "Genre"
+  )
+```
+
+Cet écart de revenu entre les hommes et les femmes peut ainsi s'expliquer de plusieurs manières. Premièrement, le salaire mensuel d'une femme est souvent inférieur à celui d'un homme - à poste équivalent, âge équivalent, expérience et formation équivalentes. En effet il est intériosé que les femmes vont avoir des enfants et seront donc moins impliquées dans leur travail. De plus, lorsque ces mêmes enfants seront malades, il y a de fortes chances que cela soit la conjointe qui prenne des congés pour s'occuper d'eux.
+
+```{r}
+# insertion autre graph
+```
+###Le genre du travail
+Deuxièmement, l'éducation est très souvent genrée. De ce fait, les femmes sont souvent orientées vers des filières qui leur "correspondent" (stéréotype de genres) comme par exemple les métiers du "care" - car les femmes sont vues comme naturellement douées pour s'occuper des autres. Or ces filières genrées avec des métiers identifiés comme féminins sont les filières peu rémunératrices. (Duru Bellat, Kieffer, Marry, 2001, *La dynamique des scolarités des filles*. 
+
+```{r industry-genre}
+industry <- data %>%
+    filter(major_industry_recode != "Not in universe or children")
+
+ggplot(industry, aes(y = major_industry_recode, fill = sex)) +
+    geom_bar() +
+    labs(x = "Nombre d'invividus", y = "Secteur d'activité")
+```
+
+
+Nous pouvons constater ici que les femmes sont majoritairement présentes dans les domaines tels que les services sociaux, l’hôpital et plus généralement le domaine médical (souvent dans des postes d’infirmières), ainsi que dans le domaine éducatif - du fait de stéréotype de genre qui font qu'elles sont considérées comme plus à même d'éduquer des enfants du fait de "l'instinct maternel". Le domaine des services sociaux est peu rémunérateur, mais ceux de la médecine (en hôpital ou en dehors des hôpitaux) sont dans les plus rémunérateur. Cependant ce secteur représente une grande variété de métiers. 
+
+Il convient tout de même de noter que les femmes sont aussi majoritaires présentes dans le domaine regroupant finance, assurance et immobilier qui est généralement très rémunérateur. 
+
+```{r industrie-wage-boxplot}
+ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
+    geom_boxplot() +
+    labs(
+        title = "Variance du salaire mensuel en fonction du secteur d’activité",
+        x = "Variance du salaire mensuel", y = "Secteur d’activité"
+    )
+```
+
+En effet, les branches médicales en hôpital et hors hôpital ont une grande variance, et nous pouvons supposer que les femmes occupent des métiers d’infirmières moins rémunérés que leurs collègues médecins. Cette supposition peut être appuyée par la suite du fait de la faible proportion de femme détenant un diplôme MD (qui est nécessaire pour exercer en tant que médecin).
+
+
+```{r gender-sector-precisely, fig.width=10}
+education <- data %>%
+    filter(wage_per_hour != 0) %>%
+    filter(education != "Children") %>%
+    filter(major_industry_recode == "Education" |
+        major_industry_recode == "Hospital services" |
+        major_industry_recode == "Medical except hospital") %>%
+    mutate(education = factor(
+        education,
+        levels = education_order
+    )) %>%
+    group_by(education, race, sex, major_industry_recode) %>%
+    summarise(wage_per_hour = mean(wage_per_hour), count = n())
+
+ggplot(education, aes(x = major_industry_recode, y = wage_per_hour, fill = major_industry_recode)) +
+    geom_bar(stat = "summary") +
+    facet_wrap(~sex) +
+    labs(
+        title = "Salaire mensuel moyen en fonction du genre et du secteur d'activité",
+        x = "Secteur d'activité", y = "Salaire mensuel moyen",
+        fill = "Secteur d'activité"
+    )
+```
+
+On constate en effet que pour deux des trois secteurs, les salaires moyens des femmes sont effectivement plus faibles que ceux des hommes. Cette différence est très visible sur le salaire mensuel. En supposant que les hommes et les femmes travaillent le même nombre d’heures. 
+    
+Or, comme on le constate ici, les femmes ont tendance à plus être en temps partiel que les hommes. En effet, ces dernières doivent généralement s'occuper des enfants et du travail domestique en plus de leur travail rémunéré. Cela explique aussi en partie leur choix de s'orienter vers des métiers plus pratiques (Duru-Bellat, 1990, *L'Ecole des filles*).  De plus, en reprenant nos précédentes explications (salaire mensuel inférieur), il est plus rationnel que cela soit la femme qui renonce à une partie du travail rémunéré car le coût d'opportunité sera moindre (expliqué par Gary Becker, 1981, *A Treaty on the Family*).
+
+
+### Femmes et temps de travail (rémunéré)
+```{r employment-time}
+employment_stat <- data %>%
+    filter(full_or_part_time_employment_stat != "Not in labor force" &
+        full_or_part_time_employment_stat != "Unemployed full-time" &
+        full_or_part_time_employment_stat != "Unemployed part- time" &
+        full_or_part_time_employment_stat != "Children or Armed Forces") %>%
+    mutate(full_or_part_time_employment_stat = gsub("PT for non-econ reasons usually FT", "Part-time", full_or_part_time_employment_stat)) %>%
+    mutate(full_or_part_time_employment_stat = gsub("PT for econ reasons usually PT", "Part-time", full_or_part_time_employment_stat)) %>%
+    mutate(full_or_part_time_employment_stat = gsub("PT for econ reasons usually FT", "Part-time", full_or_part_time_employment_stat)) %>%
+    mutate(full_or_part_time_employment_stat = gsub("Full-time schedules", "Full-time", full_or_part_time_employment_stat))
+
+ggplot(employment_stat, aes(x = full_or_part_time_employment_stat, fill = sex)) +
+    geom_bar(position = "fill") +
+    labs(title = "Type d'activité en fonction du genre", x = "Type d'activité", y = "Nombre de personnes")
+```
+
+Ce coût d’opportunité peut aussi expliquer une auto-censure des femmes dans leurs études. En effet, pourquoi investir (avec du temps et surtout de l’argent) dans l'éducation alors qu’on gagnera moins que son mari ? 
+
+### Femmes et niveau scolaire
+On constate que la part de femme en fonction du niveau d’étude va en diminuant, et qu’une large majorité des personnes qui ont arrêté leurs études au 1st grade (école élémentaire) sont… des femmes. Au vu des prix de l'éducation aux États-Unis, les parents peuvent aussi choisir d'éduquer et d'investir sur un enfant en particulier, en général un garçon, au détriment du reste de sa fratrie.
+
+La plus grande disparité entre hommes et femmes se fait au niveau MD et au niveau PhD, les deux niveaux d'études les plus rémunérateurs. 
+
+
+```{r education-sex}
+education <- data %>%
+    filter(wage_per_hour != 0) %>%
+    filter(education != "Children") %>%
+    mutate(education = factor(
+        education,
+        levels = education_order
+    )) %>%
+    group_by(education, race, sex, major_occupation_recode) %>%
+    summarise(wage_per_hour = mean(wage_per_hour))
+
+ggplot(education, aes(y = education, fill = sex)) +
+  geom_bar(position = "fill")+
+geom_vline(xintercept = 0.5, linetype = "dashed", color = "yellow")
+```
+
+Pour ce qui est de la corrélation entre diplôme et salaire par mensuel, on constate que le salaire croit en fonction du niveau du diplôme. Or, comme nous l’avons dit précédemment, les femmes sont moins enclines à continuer leurs études du fait d’un coût d’opportunité plus élevé que leurs homologues masculins. C’est en quelques sorte le serpent qui se mord la queue.
+
+```{r wage_education}
+ggplot(education, aes(x = wage_per_hour, y = education)) +
+    geom_bar(stat = "summary") +
+    labs(
+        title = "Salaire mensuel par niveau scolaire",
+        x = "Salaire mensuel", y = "Niveau scolaire"
+    )
+```
+Cependant, nous pouvons aussi dire que, au-delà de questions pécuniaires, un haut niveau de diplôme va avoir un certain prestige social (capital symbolique pour reprendre les notions de Bourdieu). De ce prisme, nous pouvons constater de nouvelles inégalités entre hommes et femmes du fait de la moindre présence féminine dans les docteurs (diplômes d’un doctorat (PhD)).
+
+
+
+
+Les différences salariales entre les femmes et les hommes sont donc dues à de multiples facteurs. Tout d'abord, les femmes sont moins nombreuses à avoir un emploi rémunéré que les hommes. Quand elles en ont un, celui-ci est plus à temps partiel, et est effectué dans des secteurs d'activité peu rémunérateur. De plus, leur plus faible taux de poursuite d'études ne les aide pas à atteindre des postes aux salaires plus attractifs.
+
+
+
 
 
 # Conclusion
@@ -786,7 +758,9 @@ ggplot() +
 ```
 
 
-La situation prend même un tournant innatendu avec l'apparition des nouvelles technologies, comme l'intelligence artificielle. Ce jeu de données par exemple, a été utilisé à des fins de machine learning. En analysant ces données, l'IA pourrait donc considérer que ces différences ethniques sont une norme sociale qu'il convient d'appliquer. Il y a donc un vrai risque qu'elle reproduise et accentue ces discriminations. Nous devons donc impérativement prendre conscience de ces nouveaux enjeux, afin de pas accentuer un cercle vicieux qui viserait à perpétuer ces discriminations. Pour conclure et pour expliciter cela, je reprendrai une citation de Giuseppe Tomasi di Lampedusa qui s'adapte bien aux limites de cette innovation qu'est l'intelligence artificielle : "Se vogliamo che tutto rimanga come è, bisogna che tutto cambi" / "Si nous voulons que tout reste pareil, il faut que tout change".
+La situation prend même un tournant innatendu avec l'apparition des nouvelles technologies, comme l'intelligence artificielle. Ce jeu de données par exemple, a été utilisé à des fins de machine learning. En analysant ces données, l'IA pourrait donc considérer que ces différences ethniques sont une norme sociale qu'il convient d'appliquer. Il y a donc un vrai risque qu'elle reproduise et accentue ces discriminations. Nous devons donc impérativement prendre conscience de ces nouveaux enjeux, afin de pas accentuer un cercle vicieux qui viserait à perpétuer ces discriminations. 
+
+Pour conclure et pour expliciter cela, nous reprendrons une citation de Giuseppe Tomasi di Lampedusa qui s'adapte bien aux limites de cette révolution qu'est l'intelligence artificielle : "Se vogliamo che tutto rimanga come è, bisogna che tutto cambi" / "Si nous voulons que tout reste pareil, il faut que tout change".
  
 
 
