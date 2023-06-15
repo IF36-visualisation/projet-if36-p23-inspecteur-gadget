@@ -254,6 +254,9 @@ On constate tout de même que la répartition des salaires entre les deux genres
 ### Taux d'emploi par genre
 
 ```{r incomesexgender}
+major <- data %>%
+  filter(age > 14)
+
 taux_emploi <- aggregate(full_or_part_time_employment_stat ~ sex, data = major, FUN = function(x) {
     taux <- sum(x == "Full-time schedules" |
         x == "PT for econ reasons usually PT" |
@@ -266,7 +269,8 @@ ggplot(data = taux_emploi) +
     xlab("Genre") +
     ylab("Taux d'emploi (%)") +
     ggtitle("Taux d'emploi chez les hommes et les femmes")
- ```
+```
+
 Pour expliquer cette différence, on constate d'abord que le taux d'emploi des femmes est inférieur à celui des hommes. Cela pourrait en partie expliquer l'écart salarial remarqué plus haut. 
 
 Néanmoins cette première explication n'est pas entièrement suffissante, et nous tenterons donc de trouver les causes de cette inégalité de revenus ; on s'intéressera dans la suite à l'impact de l'éducation, mais aussi du choix du secteur d'activité, qui pourraient apporter des pistes d'explications.
@@ -401,7 +405,7 @@ employment_stat <- data %>%
 ggplot(employment_stat, aes(x = full_or_part_time_employment_stat, fill = sex)) +
     geom_bar(position = "fill") +
     labs(title = "Type d'activité en fonction du genre", x = "Type d'activité", y = "Nombre de personnes")
- ```
+```
     
 Or, comme on le constate ici, les femmes ont tendance à plus être en temps partiel que les hommes. En effet, ces dernières doivent généralement s'occuper des enfants et du travail domestique en plus de leur travail rémunéré. Cela explique aussi en partie leur choix de s'orienter vers des métiers plus pratiques (Duru-Bellat, 1990, *L'Ecole des filles*).  De plus, en reprenant nos précédentes explications (salaire mensuel inférieur), il est plus rationnel que cela soit la femme qui renonce à une partie du travail rémunéré car le coût d'opportunité sera moindre (expliqué par Gary Becker, 1981, *A Treaty on the Family*).
 
@@ -424,7 +428,7 @@ ggplot(employment_stat, aes(x = full_or_part_time_employment_stat, fill = sex)) 
 
 Ce coût d’opportunité peut aussi expliquer une auto-censure des femmes dans leurs études. En effet, pourquoi investir (avec du temps et surtout de l’argent) dans l'éducation alors qu’on gagnera moins que son mari ? 
 
-###Femmes et niveau scolaire
+### Femmes et niveau scolaire
 On constate que la part de femme en fonction du niveau d’étude va en diminuant, et qu’une large majorité des personnes qui ont arrêté leurs études au 1st grade (école élémentaire) sont… des femmes. Au vu des prix de l'éducation aux États-Unis, les parents peuvent aussi choisir d'éduquer et d'investir sur un enfant en particulier, en général un garçon, au détriment du reste de sa fratrie.
 
 La plus grande disparité entre hommes et femmes se fait au niveau PhD. 
@@ -465,7 +469,7 @@ Les différences salariales entre les femmes et les hommes sont donc dues à de 
 
 Nous allons ensuite nous intéresser à l'impact de l'ethnie sur le niveau de revenu. 
  
-##Les inégalités raciales
+## Les inégalités raciales
 ### Niveau de revenu en fonction de l'ethnie
 
 ```{r levelrace}
@@ -794,7 +798,7 @@ ggplot() +
         color = "Ethnies"
     ) +
     theme(text = element_text(size = 20))
-  ```
+```
 
 
 La situation prend même un tournant innatendu avec l'apparition des nouvelles technologies, comme l'intelligence artificielle. Ce jeu de données par exemple, a été utilisé à des fins de machine learning. En analysant ces données, l'IA pourrait donc considérer que ces différences ethniques sont une norme sociale qu'il convient d'appliquer. Il y a donc un vrai risque qu'elle reproduise et accentue ces discriminations. Nous devons donc impérativement prendre conscience de ces nouveaux enjeux, afin de pas accentuer un cercle vicieux qui viserait à perpétuer ces discriminations. Pour conclure et pour expliciter cela, je reprendrai une citation de Giuseppe Tomasi di Lampedusa qui s'adapte bien aux limites de cette innovation qu'est l'intelligence artificielle : "Se vogliamo che tutto rimanga come è, bisogna che tutto cambi" / "Si nous voulons que tout reste pareil, il faut que tout change".
