@@ -174,7 +174,7 @@ A titre de comparaison, la population américaine en 1995 était répartie de la
 -10% de la population était hispanique*
 -3% de la population était asiatique
 
-* *hispanique est ici utilisé comme un abus de language pour parler des populations originaire d'Amérique Latine.*
+* *hispanique est ici utilisé comme un abus de language pour parler des populations originaire d'Amérique Latine et Centrale.*
 
 L’échantillon semble donc être globalement représentatif de la population américaine en 1994, avec tout de même une proportion de personnes noires légèrement moindre. 
 
@@ -289,7 +289,7 @@ ggplot(data = average_wph_by_age_sex, aes(
   )
 ```
 
-Cet écart de revenu entre les hommes et les femmes peut s'expliquer de plusieurs manières. Premièrement, le salaire mensuel d'une femme est souvent inférieur à celui d'un homme - à poste équivalent, âge équivalent, expérience et formation équivalentes. En effet il est intériosé que les femmes vont avoir des enfants et seront donc moins impliquées dans leur travail. De plus, lorsque ces mêmes enfants seront malades, il y a de fortes chances que cela soit la conjointe qui prenne des congés pour s'occuper d'eux.
+Cet écart de revenu entre les hommes et les femmes peut ainsi s'expliquer de plusieurs manières. Premièrement, le salaire mensuel d'une femme est souvent inférieur à celui d'un homme - à poste équivalent, âge équivalent, expérience et formation équivalentes. En effet il est intériosé que les femmes vont avoir des enfants et seront donc moins impliquées dans leur travail. De plus, lorsque ces mêmes enfants seront malades, il y a de fortes chances que cela soit la conjointe qui prenne des congés pour s'occuper d'eux.
 
 ```{r}
 # insertion autre graph
@@ -345,7 +345,8 @@ ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
 ```
 
 Nous pouvons constater ici que les femmes sont majoritairement présentes dans les domaines tels que les services sociaux, l’hôpital et plus généralement le domaine médical (souvent dans des postes d’infirmières), ainsi que dans le domaine éducatif - du fait de stéréotype de genre qui font qu'elles sont considérées comme plus à même d'éduquer des enfants du fait de "l'instinct maternel". Le domaine des services sociaux est peu rémunérateur, mais ceux de la médecine (en hôpital ou en dehors des hôpitaux) sont dans les plus rémunérateur. Cependant ce secteur représente une grande variété de métiers. 
-Cependant, il convient tout de même de noter que les femmes sont aussi majoritaires présentes dans le domaine regroupant finance, assurance et immobilier qui est généralement très rémunérateur. 
+
+Il convient tout de même de noter que les femmes sont aussi majoritaires présentes dans le domaine regroupant finance, assurance et immobilier qui est généralement très rémunérateur. 
 
 ```{r industrie-wage-boxplot}
 ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
@@ -386,6 +387,7 @@ On constate en effet que pour deux des trois secteurs, les salaires moyens des f
 
 ### type d'activité en fonction du genre
 
+```{r typeactivitesgenre}
 employment_stat <- data %>%
     filter(full_or_part_time_employment_stat != "Not in labor force" &
         full_or_part_time_employment_stat != "Unemployed full-time" &
@@ -399,6 +401,7 @@ employment_stat <- data %>%
 ggplot(employment_stat, aes(x = full_or_part_time_employment_stat, fill = sex)) +
     geom_bar(position = "fill") +
     labs(title = "Type d'activité en fonction du genre", x = "Type d'activité", y = "Nombre de personnes")
+ ```
     
 Or, comme on le constate ici, les femmes ont tendance à plus être en temps partiel que les hommes. En effet, ces dernières doivent généralement s'occuper des enfants et du travail domestique en plus de leur travail rémunéré. De plus, en reprenant nos précédentes explications (salaire mensuel inférieur), il est plus rationnel que cela soit la femme qui renonce à une partie du travail rémunéré car le coût d'opportunité sera moindre (expliqué par Gary Becker, 1981, *A Treaty on the Family*).
 
@@ -454,6 +457,12 @@ ggplot(education, aes(x = wage_per_hour, y = education)) +
 ```
 Cependant, nous pouvons aussi dire que, au-delà de questions pécuniaires, un haut niveau de diplôme va avoir un certain prestige social (capital symbolique pour reprendre les notions de Bourdieu). De ce prisme, nous pouvons constater de nouvelles inégalités entre hommes et femmes du fait de la moindre présence féminine dans les docteurs (diplômes d’un doctorat (PhD)).
 
+
+
+
+Les différences salariales entre les femmes et les hommes sont donc dues à de multiples facteurs. Tout d'abord, les femmes sont moins nombreuses à avoir un emploi rémunéré que les hommes. Quand elles en ont un, celui-ci est plus à temps partiel, et est effectué dans des secteurs d'activité peu rémunérateur. De plus, leur plus faible taux de poursuite d'études ne les aide pas à atteindre des postes aux salaires plus attractifs.
+
+
 Nous allons ensuite nous intéresser à l'impact de l'ethnie sur le niveau de revenu. 
  
 ##Les inégalités raciales
@@ -490,6 +499,7 @@ Avec ce graphisme, on constate qu'il existe bien des inégalités raciales au ni
 De l'autre côté, les populations en provenance d'Asie sont un peu mieux représentées dans les salaires à +50000 dollars que dans les salaires à -50000 dollars. 
 
 ### Salaire mensuel et ethnie
+
 ```{r wage_per_hour}
 wage <- data %>%
   filter(wage_per_hour != 0 & race != "Other" & age < 75)
