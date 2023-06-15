@@ -174,11 +174,54 @@ dashboardPage(
                 )
             ),
             tabItem(
+                tabName = "revenu",
+                fluidRow(
+                    box(
+                        title = "Niveau de revenu par ethnie et genre",
+                        withSpinner(
+                            plotlyOutput("race_income", height = "500px"),
+                            type = 8
+                        ),
+                        tags$br(),
+                        awesomeCheckboxGroup(
+                            inputId = "rev_selected_race",
+                            label = "Ethnies sélectionnées :",
+                            choices = c("White", "Black", "Natives", "Asian/Pacific", "Hispanic/Latino"),
+                            selected = c("White", "Black", "Natives", "Asian/Pacific", "Hispanic/Latino")
+                        )
+                    ),
+                    box(
+                        title = "Salaire mensuel moyen par ethnie ou par genre",
+                        withSpinner(
+                            plotlyOutput("wage_per_month", height = "500px"),
+                            type = 8
+                        ),
+                        tags$br(),
+                        prettyRadioButtons(
+                            inputId = "rev_selected_filter",
+                            label = "Filtre : ",
+                            choices = c("Ethnie", "Genre"),
+                            icon = icon("filter"),
+                            animation = "tada",
+                            inline = TRUE
+                        ),
+                        sliderInput(
+                            inputId = "rev_selected_max_age",
+                            label = "Âge : ",
+                            min = 0,
+                            max = 90,
+                            value = c(0, 90),
+                            ticks = FALSE
+                        )
+                    )
+                )
+            ),
+            tabItem(
                 tabName = "cartes",
                 fluidRow(
                     box(
                         title = "Le melting-pot américain : visualisation des origines internationales
-                        des résidents actuels aux États-Unis à l'aide d'un globe terrestre interactif",
+                        des résidents actuels aux États-Unis à l'aide d'un globe terrestre",
                         withSpinner(
                             globeOutput("globe"),
                             type = 8

@@ -174,39 +174,90 @@ server <- function(input, output) {
     birth_country_filtered <- reactive({
         if (input$demog_country_selector == "Tous") {
             if (input$demog_country_order == "Croissant") {
-                birth_countries <- ggplot(data, aes(y = fct_infreq(country_of_birth_self))) +
+                plot <- ggplot(data, aes(y = fct_infreq(country_of_birth_self))) +
                     geom_bar() +
                     labs(
                         x = "Nombre de personnes", y = "Pays de naissance"
                     )
-                return(birth_countries)
             } else {
-                birth_countries <- ggplot(data, aes(y = fct_rev(fct_infreq(country_of_birth_self)))) +
+                plot <- ggplot(data, aes(y = fct_rev(fct_infreq(country_of_birth_self)))) +
                     geom_bar() +
                     labs(
                         x = "Nombre de personnes", y = "Pays de naissance"
                     )
-                return(birth_countries)
             }
         } else {
             filtered_data <- data %>%
                 filter(country_of_birth_self != "United-States")
             if (input$demog_country_order == "Croissant") {
-                birth_countries <- ggplot(filtered_data, aes(y = fct_infreq(country_of_birth_self))) +
+                plot <- ggplot(filtered_data, aes(y = fct_infreq(country_of_birth_self))) +
                     geom_bar() +
                     labs(
                         x = "Nombre de personnes", y = "Pays de naissance"
                     )
-                return(birth_countries)
             } else {
-                birth_countries <- ggplot(filtered_data, aes(y = fct_rev(fct_infreq(country_of_birth_self)))) +
+                plot <- ggplot(filtered_data, aes(y = fct_rev(fct_infreq(country_of_birth_self)))) +
                     geom_bar() +
                     labs(
                         x = "Nombre de personnes", y = "Pays de naissance"
                     )
-                return(birth_countries)
             }
         }
+
+        return(plot)
+    })
+    # -------------------------------------------------
+
+    # -------------- niveau de revenu par ethnie et genre ---------------
+    race_income_filtered <- reactive({
+        races_income <- data %>%
+            filter(race != "Other") %>%
+            filter(race %in% input$rev_selected_race)
+
+        plot <- ggplot(races_income, aes(x = sex, fill = race)) +
+            geom_bar(position = "fill") +
+            facet_wrap(~income_level) +
+            scale_y_continuous(labels = percent_format()) +
+            labs(
+                x = "Niveau de revenu", y = "Distribution", fill = "Ethnie"
+            )
+
+        return(plot)
+    })
+    # -------------------------------------------------
+
+    # -------------- salaire mensuel moyen par ethnie ou genre ---------------
+    wage <- data %>%
+        filter(wage_per_hour != 0 & race != "Other")
+
+    wage_per_month_filtered <- reactive({
+        average_wpm_by_age <- wage %>%
+            filter(age >= input$rev_selected_max_age[1] & age <= input$rev_selected_max_age[2]) %>%
+            aggregate(wage_per_hour ~ age + race + sex, FUN = mean)
+
+        if (input$rev_selected_filter == "Ethnie") {
+            plot <- ggplot(data = average_wpm_by_age, aes(
+                x = age, y = wage_per_hour,
+                color = race
+            )) +
+                geom_smooth(se = FALSE, size = 0.5) +
+                labs(
+                    x = "Âge", y = "Salaire mensuel moyen",
+                    color = "Ethnie"
+                )
+        } else {
+            plot <- ggplot(data = average_wpm_by_age, aes(
+                x = age, y = wage_per_hour,
+                color = sex
+            )) +
+                geom_smooth(se = FALSE) +
+                labs(
+                    x = "Âge", y = "Salaire mensuel moyen",
+                    color = "Genre"
+                )
+        }
+
+        return(plot)
     })
     # -------------------------------------------------
 
@@ -246,5 +297,11 @@ server <- function(input, output) {
     })
     output$birth_country <- renderPlotly({
         birth_country_filtered()
+    })
+    output$race_income <- renderPlotly({
+        race_income_filtered()
+    })
+    output$wage_per_month <- renderPlotly({
+        wage_per_month_filtered()
     })
 }
