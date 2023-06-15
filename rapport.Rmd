@@ -54,7 +54,7 @@ Il est disponible sur le site de l'[UCI Machine Learning Repository](https://arc
 
 
 
-### Données
+## Données
 
 Ce dataset contient 199 523 observations et 42 variables. 
 
@@ -65,7 +65,7 @@ Pour chaque variable, les personnes recensées les ont remplies si elles étaien
 - `detailed_industry_recode` : code de l'industrie où la personne travaille ([liste des codes](https://microdata.epi.org/variables/indocc/dind03/))
 - `detailed_occupation_recode` : code du domaine de l'emploi de la personne ([liste des codes](https://www.icpsr.umich.edu/web/RCMD/studies/03303/datasets/0001/variables/PRDTOCC1?archive=RCMD))
 - `education` : niveau d'éducation (lycée, université, ...)
-- `wage_per_hour` : salaire mensuel (et non mensuel)
+- `wage_per_hour` : salaire mensuel (et non horaire comme précédemment indiqué)
 - `enroll_in_edu_inst_last_wk` : inscription à une école la semaine dernière (lycée, université, ...)
 - `marital_stat` : statut marital (marié, divorcé, veuf, ...)
 - `major_industry_code` : nom de l'industrie principale où travaille la personne (agriculture, éducation, administration, ...)
@@ -105,39 +105,7 @@ Pour chaque variable, les personnes recensées les ont remplies si elles étaien
 
 Plus d'informations sur la signification des variables sont disponibles sur le site du [Census Bureau](https://www.census.gov/).
 
-
-
-### Plan d'analyse
-
-La présence de données ethniques est une des spécificités de ce jeu de données. Celles-ci ne sont en effet pas présentes dans les données issues des instituts français, empêchant de facto l'étude des inégalités liées à la race* sur une grande échelle.
-
-
-Nous avons donc décidé de profiter de la présence de l’attribut ethnique ("race") pour étudier l’impact de l’appartenance à un groupe racisé* sur la situation économique de la personne, et plus particulièrement sur son revenu.
-Nous essaierons d’affiner notre analyse en croisant nos résultats avec d’autres données: 
-- Le sexe ; Est-ce un facteur d’aggravation des inégalités raciales ?
-- La situation géographique ; Le lieu de résidence (la Sunbelt par exemple) influe-t-il sur le niveau de vie et la qualité des emplois ?
-- Le statut marital et la situation familiale ; Le mariage profite-t-il économiquement aux individus ? On pourra aussi pondérer les revenus en fonction du nombre de personnes composant les foyers.
-- temporel (générations); Les enfants américains nés de parents étrangers sont-ils mieux intégrés au marché de l’emploi que leurs parents avant eux ?
-
-
-Enfin, nous nous attacherons à essayer de comprendre les inégalités économiques. Pour cela nous nous pencherons sur les données structurelles : 
-- Le niveau scolaire; La poursuite d’études permet-elle l’accès aux plus hauts revenus ? Élimine-t-elle le travail précaire ?
-- La qualité de l’emploi (nombre de semaines travaillées, salaire mensuel, cause du chômage, domaine d’activité, syndicat,); L’ethnie a-t-elle un impact sur les postes occupés et la rémunération des individus ? 
-- Le capital
-
-
-
-Il est tout de même important de noter que les données datent des années 90 et que les visualisations que nous allons réaliser ne seront pas forcément représentatives de la situation actuelle. Il sera donc nécessaire de replacer ces visualisations dans le contexte de l'époque afin de les interpréter correctement.
-
-
-> *NB : “race” est un mot de vocabulaire employé dans le champ de la recherche en sociologie, en France comme aux États-Unis. 
-
-
-
-# Exploration
-
-Pour commencer, comme ce jeu de données est d'abord un recencement de la population américaine, il nous semble important d'en comprendre les principales caractéristiques (âge, sexe, origine) afin de dresser un portrait de l'américain moyen en 1994.
-
+##Présentation du jeu de données
 
 ### Répartition par âge
 
@@ -146,7 +114,7 @@ Commençons donc avec la répartition par âge de notre échantillon.
 ```{r age_distribution}
 ggplot(data, aes(x = age)) +
     geom_histogram(binwidth = 5) +
-    labs(title = "Age distribution", x = "Age", y = "Count")
+    labs(title = "Age distribution", x = "Age", y = "Nombre")
 ```
 
 
@@ -226,83 +194,39 @@ ggplot(data = graph_data, aes(x = Fréquence, y = Pays, fill = Pays)) +
 
 On constate, sans surprise, que l'écrasante majorité de la population interrogée est née aux États-Unis. 
 
-## Migrations vers les US et entre les Etats. 
 
-```{r birthcountry, fig.height=8}
-ggplot(data, aes(y = country_of_birth_self)) +
-    geom_bar() +
-    labs(
-        title = "Country of birth",
-        x = "Count", y = "Country"
-    )
-```
 
-Les pays de naissance des personnes interrogées sont donc variés, avec une large majorité de personnes nées aux Etats-Unis.
 
-Quelques pays comme le Mexique semblent néanmoins se distinguer du fait de sa proximité avec les États-Unis (frontière commune). Il convient aussi de noter que le Mexique traverse une grave crise économique qui débute fin 1994. Cette information peut être mise en perspective avec les débats des années 2010 sur la construction d'un mur à la frontière entre les États-Unis et le Mexique pour endiguer le flux migratoire venant du Mexique mais aussi de l'Amérique latine.  
+## Plan d'analyse
 
-Pour mieux appréhender la pluralité des pays d'origine de ces immigrés, voici donc un autre graphique, qui exclut cette fois-ci les États-Unis.
+La présence de données ethniques est une des spécificités de ce jeu de données. Celles-ci ne sont en effet pas présentes dans les données issues des instituts français, empêchant de facto l'étude des inégalités liées à la race* sur une grande échelle.
 
-### Pays de naissance - Hors États-Unis
-```{r birthcountrynous, fig.height=8}
-no_us <- data %>%
-    filter(country_of_birth_self != "United-States")
 
-ggplot(no_us, aes(y = country_of_birth_self)) +
-    geom_bar() +
-    labs(
-        title = "Country of birth",
-        x = "Count", y = "Country"
-    )
-```
+Nous avons donc décidé de profiter de la présence de l’attribut ethnique ("race") pour étudier l’impact de l’appartenance à un groupe racisé* sur la situation économique de la personne, et plus particulièrement sur son revenu.
+Nous essaierons d’affiner notre analyse en croisant nos résultats avec d’autres données: 
+- Le sexe ; Est-ce un facteur d’aggravation des inégalités raciales ?
+- La situation géographique ; Le lieu de résidence (la Sunbelt par exemple) influe-t-il sur le niveau de vie et la qualité des emplois ?
+- Le statut marital et la situation familiale ; Le mariage profite-t-il économiquement aux individus ? On pourra aussi pondérer les revenus en fonction du nombre de personnes composant les foyers.
+- temporel (générations); Les enfants américains nés de parents étrangers sont-ils mieux intégrés au marché de l’emploi que leurs parents avant eux ?
 
-On a cette fois-ci une vision plus claire des pays de naissance. On constate une assez grande diversité géographique, puisque presques tous les continents sont représentés ; l'Amérique du Sud ( Mexique, Salvador, etc), l'Asie (Vietnam, Laos,Philippines,Inde, Japon,etc) mais aussi l'Europe (Italie,Allemagne).
 
-Au niveau des proportions, le Mexique s'impose assez largement comme 1er pays de naissance (hors États-Unis) de la population. Attirée par un pays voisin au niveau de vie supérieur, on peut aisément supposer qu'une partie de la population mexicaine a fait le choix de s'installer aux États-Unis. On retrouve de la même manière plusieurs pays latino-américains comme Puerto-Rico ou Cuba en haut du classement.
+Enfin, nous nous attacherons à essayer de comprendre les inégalités économiques. Pour cela nous nous pencherons sur les données structurelles : 
+- Le niveau scolaire; La poursuite d’études permet-elle l’accès aux plus hauts revenus ? Élimine-t-elle le travail précaire ?
+- La qualité de l’emploi (nombre de semaines travaillées, salaire mensuel, cause du chômage, domaine d’activité, syndicat,); L’ethnie a-t-elle un impact sur les postes occupés et la rémunération des individus ? 
+- Le capital
 
-Le rayonnement culturel des États-Unis, accentué par les politiques mises en place durant la Guerre Froide, a fait apparaître le pays comme un nouvel Eldorado, et a attiré les populations du monde entier en quête d'un avenir meilleur.
 
-La forte présence de population née en Allemagne pourrait, elle, être expliquée par une émigration durant et post-2nde guerre mondiale, notamment chez les populations de confession juive. 
 
-Après avoir étudié la répartition internationale des lieux de naissance, intéressons-nous maintenant aux lieux de résidence intra-étatique.
+Il est tout de même important de noter que les données datent des années 90 et que les visualisations que nous allons réaliser ne seront pas forcément représentatives de la situation actuelle. Il sera donc nécessaire de replacer ces visualisations dans le contexte de l'époque afin de les interpréter correctement.
 
-### Carte des États-Unis représentant les Etats précédents de résidence
 
-```{r maptwo}
-previous_residence_data <- data %>%
-    filter(state_of_previous_residence != "Not in universe" &
-        state_of_previous_residence != "?") %>%
-    group_by(state_of_previous_residence) %>%
-    summarise(count = n()) %>%
-    arrange(desc(count)) %>%
-    rename(state = state_of_previous_residence)
+> *NB : “race” est un mot de vocabulaire employé dans le champ de la recherche en sociologie, en France comme aux États-Unis. 
 
-plot_usmap(
-    data = previous_residence_data,
-    values = "count"
-) +
-    scale_fill_continuous(
-        low = "white", high = "#DC143C",
-    ) +
-    theme(legend.position = "right") +
-    labs(
-        title = "State of Previous Residence",
-        fill = "Number of people"
-    )
-```
 
-*Nous n'avions pas assez de données sur les États de Wasgington et Hawaï, et ils sont donc en gris sur la carte*
 
-La Californie, l'Utah, la Floride et la Caroline du Nord comptent pour les Etats les plus représentés dans la population sondée.
+# Exploration
 
-La Californie (30 millions d'habitants en 1994) et la Floride (31 millions) sont en effet les Etats les plus peuplés des États-Unis, et il n'est pas étonnant de les retrouver sur cette carte. De plus, le gouverneur de Californie Pete Wilson (Républicain) en poste en 1994 s'est lancé dans une croisade contre les immigrés de son Etat. La Proposition 187 de Californie était une proposition de loi controversée qui a été soumise au vote des électeurs en Californie lors des élections de novembre 1994. Son titre officiel était l'« Initiative de la loi sur l'immigration illégale ». Elle visait à restreindre l'accès des immigrants sans papiers aux services publics, tels que l'éducation et les soins de santé. Un débat a été engagé sur la constitutionnalité de cette loi. Cependant, de nombreuses personnes issues de l'immigration ont préféré quitter l'Etat.  La présence de l'Utah est plus surprenante, alors qu'en 1994 la population de cet Etat n'excédait par les 2 millions de personnes. On peut faire le même constat pour la Caroline du nord, et ses 7 millions d'habitants.
-
-On peut faire plusieurs conjonctures pour expliquer cette carte. Tout d'abord, il faut rappeler que malgré sa volonté d'être représentative de la population américaine, ce recensement ne se base "que" sur 200 000 personnes, et qu'il peut donc y avoir des biais, surtout géographiques. On n'a en effet pas les lieux où les enquêtes ont été majoritairement menées, et il est possible qu'il y ait eu un plus fort taux de réponses dans certains Etats comme l'Utah qu'ailleurs.
-
-Deuxième piste, les données portaient sur l'Etat de "précédente résidence" ; on peut donc faire l'hypothèse que les habitants de l'Utah et de la Caroline du Nord sont plus souvent partis de ces Etats pour s'installer dans d'autres. La forte population dans certains Etats ne seraient pas donc dû à un solde naturel positif de naissance inter-étatique, mais bien à des mobilités de population à l'échelle nationale.
-
-Ces suppositions sont évidemment insuffisantes pour expliquer ce décalage, mais elles nous permettent de nous apporter quelques pistes de réflexions, et surtout de garder à l'esprit de toujours s'interroger sur la provenance des données.
-
+Pour commencer, comme ce jeu de données est d'abord un recencement de la population américaine, il nous semble important d'en comprendre les principales caractéristiques (âge, sexe, origine) afin de dresser un portrait de l'américain moyen en 1994.
 
 ### Inégalités de genre
 ### Niveau de revenu en fonction du genre
@@ -310,7 +234,7 @@ Ces suppositions sont évidemment insuffisantes pour expliquer ce décalage, mai
 ```{r incomesex}
 ggplot(data, aes(x = income_level, fill = sex)) +
     geom_bar(position = "fill") +
-    labs(x = "Income Level", y = "Count", fill = "Sex")
+    labs(x = "Niveau de revenu", y = "Nombre d'individus", fill = "Genre")
 ```
 
 Les catégories de revenu sont divisées en deux, soit moins de 50 000 dollars par an, soit plus que 50 000 dollars par an, puisque le jeu de données ne comporte pas de données plus précises.
@@ -354,7 +278,7 @@ industry <- data %>%
 
 ggplot(industry, aes(y = major_industry_recode, fill = sex)) +
     geom_bar() +
-    labs(x = "Count", y = "Major Industry Recode")
+    labs(x = "Nombre d'invividus", y = "Secteur d'activité")
 ```
 
 ```{r industry-wage}
@@ -427,9 +351,9 @@ ggplot(education, aes(x = major_industry_recode, y = wage_per_hour, fill = major
     geom_bar(stat = "summary") +
     facet_wrap(~sex) +
     labs(
-        title = "Salaire moyen par heure en fonction du sexe et du secteur d'activité",
-        x = "Secteur d'activité", y = "Salaire moyen par heure",
-        fill = "secteur d'activité"
+        title = "Salaire mensuel moyen en fonction du genre et du secteur d'activité",
+        x = "Secteur d'activité", y = "Salaire mensuel moyen",
+        fill = "Secteur d'activité"
     )
 ```
 
@@ -481,8 +405,8 @@ Pour ce qui est de la corrélation entre diplôme et salaire par heure, on const
 ggplot(education, aes(x = wage_per_hour, y = education)) +
     geom_bar(stat = "summary") +
     labs(
-        title = "Wage per hour by education",
-        x = "Wage per hour", y = "Education"
+        title = "Salaire mensuel par niveau scolaire",
+        x = "Salaire mensuel", y = "Niveau scolaire"
     )
 ```
 Cependant, nous pouvons aussi dire que, au-delà de questions pécuniaires, un haut niveau de diplôme va avoir un certain prestige social (capital symbolique pour reprendre les notions de Bourdieu). De ce prisme, nous pouvons constater de nouvelles inégalités entre hommes et femmes du fait de la moindre présence féminine dans les docteurs (diplômes d’un doctorat (PhD)).
@@ -495,8 +419,8 @@ Nous allons ensuite nous intéresser à l'impact de l'ethnie sur le niveau de re
 ggplot(data, aes(x = income_level, fill = race)) +
     geom_bar(position = "fill") +
     labs(
-        title = "Income level by race",
-        x = "Income Level", y = "Percentage", fill = "Race"
+        title = "Niveau de revenu en fonction de l'ethnie",
+        x = "Niveau de revenu", y = "Pourcentage", fill = "Ethnies"
     )
 ```
 
@@ -510,10 +434,10 @@ ggplot(income_percent, aes(x = income_level, y = percentage, fill = race)) +
   geom_bar(position = "dodge", stat = "identity") +
   scale_y_continuous(labels = percent_format()) +
   labs(
-    title = "Distribution of Races by Income Level",
-    fill = "Race",
-    x = "Income Level",
-    y = "Percentage"
+    title = "Repartition des ethnies en fonction du niveau de revenu",
+    fill = "Ethnies",
+    x = "Niveau de revenu",
+    y = "Pourcentage"
   )
 ```
 
@@ -688,6 +612,86 @@ Nous pouvons constater que les personnes ayant habités dans la SunBelt ont un s
 Cet aspect politique a pu entrainer des migrations des personnes racisées, qui, nous l'avons dit tout à l'heure, ont un salaire moins élevés que leurs homologues blancs.
 
 La deuxième explication vient du fait que les Etats de la Sunbelt, dans les années 90, avait pour activité économique principale l'agriculture qui génère de moindre revenus. A cela s'ajoutait le tourisme et la pêche. L'industrie automobile venait de faire son apparition dans ces Etats, tout comme le domaine des hautes technologies qui n'était qu'à ses balbutiements. 
+
+
+## Etats-Unis et migrations
+
+```{r birthcountry, fig.height=8}
+ggplot(data, aes(y = country_of_birth_self)) +
+    geom_bar() +
+    labs(
+        title = "Pays de naissance",
+        x = "Nombre d'individus", y = "Pays"
+    )
+```
+
+Les pays de naissance des personnes interrogées sont donc variés, avec une large majorité de personnes nées aux Etats-Unis.
+
+Quelques pays comme le Mexique semblent néanmoins se distinguer du fait de sa proximité avec les États-Unis (frontière commune). Il convient aussi de noter que le Mexique traverse une grave crise économique qui débute fin 1994. Cette information peut être mise en perspective avec les débats des années 2010 sur la construction d'un mur à la frontière entre les États-Unis et le Mexique pour endiguer le flux migratoire venant du Mexique mais aussi de l'Amérique latine.  
+
+Pour mieux appréhender la pluralité des pays d'origine de ces immigrés, voici donc un autre graphique, qui exclut cette fois-ci les États-Unis.
+
+### Pays de naissance - Hors États-Unis
+```{r birthcountrynous, fig.height=8}
+no_us <- data %>%
+    filter(country_of_birth_self != "United-States")
+
+ggplot(no_us, aes(y = country_of_birth_self)) +
+    geom_bar() +
+    labs(
+        title = "Pays de naissance",
+        x = "Nombre d'individus", y = "Pays"
+    )
+```
+
+On a cette fois-ci une vision plus claire des pays de naissance. On constate une assez grande diversité géographique, puisque presques tous les continents sont représentés ; l'Amérique du Sud ( Mexique, Salvador, etc), l'Asie (Vietnam, Laos,Philippines,Inde, Japon,etc) mais aussi l'Europe (Italie,Allemagne).
+
+Au niveau des proportions, le Mexique s'impose assez largement comme 1er pays de naissance (hors États-Unis) de la population. Attirée par un pays voisin au niveau de vie supérieur, on peut aisément supposer qu'une partie de la population mexicaine a fait le choix de s'installer aux États-Unis. On retrouve de la même manière plusieurs pays latino-américains comme Puerto-Rico ou Cuba en haut du classement.
+
+Le rayonnement culturel des États-Unis, accentué par les politiques mises en place durant la Guerre Froide, a fait apparaître le pays comme un nouvel Eldorado, et a attiré les populations du monde entier en quête d'un avenir meilleur.
+
+La forte présence de population née en Allemagne pourrait, elle, être expliquée par une émigration durant et post-2nde guerre mondiale, notamment chez les populations de confession juive. 
+
+Après avoir étudié la répartition internationale des lieux de naissance, intéressons-nous maintenant aux lieux de résidence intra-étatique.
+
+### Carte des États-Unis représentant les Etats précédents de résidence
+
+```{r maptwo}
+previous_residence_data <- data %>%
+    filter(state_of_previous_residence != "Not in universe" &
+        state_of_previous_residence != "?") %>%
+    group_by(state_of_previous_residence) %>%
+    summarise(count = n()) %>%
+    arrange(desc(count)) %>%
+    rename(state = state_of_previous_residence)
+
+plot_usmap(
+    data = previous_residence_data,
+    values = "count"
+) +
+    scale_fill_continuous(
+        low = "white", high = "#DC143C",
+    ) +
+    theme(legend.position = "right") +
+    labs(
+        title = "Etat précédent de résidence",
+        fill = "Nombre d'individus"
+    )
+```
+
+*Nous n'avions pas assez de données sur les États de Wasgington et Hawaï, et ils sont donc en gris sur la carte*
+
+La Californie, l'Utah, la Floride et la Caroline du Nord comptent pour les Etats les plus représentés dans la population sondée.
+
+La Californie (30 millions d'habitants en 1994) et la Floride (31 millions) sont en effet les Etats les plus peuplés des États-Unis, et il n'est pas étonnant de les retrouver sur cette carte. De plus, le gouverneur de Californie Pete Wilson (Républicain) en poste en 1994 s'est lancé dans une croisade contre les immigrés de son Etat. La Proposition 187 de Californie était une proposition de loi controversée qui a été soumise au vote des électeurs en Californie lors des élections de novembre 1994. Son titre officiel était l'« Initiative de la loi sur l'immigration illégale ». Elle visait à restreindre l'accès des immigrants sans papiers aux services publics, tels que l'éducation et les soins de santé. Un débat a été engagé sur la constitutionnalité de cette loi. Cependant, de nombreuses personnes issues de l'immigration ont préféré quitter l'Etat.  La présence de l'Utah est plus surprenante, alors qu'en 1994 la population de cet Etat n'excédait par les 2 millions de personnes. On peut faire le même constat pour la Caroline du nord, et ses 7 millions d'habitants.
+
+On peut faire plusieurs conjonctures pour expliquer cette carte. Tout d'abord, il faut rappeler que malgré sa volonté d'être représentative de la population américaine, ce recensement ne se base "que" sur 200 000 personnes, et qu'il peut donc y avoir des biais, surtout géographiques. On n'a en effet pas les lieux où les enquêtes ont été majoritairement menées, et il est possible qu'il y ait eu un plus fort taux de réponses dans certains Etats comme l'Utah qu'ailleurs.
+
+Deuxième piste, les données portaient sur l'Etat de "précédente résidence" ; on peut donc faire l'hypothèse que les habitants de l'Utah et de la Caroline du Nord sont plus souvent partis de ces Etats pour s'installer dans d'autres. La forte population dans certains Etats ne seraient pas donc dû à un solde naturel positif de naissance inter-étatique, mais bien à des mobilités de population à l'échelle nationale.
+
+Ces suppositions sont évidemment insuffisantes pour expliquer ce décalage, mais elles nous permettent de nous apporter quelques pistes de réflexions, et surtout de garder à l'esprit de toujours s'interroger sur la provenance des données.
+
+
 
 
 # Conclusion
