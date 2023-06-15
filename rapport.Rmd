@@ -142,11 +142,11 @@ ages <- data %>%
 ggplot(data = ages, aes(x = as.factor(age_range), fill = sex)) +
     geom_bar(data = subset(ages, sex == "Female")) +
     geom_bar(
-        data = subset(ages, sex == "Male"),
+        data = subset(ages, sex == "Male")),
         aes(y = after_stat(count) * (-1))
     ) +
     coord_flip() +
-    labs(title = "Pyramide des âges", x = "Âge", y = "Nombre de personnes")
+    labs(title = "Pyramide des âges", x = "Âge", y = "Nombre de personnes", fill = "Genre")
 ```
 
 On peut aussi constater que les femmes vivent plus longtemps que les hommes, puisqu'elles représentent par exemple 3/4 de la classe d'âge 85-90 ans. Une hygiène de vie plus favorable, avec moins de tabac ou d'alcool, peut en partie expliquer cet écart.
@@ -257,15 +257,6 @@ Quand nous pensons aux inégalités aux Etats-Unis, nous pensons tout d'abord au
 ## Les inégalités raciales
 ### Niveau de revenu en fonction de l'ethnie
 
-```{r levelrace, fig.width = 7}
-ggplot(data, aes(x = income_level, fill = race)) +
-    geom_bar(position = "fill") +
-    labs(
-        title = "Niveau de revenu en fonction de l'ethnie",
-        x = "Niveau de revenu", y = "Pourcentage", fill = "Ethnies"
-    )
-```
-
 ```{r levelracepercentage}
 income_percent <- data %>%
   group_by(income_level) %>%
@@ -326,7 +317,7 @@ industry <- data %>%
 
 ggplot(industry, aes(y = major_industry_recode, fill = race)) +
   geom_bar() +
-  labs(x = "Nombre", y = "Type de branche")
+  labs(x = "Nombre", y = "Type de branche", fill = "Ethnie")
 ```
 
 On constate encore une fois que le nombre de personnes caucasiennes du jeu de données nuit à la lisibilité de nos graphiques axés sur les personnes racisées. Nous allons donc sélectionner seulement les personnes racisées. 
@@ -337,7 +328,7 @@ industry2 <- data %>%
 
 ggplot(industry2, aes(y = major_industry_recode, fill = race)) +
   geom_bar() +
-  labs(x = "Nombre", y = "Type de branche")
+  labs(x = "Nombre", y = "Type de branche", fill = "Race")
 ```
 
 
@@ -403,7 +394,7 @@ occupation <- data %>%
 
 ggplot(occupation, aes(y = major_occupation_recode, fill = race)) +
   geom_bar() +
-  labs(x = "Nombre", y = "Type de branche")
+  labs(x = "Nombre", y = "Type de branche", fill = "Ethnie")
 ```
 
 Pour une meilleure lisibilité, on analyse ce même schéma, mais sans les populations caucasiennes : 
@@ -415,7 +406,7 @@ occupation <- data %>%
 
 ggplot(occupation, aes(y = major_occupation_recode, fill = race)) +
   geom_bar() +
-  labs(x = "Nombre", y = "Type d'activité")
+  labs(x = "Nombre", y = "Type d'activité", fill = "Ethnie")
 ```
 
 Pour comprendre l'écart de salaire moyen que nous avions pu constater plus tôt, entre les populations noires et asiatiques par exemple, il peut être intéressant d'analyser leur domaine d'activité. Les populations asiatiques sont en effet sureprésentées dans la catégorie "spécialité professionnel". Même si le terme reste flou, on peut comprendre que c'est un domaine d'expertise bien précis, qui demande des connaissances bien précises - et qui est sûrement mieux rémunérés que les autres emplois.
@@ -429,7 +420,8 @@ Nous allons pouvoir nous intéresser à l’aspect scolaire des inégalités ent
 
 ```{r education_race}
 ggplot(education, aes(y = education, fill = race)) +
-    geom_bar(position = "fill")
+    geom_bar(position = "fill")+
+    labs(fill = "Ethnie)
 ```
 
 On constate ici que jusqu’au High school diploma les personnes racisées sont autant présentes que les personnes caucasiennes, voir même sont majoritaires dans certains cas. Cependant cette tendance s’inverse pour les diplômes les plus valorisés (et les plus longs à obtenir) que sont les prof school degree, master degree ou bien encore phD. Or nous avons vu tout à l’heure que ces diplômes étaient les plus rémunérateurs. De plus, certaines populations comme les amérindiens ne sont pas représentés dans les niveaux de diplomes les plus élevés. 
@@ -643,7 +635,7 @@ industry <- data %>%
 
 ggplot(industry, aes(y = major_industry_recode, fill = sex)) +
     geom_bar() +
-    labs(x = "Nombre d'invividus", y = "Secteur d'activité")
+    labs(x = "Nombre d'invividus", y = "Secteur d'activité", fill = "Genre")
 ```
 
 
@@ -707,7 +699,7 @@ employment_stat <- data %>%
 
 ggplot(employment_stat, aes(x = full_or_part_time_employment_stat, fill = sex)) +
     geom_bar(position = "fill") +
-    labs(title = "Type d'activité en fonction du genre", x = "Type d'activité", y = "Nombre de personnes")
+    labs(title = "Type d'activité en fonction du genre", x = "Type d'activité", y = "Nombre de personnes", fill = "Genre")
 ```
 
 Ce coût d’opportunité peut aussi expliquer une auto-censure des femmes dans leurs études. En effet, pourquoi investir (avec du temps et surtout de l’argent) dans l'éducation alors qu’on gagnera moins que son mari ? 
@@ -731,7 +723,8 @@ education <- data %>%
 
 ggplot(education, aes(y = education, fill = sex)) +
   geom_bar(position = "fill")+
-geom_vline(xintercept = 0.5, linetype = "dashed", color = "yellow")
+geom_vline(xintercept = 0.5, linetype = "dashed", color = "yellow")+
+labs(fill = "Genre")
 ```
 
 Pour ce qui est de la corrélation entre diplôme et salaire par mensuel, on constate que le salaire croit en fonction du niveau du diplôme. Or, comme nous l’avons dit précédemment, les femmes sont moins enclines à continuer leurs études du fait d’un coût d’opportunité plus élevé que leurs homologues masculins. C’est en quelques sorte le serpent qui se mord la queue.
