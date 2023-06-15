@@ -19,6 +19,8 @@ ggplot(data, aes(x = age)) +
 # distribution des ethnies sur le jeu de données
 data$race <- gsub("Asian or Pacific Islander", "Asian/Pacific", data$race)
 data$race <- gsub("Amer Indian Aleut or Eskimo", "Natives", data$race)
+hispanic_latino <- c("Mexican (Mexicano)", "Puerto Rican", "Cuban", "Central or South American", "Other Spanish", "Chicano", "Mexican-American")
+data$race <- ifelse(data$hispanic_origin %in% hispanic_latino, "Hispanic/Latino", data$race)
 
 ggplot(data, aes(x = race, fill = race)) +
     geom_bar() +
@@ -37,7 +39,7 @@ ggplot(data, aes(x = sex, fill = race)) +
 
 
 # Répartition des hommes et des femmes selon l'âge
-ggplot(data = data, aes(x = age, color = sex)) +
+ggplot(data, aes(x = age, color = sex)) +
     geom_line(stat = "count") +
     xlab("Âge") +
     ylab("Nombre de personnes") +
