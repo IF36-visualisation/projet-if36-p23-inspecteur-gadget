@@ -42,6 +42,10 @@ library(scales)
 
 ```{r data, include=FALSE}
 data <- read_csv("data/census-income.csv")
+data$race <- gsub("Asian or Pacific Islander", "Asian/Pacific", data$race)
+data$race <- gsub("Amer Indian Aleut or Eskimo", "Natives", data$race)
+hispanic_latino <- c("Mexican (Mexicano)", "Puerto Rican", "Cuban", "Central or South American", "Other Spanish", "Chicano", "Mexican-American")
+data$race <- ifelse(data$hispanic_origin %in% hispanic_latino, "Hispanic/Latino", data$race)
 ```
 
 # Introduction
