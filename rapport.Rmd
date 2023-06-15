@@ -271,7 +271,7 @@ Cet écart de revenu entre les hommes et les femmes peut s'expliquer de plusieur
 ```{r}
 # insertion autre graph
 ```
-
+###Le genre du travail
 Deuxièmement, l'éducation est très souvent genrée. De ce fait, les femmes sont souvent orientées vers des filières qui leur "correspondent" (stéréotype de genres) comme par exemple les métiers du "care" - car les femmes sont vues comme naturellement douées pour s'occuper des autres. Or ces filières genrées avec des métiers identifiés comme féminins sont les filières peu rémunératrices. 
 
 ```{r industry-genre}
@@ -321,7 +321,7 @@ ggplot(education, aes(y = major_industry_recode, x = wage_per_hour)) +
   )  
 ```
 
-Nous pouvons constater ici que les femmes sont majoritairement présentes dans les domaines tels que les services sociaux, l’hôpital et plus généralement le domaine médical (souvent dans des postes d’infirmières), ainsi que dans le domaine éducatif. Le domaine des services sociaux est peu rémunérateur, mais ceux de la médecine (en hôpital ou en dehors des hôpitaux) sont dans les plus rémunérateur. Cependant ce secteur représente une grande variété de métiers. 
+Nous pouvons constater ici que les femmes sont majoritairement présentes dans les domaines tels que les services sociaux, l’hôpital et plus généralement le domaine médical (souvent dans des postes d’infirmières), ainsi que dans le domaine éducatif - du fait de stéréotype de genre qui font qu'elles sont considérées comme plus à même d'éduquer des enfants du fait de "l'instinct maternel". Le domaine des services sociaux est peu rémunérateur, mais ceux de la médecine (en hôpital ou en dehors des hôpitaux) sont dans les plus rémunérateur. Cependant ce secteur représente une grande variété de métiers. 
 Cependant, il convient tout de même de noter que les femmes sont aussi majoritaires présentes dans le domaine regroupant finance, assurance et immobilier qui est généralement très rémunérateur. 
 
 ```{r industrie-wage-boxplot}
@@ -361,6 +361,7 @@ ggplot(education, aes(x = major_industry_recode, y = wage_per_hour, fill = major
 
 On constate en effet que pour deux des trois secteurs, les salaires moyens des femmes sont effectivement plus faibles que ceux des hommes. Cette différence est très visible sur le salaire mensuel, ce qui suppose donc une différence importante de salaire en fin de mois. En supposant que les hommes et les femmes travaillent le même nombre d’heures. 
 
+### Femmes et temps de travail (rémunéré)
 Troisième, les femmes ont tendance à plus être en temps partiel que les hommes. En effet, ces dernières doivent généralement s'occuper des enfants et du travail domestique en plus de leur travail rémunéré. De plus, en reprenant nos précédentes explications (salaire mensuel inférieur), il est plus rationnel que cela soit la femme qui renonce à une partie du travail rémunéré car le coût d'opportunité sera moindre (expliqué par Gary Becker, 1981, *A Treaty on the Family*).
 
 ```{r employment-time}
@@ -381,6 +382,7 @@ ggplot(employment_stat, aes(x = full_or_part_time_employment_stat, fill = sex)) 
 
 Ce coût d’opportunité peut aussi expliquer une auto-censure des femmes dans leurs études. En effet, pourquoi investir (avec du temps et surtout de l’argent) alors qu’on gagnera moins que son mari ? 
 
+###Femmes et niveau scolaire
 On constate que la part de femme en fonction du niveau d’étude va en diminuant, et qu’une large majorité des personnes qui ont arrêté leurs études au 1st grade (école élémentaire) sont… des femmes. Au vu des prix de l'éducation aux États-Unis, les parents peuvent aussi choisir d'éduquer et d'investir sur un enfant en particulier, en général un garçon, au détriment du reste de sa fratrie.
 
 La plus grande disparité entre hommes et femmes se fait au niveau PhD. 
@@ -415,6 +417,7 @@ Cependant, nous pouvons aussi dire que, au-delà de questions pécuniaires, un h
 
 Nous allons ensuite nous intéresser à l'impact de l'ethnie sur le niveau de revenu. 
  
+##Les inégalités raciales
 ### Niveau de revenu en fonction de l'ethnie
 
 ```{r levelrace}
@@ -447,6 +450,7 @@ Avec ce graphisme, on constate qu'il existe bien des inégalités raciales au ni
 
 De l'autre côté, les populations en provenance d'Asie sont un peu mieux représentées dans les salaires à +50000 dollars que dans les salaires à -50000 dollars. 
 
+### Salaire mensuel et ethnie
 ```{r wage_per_hour}
 wage <- data %>%
   filter(wage_per_hour != 0 & race != "Other" & age < 75)
@@ -476,6 +480,7 @@ Nous allons maintenant nous intéresser aux différences entre les ethnies. Tout
 
 Néanmoins les population asiatiques ont le plus haut salaire mensuel moyen, dépassant ainsi le seuil des 1250 dollars mensuels après 40 ans. Cette différence pourrait s'expliquer par plusieurs facteurs. Tout d'abord une immigration sélective : seules les populations au plus haut capital social, culturel et économique ont eu les moyens d'immigrer aux États-Unis. La tontine, sorte d'épargne communautaire aidant à financer les projets des membres, est aussi bien développé. On peut aussi supposer que ce haut salaire est corrélé à un plus fort taux d'études, dans des secteurs mieux rémunérés. C'est ce que nous allons vérifier.
 
+###Ethnie et secteur d'activité
 ```{r industry_race}
 industry <- data %>%
   filter(major_industry_recode != "Not in universe or children")
@@ -530,6 +535,7 @@ Nous pouvons remarquer ici, sur les branches qui nous intéressent (retail trade
 
 Maintenant que nous avons vu que les secteurs d’activités étaient répartis de manière inégales entre population racisée et non racisée, nous allons pouvoir nous concentrer sur la position des personnes dans leur travail. 
 
+### Ethnie et type d'activité
 ```{r occupation_race_W}
 occupation <- data %>%
   filter(major_occupation_recode != "Not in universe or children" & major_occupation_recode != "Not in universe" & major_occupation_recode != "Other service"  &  major_occupation_recode != "Armed Forces")
@@ -545,7 +551,7 @@ occupation <- data %>%
 
 ggplot(occupation, aes(y = major_occupation_recode, fill = race)) +
   geom_bar() +
-  labs(x = "Nombre", y = "Type de branche")
+  labs(x = "Nombre", y = "Type d'activité")
 ```
 
 Pour comprendre l'écart de salaire moyen que nous avions pu constater plus tôt, entre les populations noires et asiatiques par exemple, il peut être intéressant d'analyser leur domaine d'activité. Les populations asiatiques sont en effet sureprésentées dans la catégorie "spécialité professionnel". Même si le terme reste flou, on peut comprendre que c'est un domaine d'expertise bien précis, qui demande des connaissances bien précises - et qui est sûrement mieux rémunérés que les autres emplois.
@@ -555,12 +561,17 @@ Le secteur d'activité peut donc avoir un rôle déterminant sur les perspective
 
 Nous allons pouvoir nous intéresser à l’aspect scolaire des inégalités entre les ethnies. 
 
+###Ethnie et capital scolaire
+
 ```{r education_race}
 ggplot(education, aes(y = education, fill = race)) +
     geom_bar(position = "fill")
 ```
 
 On constate ici que jusqu’au High school diploma les personnes racisées sont autant présentes que les personnes caucasiennes, voir même sont majoritaires dans certains cas. Cependant cette tendance s’inverse pour les diplômes les plus valorisés (et les plus longs à obtenir) que sont les prof school degree, master degree ou bien encore phD. Or nous avons vu tout à l’heure que ces diplômes étaient les plus rémunérateurs. De plus, certaines populations comme les amérindiens ne sont pas représentés dans les niveaux de diplomes les plus élevés. 
+
+
+## Etats-Unis et migrations
 
 ### La Sunbelt
 ```{r sunbelt}
@@ -588,8 +599,7 @@ Cet aspect politique a pu entrainer des migrations des personnes racisées, qui,
 
 La deuxième explication vient du fait que les Etats de la Sunbelt, dans les années 90, avait pour activité économique principale l'agriculture qui génère de moindre revenus. A cela s'ajoutait le tourisme et la pêche. L'industrie automobile venait de faire son apparition dans ces Etats, tout comme le domaine des hautes technologies qui n'était qu'à ses balbutiements. 
 
-
-## Etats-Unis et migrations
+###Pays de naissance
 
 ```{r birthcountry, fig.height=8}
 ggplot(data, aes(y = country_of_birth_self)) +
