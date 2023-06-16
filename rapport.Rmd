@@ -424,7 +424,7 @@ Nous allons pouvoir nous intéresser à l’aspect scolaire des inégalités ent
 ```{r education_race, fig.width = 10}
 ggplot(education, aes(y = education, fill = race)) +
     geom_bar(position = "fill") +
-    labs(fill = "Ethnie", x = "Nombre=)
+    labs(fill = "Ethnie", x = "Nombre")
 ```
 
 On constate ici que jusqu’au High school diploma les personnes racisées sont autant présentes que les personnes caucasiennes, voir même sont majoritaires dans certains cas. Cependant cette tendance s’inverse pour les diplômes les plus valorisés (et les plus longs à obtenir) que sont les prof school degree, master degree ou bien encore phD. Or nous avons vu tout à l’heure que ces diplômes étaient les plus rémunérateurs. De plus, certaines populations comme les amérindiens ne sont pas représentés dans les niveaux de diplomes les plus élevés. 
