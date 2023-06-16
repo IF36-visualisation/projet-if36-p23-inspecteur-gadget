@@ -641,3 +641,14 @@ ggplot() +
         color = "Ethnies"
     ) +
     theme(text = element_text(size = 20))
+
+
+# pays de naissance décroissant
+ggplot(jesaispas, aes(y = fct_rev(fct_infreq(country_of_birth_self)))) +
+    geom_bar() +
+    labs(x = "Nombre de personnes", y = "Pays de naissance")
+
+# pays de naissance croissant
+ggplot(jesaispas, aes(y = fct_infreq(country_of_birth_self))) +
+    geom_bar() +
+    labs(x = "Nombre de personnes", y = "Pays de naissance")
