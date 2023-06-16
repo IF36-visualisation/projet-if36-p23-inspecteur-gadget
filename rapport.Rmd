@@ -233,12 +233,14 @@ Il est tout de même important de noter que les données datent des années 90 e
 
 
 > *NB : afin d'éviter toute confusion malaisante sur l'emploi des termes "races", "racisées", "raciales" ou autres dans notre rapport, je citerai le sociologue Saïd Bouamama, *Les discriminations racistes: une arme de division massive*
+
 > *"Si la « race » n’existe pas biologiquement, le racisme existe lui
 socialement. Ce n’est pas la race qui produit le racisme mais ce dernier
-qui produit socialement la « race ». "
+qui produit socialement la « race »."*
+
 > *"Ne pas utiliser ces termes correspondant à une réalité sociale, c’est se condamner
 à l’euphémisation, c’est-à-dire au masquage des inégalités les plus
-scandaleuses et les plus destructrices."
+scandaleuses et les plus destructrices."*
 
 
 
@@ -434,6 +436,7 @@ ggplot(education, aes(y = education, fill = race)) +
 ```
 
 On constate ici que jusqu’au High school diploma les personnes racisées sont autant présentes que les personnes caucasiennes, voir même sont majoritaires dans certains cas. Cependant cette tendance s’inverse pour les diplômes les plus valorisés (et les plus longs à obtenir) que sont les prof school degree, master degree ou bien encore phD. Or nous avons vu tout à l’heure que ces diplômes étaient les plus rémunérateurs. De plus, certaines populations comme les amérindiens ne sont pas représentés dans les niveaux de diplomes les plus élevés. 
+
 La présence des personnes noires dans les études allant de master à doctorat s'explique principalement par la mise en place de quotas par les universités (discrimination positive) dès les années 1960. De plus, la minorité afro-américaine est la plus grosse minorité des Etats-Unis, ce qui signifie qu'elle a un poids électoral indéniable. De même pour les populations hispaniques et latinos, qui bénéficient ainsi elles aussi des systèmes de quotas. Cependant ce n'est pas le cas des populations natives qui n'ont pas été intégrées au système de discrimination positive dans le domaine éducatif américain. 
 
 
@@ -734,7 +737,7 @@ education <- data %>%
 ggplot(education, aes(y = education, fill = sex)) +
   geom_bar(position = "fill") +
   geom_vline(xintercept = 0.5, linetype = "dashed", color = "yellow") +
-  labs(title = "Répartition genrée par niveau de diplôme obtenu", fill = "Genre")
+  labs(title = "Répartition genrée par niveau de diplôme obtenu", x = "Pourcentage", fill = "Genre")
 ```
 
 Pour ce qui est de la corrélation entre diplôme et salaire par mensuel, on constate que le salaire croit en fonction du niveau du diplôme. Or, comme nous l’avons dit précédemment, les femmes sont moins enclines à continuer leurs études du fait d’un coût d’opportunité plus élevé que leurs homologues masculins. C’est en quelques sorte le serpent qui se mord la queue.
