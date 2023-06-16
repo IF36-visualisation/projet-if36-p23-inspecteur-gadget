@@ -38,6 +38,8 @@ library(tidyr)
 library(ggplot2)
 library(usmap)
 library(scales)
+library(stringr)
+library(forcats)
 ```
 
 ```{r data, include=FALSE}
@@ -327,7 +329,10 @@ industry2 <- data %>%
 
 ggplot(industry2, aes(y = major_industry_recode, fill = race)) +
   geom_bar() +
-  labs(title = "Répartition des personnes racisées dans les secteurs d'activité"x = "Nombre", y = "Type de branche", fill = "Ethnie")
+  labs(
+    title = "Répartition des personnes racisées dans les secteurs d'activité", 
+    x = "Nombre", y = "Type de branche", fill = "Ethnie"
+  )
 ```
 
 
@@ -463,7 +468,8 @@ La deuxième explication vient du fait que les Etats de la Sunbelt, dans les ann
 ```{r birthcountry, fig.height=8}
 no_other <- data %>%
     filter(country_of_birth_self != "?")
-    ggplot(no-other, aes(y = fct_rev(fct_infreq(country_of_birth_self)))) +
+
+ggplot(no_other, aes(y = fct_rev(fct_infreq(country_of_birth_self)))) +
   geom_bar() +
   labs(x = "Nombre de personnes", y = "Pays de naissance")
 ```
@@ -483,7 +489,6 @@ no_us <- data %>%
 ggplot(no_us, aes(y = fct_rev(fct_infreq(country_of_birth_self)))) +
   geom_bar() +
   labs(x = "Nombre de personnes", y = "Pays de naissance")
-    )
 ```
 
 On a cette fois-ci une vision plus claire des pays de naissance. On constate une assez grande diversité géographique, puisque presques tous les continents sont représentés ; l'Amérique du Sud ( Mexique, Salvador, etc), l'Asie (Vietnam, Laos,Philippines,Inde, Japon,etc) mais aussi l'Europe (Italie,Allemagne).
@@ -677,8 +682,8 @@ ggplot(education, aes(x = major_industry_recode, y = wage_per_hour, fill = major
         title = "Salaire mensuel moyen en fonction du genre et du secteur d'activité",
         x = "Secteur d'activité", y = "Salaire mensuel moyen",
         fill = "Secteur d'activité"
-    )+
-    scale_x_discrete(labels = function(x) str_wrap(x, width = 10)
+    ) +
+    scale_x_discrete(labels = function(x) str_wrap(x, width = 10))
 ```
 
 On constate en effet que pour deux des trois secteurs, les salaires moyens des femmes sont effectivement plus faibles que ceux des hommes. Cette différence est très visible sur le salaire mensuel. En supposant que les hommes et les femmes travaillent le même nombre d’heures. 
