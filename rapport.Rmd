@@ -118,7 +118,7 @@ Plus d'informations sur la signification des variables sont disponibles sur le s
 
 Commençons donc avec la répartition par âge de notre échantillon.
 
-```{r pyramide}
+```{r pyramide, fig.width=8}
 ages <- data %>%
     mutate(age_range = cut(age,
         breaks = seq(min(data$age), max(data$age), 5), include.lowest = TRUE
@@ -252,7 +252,7 @@ scandaleuses et les plus destructrices."*
 
 Pour commencer, comme ce jeu de données est d'abord un recencement de la population américaine, il nous semble important d'en comprendre les principales caractéristiques (âge, sexe, origine) afin de dresser un portrait de l'américain moyen en 1994.
 
-Quand nous pensons aux inégalités aux Etats-Unis, nous pensons tout d'abord aux inégalités raciales qui touchent les populations afro-américaines. Nous allons donc commencer notre exploration par cet aspect des inégalités. 
+Quand nous pensons aux inégalités aux États-Unis, nous pensons tout d'abord aux inégalités raciales qui touchent les populations afro-américaines. Nous allons donc commencer notre exploration par cet aspect des inégalités. 
 
 
  
@@ -423,7 +423,7 @@ Pour comprendre l'écart de salaire moyen que nous avions pu constater plus tôt
 
 Les populations noires sont elles plutôt représentés dans le support administratif, domaine qui paye peut-être moins bien.
 Le secteur d'activité peut donc avoir un rôle déterminant sur les perspectives de salaire, et est l'une des causes des différences salariales entre ethnies.
-Les populations latinos hispaniques sont elles plus présentes dans le domaine administratif, dans les emplois de supervision dans les usines (contre-maîtres) mais aussi dans la mécanique de précision. Comme nous l'avons dit plus haut, le domaine administratif, même aux Etats-Unis, n'est pas celui qui paie le mieux. De même, les contre-maîtres dans l'industrie américaine ne sont pas des postes à forte valeur ajoutée, ainsi les salaires restent faibles. Enfin, la mécanique de précision est un domaine peu valorisé d'un point de vue salarial. 
+Les populations latinos hispaniques sont elles plus présentes dans le domaine administratif, dans les emplois de supervision dans les usines (contre-maîtres) mais aussi dans la mécanique de précision. Comme nous l'avons dit plus haut, le domaine administratif, même aux États-Unis, n'est pas celui qui paie le mieux. De même, les contre-maîtres dans l'industrie américaine ne sont pas des postes à forte valeur ajoutée, ainsi les salaires restent faibles. Enfin, la mécanique de précision est un domaine peu valorisé d'un point de vue salarial. 
 
 Nous allons pouvoir nous intéresser à l’aspect scolaire des inégalités entre les ethnies. 
 
@@ -437,10 +437,10 @@ ggplot(education, aes(y = education, fill = race)) +
 
 On constate ici que jusqu’au High school diploma les personnes racisées sont autant présentes que les personnes caucasiennes, voir même sont majoritaires dans certains cas. Cependant cette tendance s’inverse pour les diplômes les plus valorisés (et les plus longs à obtenir) que sont les prof school degree, master degree ou bien encore phD. Or nous avons vu tout à l’heure que ces diplômes étaient les plus rémunérateurs. De plus, certaines populations comme les amérindiens ne sont pas représentés dans les niveaux de diplomes les plus élevés. 
 
-La présence des personnes noires dans les études allant de master à doctorat s'explique principalement par la mise en place de quotas par les universités (discrimination positive) dès les années 1960. De plus, la minorité afro-américaine est la plus grosse minorité des Etats-Unis, ce qui signifie qu'elle a un poids électoral indéniable. De même pour les populations hispaniques et latinos, qui bénéficient ainsi elles aussi des systèmes de quotas. Cependant ce n'est pas le cas des populations natives qui n'ont pas été intégrées au système de discrimination positive dans le domaine éducatif américain. 
+La présence des personnes noires dans les études allant de master à doctorat s'explique principalement par la mise en place de quotas par les universités (discrimination positive) dès les années 1960. De plus, la minorité afro-américaine est la plus grosse minorité des États-Unis, ce qui signifie qu'elle a un poids électoral indéniable. De même pour les populations hispaniques et latinos, qui bénéficient ainsi elles aussi des systèmes de quotas. Cependant ce n'est pas le cas des populations natives qui n'ont pas été intégrées au système de discrimination positive dans le domaine éducatif américain. 
 
 
-## Etats-Unis et migrations
+## États-Unis et migrations
 
 ### La Sunbelt
 
@@ -464,10 +464,10 @@ ggplot() +
     )
 ```
 
-Nous pouvons constater que les personnes ayant habités dans la SunBelt ont un salaire moyen inférieur à celui de l'ensemble des Américains. Cela peut s'expliquer par plusieurs choses. D'une part, notre jeu de données ne nous permet pas de connaître l'Etat de résidence de chaque personne intérrogée. En revanche, nous connaissons leur Etat précédent de résidence. Ainsi nous nous sommes focalisés sur les personnes ayant habitées dans la Sunbelt pour faire ce graphique. Or la Sunbelt est une terre qui a un passé esclavagiste. Encore aujourd'hui, 158ans après la fin de la guerre de Secession, ces racines sont encore présentes. Les Républicains sont relativement bien implantés dans ces Etats, encore de nos jours. 
+Nous pouvons constater que les personnes ayant habités dans la SunBelt ont un salaire moyen inférieur à celui de l'ensemble des Américains. Cela peut s'expliquer par plusieurs choses. D'une part, notre jeu de données ne nous permet pas de connaître l'Etat de résidence de chaque personne intérrogée. En revanche, nous connaissons leur Etat précédent de résidence. Ainsi nous nous sommes focalisés sur les personnes ayant habitées dans la Sunbelt pour faire ce graphique. Or la Sunbelt est une terre qui a un passé esclavagiste. Encore aujourd'hui, 158ans après la fin de la guerre de Secession, ces racines sont encore présentes. Les Républicains sont relativement bien implantés dans ces États, encore de nos jours. 
 Ces aspects politique et culturel ont pu entrainer des migrations des personnes racisées qui apparaissent comme seules personnes reliées à un Etat de la Sunbelt dans notre jeu de données (du fait de l'absence de l'Etat de résidence). 
 
-La deuxième explication vient du fait que les Etats de la Sunbelt, dans les années 90, avaient pour activité économique principale l'agriculture qui génère de moindres revenus. A cela s'ajoutait le tourisme et la pêche, qui emploient des personnes avec des salaires relativement faibles.  L'industrie automobile venait de faire son apparition dans ces Etats, tout comme le domaine des hautes technologies qui n'était qu'à son balbutiement. 
+La deuxième explication vient du fait que les États de la Sunbelt, dans les années 90, avaient pour activité économique principale l'agriculture qui génère de moindres revenus. A cela s'ajoutait le tourisme et la pêche, qui emploient des personnes avec des salaires relativement faibles.  L'industrie automobile venait de faire son apparition dans ces États, tout comme le domaine des hautes technologies qui n'était qu'à son balbutiement. 
 
 ### Pays de naissance
 
@@ -480,7 +480,7 @@ ggplot(no_other, aes(y = fct_rev(fct_infreq(country_of_birth_self)))) +
   labs(x = "Nombre de personnes", y = "Pays de naissance")
 ```
 
-Les pays de naissance des personnes interrogées sont donc variés, avec une large majorité de personnes nées aux Etats-Unis.
+Les pays de naissance des personnes interrogées sont donc variés, avec une large majorité de personnes nées aux États-Unis.
 
 Quelques pays comme le Mexique semblent néanmoins se distinguer du fait de sa proximité avec les États-Unis (frontière commune). Il convient aussi de noter que le Mexique traverse une grave crise économique qui débute fin 1994. Cette information peut être mise en perspective avec les débats des années 2010 sur la construction d'un mur à la frontière entre les États-Unis et le Mexique pour endiguer le flux migratoire venant du Mexique et plus généralement de l'Amérique latine.  
 
@@ -531,9 +531,9 @@ ggplot() +
     )
 ```
     
-Nous remarquons ici que les personnes qui viennent d'immigrer aux Etats-Unis ont un salaire inférieur aux personnes dont au moins un des deux parents a immigré aux Etats-Unis. Ainsi on constate que l'intégration des personnes issues de pays autres que les Etats-Unis se fait dans le temps et sur plusieurs générations. Le temps de vie dans le pays influence donc les inégalités. "L'American Dream" n'est pas à effet immédiat. 
+Nous remarquons ici que les personnes qui viennent d'immigrer aux États-Unis ont un salaire inférieur aux personnes dont au moins un des deux parents a immigré aux États-Unis. Ainsi on constate que l'intégration des personnes issues de pays autres que les États-Unis se fait dans le temps et sur plusieurs générations. Le temps de vie dans le pays influence donc les inégalités. "L'American Dream" n'est pas à effet immédiat. 
 
-### Carte des États-Unis représentant les Etats précédents de résidence
+### Carte des États-Unis représentant les États précédents de résidence
 
 ```{r maptwo}
 previous_residence_data <- data %>%
@@ -557,15 +557,15 @@ plot_usmap(
     )
 ```
 
-*Nous n'avions pas assez de données sur les États de Wasgington et Hawaï, et ils sont donc en gris sur la carte*
+*Nous n'avions pas assez de données sur les États de Wasgington et Hawaï, ils sont donc en gris sur la carte.*
 
-La Californie, l'Utah, la Floride et la Caroline du Nord comptent pour les Etats les plus représentés dans la population sondée.
+La Californie, l'Utah, la Floride et la Caroline du Nord comptent pour les États les plus représentés dans la population sondée.
 
-La Californie (30 millions d'habitants en 1994) et la Floride (31 millions) sont en effet les Etats les plus peuplés des États-Unis, et il n'est pas étonnant de les retrouver sur cette carte. De plus, le gouverneur de Californie Pete Wilson (Républicain) en poste en 1994 s'est lancé dans une croisade contre les immigrés de son Etat. La Proposition 187 de Californie était une proposition de loi controversée qui a été soumise au vote des électeurs en Californie lors des élections de novembre 1994. Son titre officiel était l'« Initiative de la loi sur l'immigration illégale ». Elle visait à restreindre l'accès des immigrants sans papiers aux services publics, tels que l'éducation et les soins de santé. Un débat a été engagé sur la constitutionnalité de cette loi. Cependant, de nombreuses personnes issues de l'immigration ont préféré quitter l'Etat.  La présence de l'Utah est plus surprenante, alors qu'en 1994 la population de cet Etat n'excédait par les 2 millions de personnes. On peut faire le même constat pour la Caroline du nord, et ses 7 millions d'habitants.
+La Californie (30 millions d'habitants en 1994) et la Floride (31 millions) sont en effet les États les plus peuplés des États-Unis, et il n'est pas étonnant de les retrouver sur cette carte. De plus, le gouverneur de Californie Pete Wilson (Républicain) en poste en 1994 s'est lancé dans une croisade contre les immigrés de son Etat. La Proposition 187 de Californie était une proposition de loi controversée qui a été soumise au vote des électeurs en Californie lors des élections de novembre 1994. Son titre officiel était l'« Initiative de la loi sur l'immigration illégale ». Elle visait à restreindre l'accès des immigrants sans papiers aux services publics, tels que l'éducation et les soins de santé. Un débat a été engagé sur la constitutionnalité de cette loi. Cependant, de nombreuses personnes issues de l'immigration ont préféré quitter l'Etat.  La présence de l'Utah est plus surprenante, alors qu'en 1994 la population de cet Etat n'excédait par les 2 millions de personnes. On peut faire le même constat pour la Caroline du nord, et ses 7 millions d'habitants.
 
-On peut faire plusieurs conjonctures pour expliquer cette carte. Tout d'abord, il faut rappeler que malgré sa volonté d'être représentative de la population américaine, ce recensement ne se base "que" sur 200 000 personnes, et qu'il peut donc y avoir des biais, surtout géographiques. On n'a en effet pas les lieux où les enquêtes ont été majoritairement menées, et il est possible qu'il y ait eu un plus fort taux de réponses dans certains Etats comme l'Utah qu'ailleurs.
+On peut faire plusieurs conjonctures pour expliquer cette carte. Tout d'abord, il faut rappeler que malgré sa volonté d'être représentative de la population américaine, ce recensement ne se base "que" sur 200 000 personnes, et qu'il peut donc y avoir des biais, surtout géographiques. On n'a en effet pas les lieux où les enquêtes ont été majoritairement menées, et il est possible qu'il y ait eu un plus fort taux de réponses dans certains États comme l'Utah qu'ailleurs.
 
-Deuxième piste, les données portaient sur l'Etat de "précédente résidence" ; on peut donc faire l'hypothèse que les habitants de l'Utah et de la Caroline du Nord sont plus souvent partis de ces Etats pour s'installer dans d'autres. La forte population dans certains Etats ne seraient pas donc dû à un solde naturel positif de naissance inter-étatique, mais bien à des mobilités de population à l'échelle nationale.
+Deuxième piste, les données portaient sur l'Etat de "précédente résidence" ; on peut donc faire l'hypothèse que les habitants de l'Utah et de la Caroline du Nord sont plus souvent partis de ces États pour s'installer dans d'autres. La forte population dans certains États ne seraient pas donc dû à un solde naturel positif de naissance inter-étatique, mais bien à des mobilités de population à l'échelle nationale.
 
 Ces suppositions sont évidemment insuffisantes pour expliquer ce décalage, mais elles nous permettent de nous apporter quelques pistes de réflexions, et surtout de garder à l'esprit de toujours s'interroger sur la provenance des données.
 
@@ -639,9 +639,9 @@ Cet écart de revenu entre les hommes et les femmes peut ainsi s'expliquer de pl
 
 ### Le genre du travail
 
-Deuxièmement, l'éducation est très souvent genrée. De ce fait, les femmes sont souvent orientées vers des filières qui leur "correspondent" (stéréotype de genres) comme par exemple les métiers du "care" - car les femmes sont vues comme naturellement douées pour s'occuper des autres. Or ces filières genrées avec des métiers identifiés comme féminins sont les filières peu rémunératrices. (Duru Bellat, Kieffer, Marry, 2001, *La dynamique des scolarités des filles*)
+Deuxièmement, l'éducation est très souvent genrée. De ce fait, les femmes sont souvent orientées vers des filières qui leur "correspondent" (stéréotype de genres) comme par exemple les métiers du "care" - car les femmes sont vues comme naturellement douées pour s'occuper des autres. Or ces filières genrées avec des métiers identifiés comme féminins sont les filières peu rémunératrices (Duru Bellat, Kieffer, Marry, 2001, *La dynamique des scolarités des filles*).
 
-```{r industry-genre}
+```{r industry-genre, fig.width=8}
 industry <- data %>%
     filter(major_industry_recode != "Not in universe or children")
 
@@ -742,7 +742,7 @@ ggplot(education, aes(y = education, fill = sex)) +
 
 Pour ce qui est de la corrélation entre diplôme et salaire par mensuel, on constate que le salaire croit en fonction du niveau du diplôme. Or, comme nous l’avons dit précédemment, les femmes sont moins enclines à continuer leurs études du fait d’un coût d’opportunité plus élevé que leurs homologues masculins. C’est en quelques sorte le serpent qui se mord la queue.
 
-```{r wage_education}
+```{r wage_education, fig.width=7}
 ggplot(education, aes(x = wage_per_hour, y = education)) +
     geom_bar(stat = "summary") +
     labs(
@@ -763,6 +763,7 @@ Les différences salariales entre les femmes et les hommes sont donc dues à de 
 
 
 # Conclusion
+
 Après avoir étudié le profil de notre échantillon et l'avoir mis en perspective avec les données démographiques de l'époque, il nous a semblé pertinent de nous interroger sur les dicriminations pouvant exister aux États-Unis, notamment celles basées sur l'ethnie ou le sexe.
 Les résultats sont sans équivoque ; ces facteurs ont une importance sur l'éducation, le choix de domaine d'activité, et in fine sur le salaire.
 
@@ -772,7 +773,7 @@ Malheureusement, presque 30 ans plus tard, les choses ne semblent pas avoir éno
 
 De plus, il convient de remarquer que les inégalités de genre et de races non seulement s'accumulent, mais elles peuvent aussi se multiplier. Les femmes noires sont par exemple sujettes à plus d'inégalités, d'une part parce que ce sont des femmes, et d'autre part parce qu'elles sont noires. En témoigne cette courbe représentant les salaires mensuels selon l'âge, le genre et l'ethnie.
 
-```{r intersectionnalite}
+```{r intersectionnalite, fig.width=7}
 wage_nozero_young <- data %>%
     filter(wage_per_hour != 0) %>%
     filter(age <= 67)
