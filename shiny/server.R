@@ -7,7 +7,7 @@ library(plotly)
 library(scales)
 library(forcats)
 library(shiny)
-library(shiny.i18n)
+library(shinyalert)
 
 data <- read_csv("../data/census-income.csv")
 
@@ -505,4 +505,11 @@ server <- function(input, output) {
     output$education_domain <- renderPlotly({
         education_domain_filtered()
     })
+    shinyalert("Bienvenue sur le dashboard !",
+        "Pour personnaliser votre expérience, cliquez sur l'icône en haut à droite de la page.",
+        type = "info",
+        confirmButtonCol = "#2596be",
+        closeOnEsc = TRUE,
+        closeOnClickOutside = TRUE
+    )
 }
