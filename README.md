@@ -4,7 +4,7 @@
 
 Extrait du recensement de la population américaine effectué en 1994-1995, ce jeu de données contient les données d’un peu moins de 200 000 individus, réparties sur 40 variables. Ce jeu de données provient du Département du Commerce des Etats-Unis; nous sommes donc en présence de données qui s'attachent principalement à décrire des données démographiques et sur l'emploi.
 
-Il est disponible sur le site de l'[UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Census-Income+%28KDD%29).
+Il est disponible sur le site de l'[UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/117/census+income+kdd).
 
 
 

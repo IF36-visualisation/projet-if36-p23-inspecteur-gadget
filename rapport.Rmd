@@ -56,7 +56,7 @@ Extrait du recensement de la population américaine effectué en 1994-1995, ce j
 
 À l'origine, ce jeu de données a été publié par Ronny Kohavi et Barry Becker (Data Mining and Visualization, Silicon Graphics) avec pour objectif de prédire si un individu gagne plus de 50 000 dollars par an, dans le cadre du machine learning.
 
-Il est disponible sur le site de l'[UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/20/census+income).
+Il est disponible sur le site de l'[UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/117/census+income+kdd).
 
 
 
