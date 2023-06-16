@@ -772,7 +772,7 @@ Malheureusement, presque 30 ans plus tard, les choses ne semblent pas avoir éno
 
 De plus, il convient de remarquer que les inégalités de genre et de races non seulement s'accumulent, mais elles peuvent aussi se multiplier. Les femmes noires sont par exemple sujettes à plus d'inégalités, d'une part parce que ce sont des femmes, et d'autre part parce qu'elles sont noires. En témoigne cette courbe représentant les salaires mensuels selon l'âge, le genre et l'ethnie.
 
-```{r intersectionnalité}
+```{r intersectionnalite}
 wage_nozero_young <- data %>%
     filter(wage_per_hour != 0) %>%
     filter(age <= 67)
