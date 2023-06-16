@@ -461,11 +461,11 @@ La deuxième explication vient du fait que les Etats de la Sunbelt, dans les ann
 ### Pays de naissance
 
 ```{r birthcountry, fig.height=8}
-ggplot(data, aes(y = country_of_birth_self)) +
-    geom_bar() +
-    labs(
-        x = "Nombre d'individus", y = "Pays"
-    )
+no_other <- data %>%
+    filter(country_of_birth_self != "?")
+    ggplot(no-other, aes(y = fct_rev(fct_infreq(country_of_birth_self)))) +
+  geom_bar() +
+  labs(x = "Nombre de personnes", y = "Pays de naissance")
 ```
 
 Les pays de naissance des personnes interrogées sont donc variés, avec une large majorité de personnes nées aux Etats-Unis.
@@ -480,10 +480,9 @@ Pour mieux appréhender la pluralité des pays d'origine des immigrés, voici do
 no_us <- data %>%
     filter(country_of_birth_self != "United-States" & country_of_birth_self != "?")
 
-ggplot(no_us, aes(y = country_of_birth_self)) +
-    geom_bar() +
-    labs(
-        x = "Nombre d'individus", y = "Pays"
+ggplot(no_us, aes(y = fct_rev(fct_infreq(country_of_birth_self)))) +
+  geom_bar() +
+  labs(x = "Nombre de personnes", y = "Pays de naissance")
     )
 ```
 
