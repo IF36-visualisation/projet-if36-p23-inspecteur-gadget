@@ -588,21 +588,24 @@ On constate tout de même que la répartition des salaires entre les deux genres
 ### Taux d'emploi par genre
 
 ```{r incomesexgender}
-major <- data %>%
-  filter(age > 14)
+adults <- data %>% filter(education != "Children")
 
-taux_emploi <- aggregate(full_or_part_time_employment_stat ~ sex, data = major, FUN = function(x) {
-    taux <- sum(x == "Full-time schedules" |
-        x == "PT for econ reasons usually PT" |
-        x == "PT for econ reasons usually FT" |
-        x == "PT for non-econ reasons usually FT") / length(x)
-})
+employment_rate <- aggregate(
+  adults$full_or_part_time_employment_stat,
+  by = list(adults$age, adults$sex), FUN = function(x) {
+    sum(x == "Full-time schedules" |
+          x == "PT for econ reasons usually PT" |
+          x == "PT for econ reasons usually FT" |
+          x == "PT for non-econ reasons usually FT" |
+          x == "Children or Armed Forces") / length(x)
+  }
+)
 
-ggplot(data = taux_emploi) +
-    geom_bar(aes(x = sex, y = full_or_part_time_employment_stat), stat = "identity", fill = "Purple", width = 0.5) +
-    xlab("Genre") +
-    ylab("Taux d'emploi (%)") +
-    ggtitle("Taux d'emploi chez les hommes et les femmes")
+colnames(employment_rate) <- c("age", "sex", "employment_rate")
+
+ggplot(data = employment_rate, aes(x = age, y = employment_rate, color = sex)) +
+  geom_smooth(se = FALSE) +
+  labs(title = "Taux d'emploi par genre", x = "Age", y = "Taux d'emploi", color = "Genre")
 ```
 
 Pour expliquer cette différence, on constate d'abord que le taux d'emploi des femmes est inférieur à celui des hommes. Cela pourrait en partie expliquer l'écart salarial remarqué plus haut. 
