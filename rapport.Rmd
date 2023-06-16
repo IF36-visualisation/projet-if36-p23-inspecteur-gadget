@@ -678,7 +678,8 @@ ggplot(education, aes(x = major_industry_recode, y = wage_per_hour, fill = major
         title = "Salaire mensuel moyen en fonction du genre et du secteur d'activité",
         x = "Secteur d'activité", y = "Salaire mensuel moyen",
         fill = "Secteur d'activité"
-    )
+    )+
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 On constate en effet que pour deux des trois secteurs, les salaires moyens des femmes sont effectivement plus faibles que ceux des hommes. Cette différence est très visible sur le salaire mensuel. En supposant que les hommes et les femmes travaillent le même nombre d’heures. 
