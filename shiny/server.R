@@ -249,15 +249,9 @@ server <- function(input, output) {
             filter(education != "Children") %>%
             filter(age >= input$employ_selected_age[1] & age <= input$employ_selected_age[2])
 
-        color_variable <- if (input$employ_selected_race_sex == "Ethnie") {
-            adults$race
-        } else {
-            adults$sex
-        }
-
         employment_rate <- aggregate(
             adults$full_or_part_time_employment_stat,
-            by = list(adults$age), FUN = function(x) {
+            by = list(adults$age, adults$race, adults$sex), FUN = function(x) {
                 sum(x == "Full-time schedules" |
                     x == "PT for econ reasons usually PT" |
                     x == "PT for econ reasons usually FT" |
@@ -266,11 +260,20 @@ server <- function(input, output) {
             }
         )
 
-        colnames(employment_rate) <- c("age", "rate")
+        colnames(employment_rate) <- c("age", "race", "sex", "rate")
 
-        plot <- ggplot(data = employment_rate, aes(x = age, y = rate)) +
-            geom_smooth(color = color_variable, se = FALSE) +
-            labs(x = "Âge", y = "Taux d'emploi")
+        color_variable <- if (input$employ_selected_race_sex == "Ethnie") {
+            employment_rate$race
+        } else {
+            employment_rate$sex
+        }
+
+        plot <- ggplot(data = employment_rate, aes(x = age, y = rate, color = color_variable)) +
+            geom_smooth(se = FALSE, size = 0.5) +
+            labs(
+                x = "Âge", y = "Taux d'emploi",
+                color = "Ethnie"
+            )
 
         return(plot)
     })
@@ -302,14 +305,14 @@ server <- function(input, output) {
         return(plot)
     })
     # -------------------------------------------------------------------------------------------
-    
+
     # -------------- industry et occupation ---------------
     industry <- data %>%
         filter(major_industry_recode != "Not in universe or children" &
             major_occupation_recode != "Not in universe or children")
 
     industry_occupation_filtered <- reactive({
-        y_variable <- if (input$employ_selected_industry_occupation == "Industrie") {
+        y_variable <- if (input$employ_selected_industry_occupation == "Industries") {
             if (input$employ_industry_occupation_order == "Décroissant") {
                 industry$major_industry_recode %>%
                     fct_infreq() %>%
@@ -337,7 +340,7 @@ server <- function(input, output) {
             geom_bar() +
             labs(
                 x = "Nombre de personnes",
-                y = if (input$employ_selected_industry_occupation == "Industrie") {
+                y = if (input$employ_selected_industry_occupation == "Industries") {
                     "Industrie"
                 } else {
                     "Occupation"
@@ -349,10 +352,91 @@ server <- function(input, output) {
                 }
             ) +
             theme(axis.text.y = element_text(size = 8))
-        
+
         return(plot)
     })
     # -----------------------------------------------------
+
+    # -------------- salaire mensuel selon l'éducation  -----------------
+    education_order <- c(
+        "Less than 1st grade",
+        "1st 2nd 3rd or 4th grade",
+        "5th or 6th grade",
+        "7th and 8th grade",
+        "9th grade",
+        "10th grade",
+        "11th grade",
+        "12th grade no diploma",
+        "High school graduate",
+        "Some college but no degree",
+        "Associates degree-occup /vocational",
+        "Associates degree-academic program",
+        "Bachelors degree(BA AB BS)",
+        "Masters degree(MA MS MEng MEd MSW MBA)",
+        "Prof school degree (MD DDS DVM LLB JD)",
+        "Doctorate degree(PhD EdD)"
+    )
+
+    education <- data %>%
+        filter(wage_per_month != 0) %>%
+        filter(education != "Children") %>%
+        mutate(education = factor(
+            education,
+            levels = education_order
+        )) %>%
+        group_by(education, race, sex, major_industry_recode, major_occupation_recode) %>%
+        summarise(wage_per_month = mean(wage_per_month))
+
+    wage_education_filtered <- reactive({
+        plot <- ggplot(education, aes(x = wage_per_month, y = education)) +
+            geom_bar(stat = "summary")
+
+        return(plot)
+    })
+
+    education_race_sex_filtered <- reactive({
+        if (input$edu_selected_filter == "Ethnie") {
+            mapping <- aes(y = education, fill = race)
+            fill_label <- "Ethnie"
+        } else {
+            mapping <- aes(y = education, fill = sex)
+            fill_label <- "Genre"
+        }
+
+        plot <- ggplot(education, mapping) +
+            geom_bar(position = "fill") +
+            scale_x_continuous(labels = percent_format()) +
+            labs(
+                x = "Pourcentage",
+                y = "Éducation",
+                fill = fill_label
+            )
+
+        return(plot)
+    })
+
+    education_domain_filtered <- reactive({
+        if (input$edu_selected_domain == "Industries") {
+            mapping <- aes(y = education, fill = major_industry_recode)
+            fill_label <- "Industrie"
+        } else {
+            mapping <- aes(y = education, fill = major_occupation_recode)
+            fill_label <- "Secteur"
+        }
+
+        plot <- ggplot(education, mapping) +
+            geom_bar(position = "fill") +
+            scale_x_continuous(labels = percent_format()) +
+            labs(
+                x = "Pourcentage",
+                y = "Éducation",
+                fill = fill_label
+            )
+
+        return(plot)
+    })
+
+    # ---------------------------------------------------------------------
 
     output$annee_recensement <- renderText({
         "1994"
@@ -411,5 +495,14 @@ server <- function(input, output) {
     })
     output$industry_occupation <- renderPlotly({
         industry_occupation_filtered()
+    })
+    output$wage_education <- renderPlotly({
+        wage_education_filtered()
+    })
+    output$wage_race_sex <- renderPlotly({
+        education_race_sex_filtered()
+    })
+    output$education_domain <- renderPlotly({
+        education_domain_filtered()
     })
 }

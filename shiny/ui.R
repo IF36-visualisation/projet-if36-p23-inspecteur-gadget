@@ -17,9 +17,9 @@ dashboardPage(
     ),
     dashboardSidebar(
         sidebarMenu(
-            menuItem("Statistiques",
-                tabName = "stats",
-                icon = icon("arrow-trend-up")
+            menuItem("Présentation",
+                tabName = "presentation",
+                icon = icon("chalkboard")
             ),
             menuItem("Démographie",
                 tabName = "demographie",
@@ -51,9 +51,27 @@ dashboardPage(
         chooseSliderSkin("Round"),
         tabItems(
             tabItem(
-                tabName = "stats",
+                tabName = "presentation",
                 fluidRow(
-                    tags$h1("Statistiques")
+                    tags$h1("Présentation")
+                ),
+                fluidRow(
+                    tags$br()
+                ),
+                fluidRow(
+                    box(
+                        width = 12,
+                        status = "primary",
+                        title = "Dashboard interactif : exploration du dataset Census Income",
+                        tags$div(
+                            "Ce dataset, extrait d'un recensement américain, se concentre principalement sur les données démographiques et l'emploi des individus.
+                        L'objectif initial de ce jeu de données était le Machine Learning : entraîner une intelligence artificielle à prédire si un individu gagne
+                        plus ou moins de 50 000 dollars par an, à partir de toutes les autres dimensions du dataset. Il est disponible sur le site de l'", tags$a(href = "https://archive.ics.uci.edu/dataset/117/census+income+kdd", "UCI Machine Learning Repository."),
+                            tags$br(),
+                            "Ce dashboard a pour but de présenter notre exploration de manière interactive : des composants graphiques vous permettent de filtrer les données selon vos préférences
+                        et la librarie Plotly vous permet de zoomer et de vous déplacer dans les graphiques. Pour plus d'informations, voir la section \"À propos\"."
+                        )
+                    )
                 ),
                 fluidRow(
                     tags$br()
@@ -68,7 +86,7 @@ dashboardPage(
                             proxy.height = 57.6
                         ),
                         icon = icon("calendar"),
-                        color = "indigo"
+                        color = "navy"
                     ),
                     infoBox(
                         title = "Observations",
@@ -137,6 +155,7 @@ dashboardPage(
                 ),
                 fluidRow(
                     box(
+                        status = "secondary",
                         title = "Pyramide des âges",
                         withSpinner(
                             plotlyOutput("ages_pyramid"),
@@ -151,6 +170,7 @@ dashboardPage(
                         )
                     ),
                     box(
+                        status = "secondary",
                         title = "Distribution des genres et des ethnies",
                         withSpinner(
                             plotlyOutput("race_sex_distribution"),
@@ -167,6 +187,7 @@ dashboardPage(
                         )
                     ),
                     box(
+                        status = "secondary",
                         title = "Pays de naissance des interrogés",
                         withSpinner(
                             plotlyOutput("birth_country", height = "600px"),
@@ -210,6 +231,7 @@ dashboardPage(
                 ),
                 fluidRow(
                     box(
+                        status = "secondary",
                         title = "Niveau de revenu par ethnie et genre",
                         withSpinner(
                             plotlyOutput("race_income", height = "500px"),
@@ -224,6 +246,7 @@ dashboardPage(
                         )
                     ),
                     box(
+                        status = "secondary",
                         title = "Salaire mensuel moyen par ethnie ou par genre",
                         withSpinner(
                             plotlyOutput("wage_per_month", height = "500px"),
@@ -287,6 +310,7 @@ dashboardPage(
                 ),
                 fluidRow(
                     box(
+                        status = "secondary",
                         title = "Taux d'emploi des interrogés, par ethnie ou par genre",
                         withSpinner(
                             plotlyOutput("employment_rate"),
@@ -294,6 +318,7 @@ dashboardPage(
                         )
                     ),
                     box(
+                        status = "secondary",
                         title = "Nombre de semaines travaillées par an, par ethnie ou par genre",
                         withSpinner(
                             plotlyOutput("weeks_worked"),
@@ -304,7 +329,7 @@ dashboardPage(
                 fluidRow(
                     box(
                         status = "primary",
-                        title = "Industries ou occupations par genre ou ethnie",
+                        title = "Industries ou secteurs par genre ou ethnie",
                         width = 12,
                         withSpinner(
                             plotlyOutput("industry_occupation", height = "500px"),
@@ -317,7 +342,7 @@ dashboardPage(
                                 prettyRadioButtons(
                                     inputId = "employ_selected_industry_occupation",
                                     label = "Données : ",
-                                    choices = c("Industrie", "Occupation"),
+                                    choices = c("Industries", "Secteurs"),
                                     icon = icon("file"),
                                     animation = "tada",
                                     inline = TRUE
@@ -356,6 +381,53 @@ dashboardPage(
                 ),
                 fluidRow(
                     tags$br()
+                ),
+                fluidRow(
+                    box(
+                        width = 12,
+                        status = "secondary",
+                        title = "Salaire mensuel moyen par niveau d'éducation",
+                        withSpinner(
+                            plotlyOutput("wage_education"),
+                            type = 8
+                        )
+                    ),
+                    box(
+                        width = 12,
+                        status = "secondary",
+                        title = "Niveau d'étude en fonction de l'ethnie ou du genre",
+                        withSpinner(
+                            plotlyOutput("wage_race_sex"),
+                            type = 8
+                        ),
+                        tags$br(),
+                        prettyRadioButtons(
+                            inputId = "edu_selected_filter",
+                            label = "Filtre : ",
+                            choices = c("Ethnie", "Genre"),
+                            icon = icon("filter"),
+                            animation = "tada",
+                            inline = TRUE
+                        )
+                    ),
+                    box(
+                        width = 12,
+                        status = "secondary",
+                        title = "Niveau d'étude en fonction du domaine d'industrie ou du secteur",
+                        withSpinner(
+                            plotlyOutput("education_domain", height = "500px"),
+                            type = 8
+                        ),
+                        tags$br(),
+                        prettyRadioButtons(
+                            inputId = "edu_selected_domain",
+                            label = "Données : ",
+                            choices = c("Industries", "Secteurs"),
+                            icon = icon("file"),
+                            animation = "tada",
+                            inline = TRUE
+                        )
+                    )
                 )
             ),
             tabItem(
@@ -368,6 +440,7 @@ dashboardPage(
                 ),
                 fluidRow(
                     box(
+                        status = "secondary",
                         title = "Le melting-pot américain : visualisation des origines internationales
                         des résidents actuels aux États-Unis à l'aide d'un globe terrestre",
                         withSpinner(
@@ -376,13 +449,51 @@ dashboardPage(
                         )
                     ),
                     box(
+                        status = "secondary",
                         title = "Cartographie des migrations internes aux États-Unis :
-                        les États d'origine des populations interrogées",
+                        les États d'origine des populations interrogées (passer la souris sur les États pour plus d'informations)",
                         withSpinner(
                             plotlyOutput("state_map"),
                             type = 8
                         )
                     )
+                )
+            ),
+            tabItem(
+                tabName = "apropos",
+                fluidRow(
+                    tags$h1("À propos du dashboard")
+                ),
+                fluidRow(
+                    tags$br()
+                ),
+                fluidRow(
+                    box(
+                        width = 8,
+                        status = "primary",
+                        title = "Pourquoi ce dashboard ?",
+                        tags$div(
+                            "Ce dashboard a été réalisé dans le cadre de l'UE IF36 à l'", tags$a(href = "https://www.utt.fr/", "Université de Technologie de Troyes"), ".
+                            Il a pour but de présenter les résultats de notre exploration de données sur le jeu de données de notre choix, en complément d'un rapport et d'une soutenance orale."
+                        )
+                    ),
+                    box(
+                        width = 8,
+                        status = "secondary",
+                        title = "Comment ?",
+                        tags$div(
+                            "Grâce au langage R, le dashboard a été développé avec les libraries Shiny, ShinyDashboard(Plus), Intro.js,
+                            et bien d'autres pour la mise en forme et la visualisation des données (notamment Three.js pour le globe terrestre)."
+                        )
+                    ),
+                    box(
+                        width = 8,
+                        status = "secondary",
+                        title = "Par qui ?",
+                        tags$div(
+                            tags$b("Clara Gullotta, Julien Crabos et Tanguy Hardion"), ", étudiants en 1ère année de cycle ingénieur à l'UTT en Informatique et Systèmes d'Information."
+                        )
+                    ),
                 )
             )
         )
