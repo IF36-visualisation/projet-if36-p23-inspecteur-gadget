@@ -232,7 +232,7 @@ Enfin, nous nous attacherons à essayer de comprendre les inégalités économiq
 Il est tout de même important de noter que les données datent des années 90 et que les visualisations que nous allons réaliser ne seront pas forcément représentatives de la situation actuelle. Il sera donc nécessaire de replacer ces visualisations dans le contexte de l'époque afin de les interpréter correctement.
 
 
-> *NB : afin d'éviter toute confusion malaisante sur l'emploi des termes "races", "racisées", "raciales" ou autres dans notre rapport, je citerai le sociologue Saïd Bouamama, *Les discriminations racistes: une arme de division massive*
+> *NB : afin d'éviter toute confusion malaisante sur l'emploi des termes "races", "racisées", "raciales" ou autres dans notre rapport, je citerai le sociologue Saïd Bouamama, *Les discriminations racistes: une arme de division massive**
 
 > *"Si la « race » n’existe pas biologiquement, le racisme existe lui
 socialement. Ce n’est pas la race qui produit le racisme mais ce dernier
