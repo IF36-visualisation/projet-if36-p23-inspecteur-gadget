@@ -10,15 +10,19 @@ library(shiny)
 library(shiny.i18n)
 
 data <- read_csv("../data/census-income.csv")
+
 data$race <- gsub("Asian or Pacific Islander", "Asian/Pacific", data$race)
 data$race <- gsub("Amer Indian Aleut or Eskimo", "Natives", data$race)
+
 hispanic_latino <- c("Mexican (Mexicano)", "Puerto Rican", "Cuban", "Central or South American", "Other Spanish", "Chicano", "Mexican-American")
 data$race <- ifelse(data$hispanic_origin %in% hispanic_latino, "Hispanic/Latino", data$race)
+
+data <- data %>% rename(wage_per_month = wage_per_hour)
 
 
 # ----------------- wage per hour without 0 -----------------
 wph_nozero <- data %>%
-    filter(wage_per_hour != 0)
+    filter(wage_per_month != 0)
 # -----------------------------------------------------------
 
 
@@ -128,21 +132,13 @@ globe <- globejs(
 
 server <- function(input, output) {
     # -------------- pyramides des âges ---------------
-    ages <- data %>%
-        mutate(age_range = cut(age,
-            breaks = seq(min(data$age), max(data$age), 5), include.lowest = TRUE
-        ))
-
     pyramid_filtered <- reactive({
-        selected_race <- input$demog_race_selector
-        if (selected_race == "Toutes") {
-            return(ages)
-        }
+        filtered_ages <- data %>%
+            filter(race %in% input$demog_race_selector) %>%
+            mutate(age_range = cut(age,
+                breaks = seq(min(data$age), max(data$age), 5), include.lowest = TRUE
+            ))
 
-        filtered_ages <- ages %>%
-            filter(
-                race == input$demog_race_selector
-            )
         return(filtered_ages)
     })
     # -------------------------------------------------
@@ -171,41 +167,30 @@ server <- function(input, output) {
     # -------------------------------------------------
 
     # -------------- pays de naissance  ---------------
+    birth_data <- data %>%
+        filter(country_of_birth_self != "?")
+
     birth_country_filtered <- reactive({
         if (input$demog_country_selector == "Tous") {
-            if (input$demog_country_order == "Croissant") {
-                plot <- ggplot(data, aes(y = fct_infreq(country_of_birth_self))) +
-                    geom_bar() +
-                    labs(
-                        x = "Nombre de personnes", y = "Pays de naissance"
-                    )
-            } else {
-                plot <- ggplot(data, aes(y = fct_rev(fct_infreq(country_of_birth_self)))) +
-                    geom_bar() +
-                    labs(
-                        x = "Nombre de personnes", y = "Pays de naissance"
-                    )
-            }
+            filtered_data <- birth_data
         } else {
-            filtered_data <- data %>%
+            filtered_data <- birth_data %>%
                 filter(country_of_birth_self != "United-States")
-            if (input$demog_country_order == "Croissant") {
-                plot <- ggplot(filtered_data, aes(y = fct_infreq(country_of_birth_self))) +
-                    geom_bar() +
-                    labs(
-                        x = "Nombre de personnes", y = "Pays de naissance"
-                    )
-            } else {
-                plot <- ggplot(filtered_data, aes(y = fct_rev(fct_infreq(country_of_birth_self)))) +
-                    geom_bar() +
-                    labs(
-                        x = "Nombre de personnes", y = "Pays de naissance"
-                    )
-            }
+        }
+
+        if (input$demog_country_order == "Croissant") {
+            plot <- ggplot(filtered_data, aes(y = fct_infreq(country_of_birth_self))) +
+                geom_bar() +
+                labs(x = "Nombre de personnes", y = "Pays de naissance")
+        } else {
+            plot <- ggplot(filtered_data, aes(y = fct_rev(fct_infreq(country_of_birth_self)))) +
+                geom_bar() +
+                labs(x = "Nombre de personnes", y = "Pays de naissance")
         }
 
         return(plot)
     })
+
     # -------------------------------------------------
 
     # -------------- niveau de revenu par ethnie et genre ---------------
@@ -228,41 +213,132 @@ server <- function(input, output) {
 
     # -------------- salaire mensuel moyen par ethnie ou genre ---------------
     wage <- data %>%
-        filter(wage_per_hour != 0 & race != "Other")
+        filter(wage_per_month != 0 & race != "Other")
 
     wage_per_month_filtered <- reactive({
         average_wpm_by_age <- wage %>%
-            filter(age >= input$rev_selected_max_age[1] & age <= input$rev_selected_max_age[2]) %>%
-            aggregate(wage_per_hour ~ age + race + sex, FUN = mean)
+            filter(age >= input$rev_selected_age[1] & age <= input$rev_selected_age[2]) %>%
+            aggregate(wage_per_month ~ age + race + sex, FUN = mean)
 
-        if (input$rev_selected_filter == "Ethnie") {
-            plot <- ggplot(data = average_wpm_by_age, aes(
-                x = age, y = wage_per_hour,
-                color = race
-            )) +
-                geom_smooth(se = FALSE, size = 0.5) +
-                labs(
-                    x = "Âge", y = "Salaire mensuel moyen",
-                    color = "Ethnie"
-                )
+        aes_variable <- if (input$rev_selected_filter == "Ethnie") {
+            aes(x = age, y = wage_per_month, color = race)
         } else {
-            plot <- ggplot(data = average_wpm_by_age, aes(
-                x = age, y = wage_per_hour,
-                color = sex
-            )) +
-                geom_smooth(se = FALSE) +
-                labs(
-                    x = "Âge", y = "Salaire mensuel moyen",
-                    color = "Genre"
-                )
+            aes(x = age, y = wage_per_month, color = sex)
         }
+
+        plot <- ggplot(data = average_wpm_by_age, aes_variable) +
+            geom_smooth(se = FALSE, size = ifelse(input$rev_selected_filter == "Ethnie", 0.5, 1)) +
+            labs(
+                x = "Âge",
+                y = "Salaire mensuel moyen",
+                color = if (input$rev_selected_filter == "Ethnie") {
+                    "Ethnie"
+                } else {
+                    "Genre"
+                }
+            )
+
+        return(plot)
+    })
+
+    # ------------------------------------------------------------------------
+
+    # -------------- taux d'emploi --------------------
+    employment_rate_filtered <- reactive({
+        adults <- data %>%
+            filter(education != "Children") %>%
+            filter(age >= input$employ_selected_age[1] & age <= input$employ_selected_age[2])
+
+        employment_rate <- aggregate(
+            adults$full_or_part_time_employment_stat,
+            by = list(adults$age), FUN = function(x) {
+                sum(x == "Full-time schedules" |
+                    x == "PT for econ reasons usually PT" |
+                    x == "PT for econ reasons usually FT" |
+                    x == "PT for non-econ reasons usually FT" |
+                    x == "Children or Armed Forces") / length(x)
+            }
+        )
+
+        colnames(employment_rate) <- c("age", "employment_rate")
+
+        plot <- ggplot(data = employment_rate, aes(x = age, y = employment_rate)) +
+            geom_smooth(se = FALSE) +
+            labs(x = "Âge", y = "Taux d'emploi")
 
         return(plot)
     })
     # -------------------------------------------------
 
+    # -------------- industry et occupation ---------------
+    industry <- data %>%
+        filter(major_industry_recode != "Not in universe or children" &
+            major_occupation_recode != "Not in universe or children")
+
+    industry_occupation_filtered <- reactive({
+        y_variable <- if (input$employ_selected_industry_occupation == "Industrie") {
+            if (input$employ_industry_occupation_order == "Décroissant") {
+                industry$major_industry_recode %>%
+                    fct_infreq() %>%
+                    fct_rev()
+            } else {
+                industry$major_industry_recode %>% fct_infreq()
+            }
+        } else {
+            if (input$employ_industry_occupation_order == "Décroissant") {
+                industry$major_occupation_recode %>%
+                    fct_infreq() %>%
+                    fct_rev()
+            } else {
+                industry$major_occupation_recode %>% fct_infreq()
+            }
+        }
+
+        fill_variable <- if (input$employ_selected_filter == "Ethnie") {
+            industry$race
+        } else {
+            industry$sex
+        }
+
+        ggplot(industry, aes(y = y_variable, fill = fill_variable)) +
+            geom_bar() +
+            labs(
+                x = "Nombre de personnes",
+                y = if (input$employ_selected_industry_occupation == "Industrie") {
+                    "Industrie"
+                } else {
+                    "Occupation"
+                },
+                fill = if (input$employ_selected_filter == "Ethnie") {
+                    "Ethnie"
+                } else {
+                    "Genre"
+                }
+            ) +
+            theme(axis.text.y = element_text(size = 8))
+    })
+    # -----------------------------------------------------
+
+    # -------------- nombre moyen de semaine travaillées dans l'année selon l'âge ---------------
+
+    weeks_worked_filtered <- reactive({
+        plot <- ggplot(data, aes(x = age, y = weeks_worked_in_year)) +
+            geom_smooth(aes(color = race), se = FALSE, size = 0.5) +
+            labs(
+                x = "Âge",
+                y = "Nombre de semaines travaillées dans l'année",
+                color = "Ethnie"
+            )
+
+        return(plot)
+    })
+    # -------------------------------------------------------------------------------------------
+
+    output$annee_recensement <- renderText({
+        "1994"
+    })
     output$nb_observations <- renderText({
-        nrow(data)
+        format(nrow(data), big.mark = " ")
     })
     output$nb_dimensions <- renderText({
         ncol(data)
@@ -270,14 +346,17 @@ server <- function(input, output) {
     output$age_moyen <- renderText({
         round(mean(data$age))
     })
-    output$wph_moyen <- renderText({
-        round(mean(wph_nozero$wage_per_hour))
+    output$age_median <- renderText({
+        median(data$age)
     })
-    output$globe <- renderGlobe({
-        globe
+    output$wpm_moyen <- renderText({
+        round(mean(wph_nozero$wage_per_month))
     })
     output$state_map <- renderPlotly({
         state_map
+    })
+    output$globe <- renderGlobe({
+        globe
     })
     output$ages_pyramid <- renderPlotly({
         ggplot(data = pyramid_filtered(), aes(x = as.factor(age_range), fill = sex)) +
@@ -303,5 +382,14 @@ server <- function(input, output) {
     })
     output$wage_per_month <- renderPlotly({
         wage_per_month_filtered()
+    })
+    output$employment_rate <- renderPlotly({
+        employment_rate_filtered()
+    })
+    output$industry_occupation <- renderPlotly({
+        industry_occupation_filtered()
+    })
+    output$weeks_worked <- renderPlotly({
+        weeks_worked_filtered()
     })
 }

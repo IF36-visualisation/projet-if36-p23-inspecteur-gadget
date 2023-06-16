@@ -37,8 +37,8 @@ dashboardPage(
                 tabName = "education",
                 icon = icon("graduation-cap")
             ),
-            menuItem("Cartes",
-                tabName = "cartes",
+            menuItem("Migrations",
+                tabName = "migrations",
                 icon = icon("globe-americas")
             ),
             menuItem("À propos",
@@ -59,6 +59,17 @@ dashboardPage(
                     tags$br()
                 ),
                 fluidRow(
+                    infoBox(
+                        title = "Année du recensement",
+                        value = withSpinner(
+                            textOutput("annee_recensement"),
+                            type = 7,
+                            size = .4,
+                            proxy.height = 57.6
+                        ),
+                        icon = icon("calendar"),
+                        color = "indigo"
+                    ),
                     infoBox(
                         title = "Observations",
                         value = withSpinner(
@@ -93,9 +104,20 @@ dashboardPage(
                         color = "lime"
                     ),
                     infoBox(
-                        title = "Salaire horaire moyen",
+                        title = "Âge médian",
                         value = withSpinner(
-                            textOutput("wph_moyen"),
+                            textOutput("age_median"),
+                            type = 7,
+                            size = .4,
+                            proxy.height = 57.6
+                        ),
+                        icon = icon("child-reaching"),
+                        color = "maroon"
+                    ),
+                    infoBox(
+                        title = "Salaire mensuel moyen",
+                        value = withSpinner(
+                            textOutput("wpm_moyen"),
                             type = 7,
                             size = .4,
                             proxy.height = 57.6
@@ -108,6 +130,12 @@ dashboardPage(
             tabItem(
                 tabName = "demographie",
                 fluidRow(
+                    tags$h1("Démographie")
+                ),
+                fluidRow(
+                    tags$br()
+                ),
+                fluidRow(
                     box(
                         title = "Pyramide des âges",
                         withSpinner(
@@ -115,12 +143,11 @@ dashboardPage(
                             type = 8
                         ),
                         tags$br(),
-                        prettyRadioButtons(
+                        awesomeCheckboxGroup(
                             inputId = "demog_race_selector",
-                            label = "Ethnie :",
-                            choices = c("Toutes", "White", "Black", "Natives", "Asian/Pacific", "Other"),
-                            icon = icon("user"),
-                            animation = "tada"
+                            label = "Ethnies sélectionnées :",
+                            choices = c("White", "Black", "Natives", "Asian/Pacific", "Hispanic/Latino"),
+                            selected = c("White", "Black", "Natives", "Asian/Pacific", "Hispanic/Latino")
                         )
                     ),
                     box(
@@ -153,7 +180,7 @@ dashboardPage(
                                     inputId = "demog_country_selector",
                                     label = "Pays à afficher : ",
                                     choices = c("Tous", "Hors USA"),
-                                    icon = icon("filter"),
+                                    icon = icon("flag"),
                                     animation = "tada",
                                     inline = TRUE
                                 )
@@ -164,7 +191,7 @@ dashboardPage(
                                     inputId = "demog_country_order",
                                     label = "Ordre : ",
                                     choices = c("Croissant", "Décroissant"),
-                                    icon = icon("sort-amount-up"),
+                                    icon = icon("sort"),
                                     animation = "tada",
                                     inline = TRUE
                                 )
@@ -175,6 +202,12 @@ dashboardPage(
             ),
             tabItem(
                 tabName = "revenu",
+                fluidRow(
+                    tags$h1("Revenu")
+                ),
+                fluidRow(
+                    tags$br()
+                ),
                 fluidRow(
                     box(
                         title = "Niveau de revenu par ethnie et genre",
@@ -206,8 +239,8 @@ dashboardPage(
                             inline = TRUE
                         ),
                         sliderInput(
-                            inputId = "rev_selected_max_age",
-                            label = "Âge : ",
+                            inputId = "rev_selected_age",
+                            label = "Tranche d'âge : ",
                             min = 0,
                             max = 90,
                             value = c(0, 90),
@@ -217,7 +250,108 @@ dashboardPage(
                 )
             ),
             tabItem(
-                tabName = "cartes",
+                tabName = "emploi",
+                fluidRow(
+                    tags$h1("Emploi")
+                ),
+                fluidRow(
+                    tags$br()
+                ),
+                fluidRow(
+                    box(
+                        status = "primary",
+                        width = 12,
+                        sliderInput(
+                            inputId = "employ_selected_age",
+                            label = "Tranche d'âge : ",
+                            min = 0,
+                            max = 90,
+                            value = c(0, 90),
+                            ticks = FALSE
+                        )
+                    )
+                ),
+                fluidRow(
+                    box(
+                        title = "Taux d'emploi des interrogés, par ethnie ou par genre",
+                        withSpinner(
+                            plotlyOutput("employment_rate"),
+                            type = 8
+                        )
+                    ),
+                    box(
+                        title = "Nombre de semaines travaillées par an, par ethnie ou par genre",
+                        withSpinner(
+                            plotlyOutput("weeks_worked"),
+                            type = 8
+                        )
+                    )
+                ),
+                fluidRow(
+                    box(
+                        status = "primary",
+                        title = "Industries ou occupations par genre ou ethnie",
+                        width = 12,
+                        withSpinner(
+                            plotlyOutput("industry_occupation", height = "500px"),
+                            type = 8
+                        ),
+                        tags$br(),
+                        fluidRow(
+                            column(
+                                width = 3,
+                                prettyRadioButtons(
+                                    inputId = "employ_selected_industry_occupation",
+                                    label = "Données : ",
+                                    choices = c("Industrie", "Occupation"),
+                                    icon = icon("file"),
+                                    animation = "tada",
+                                    inline = TRUE
+                                )
+                            ),
+                            column(
+                                width = 3,
+                                prettyRadioButtons(
+                                    inputId = "employ_selected_filter",
+                                    label = "Filtre : ",
+                                    choices = c("Ethnie", "Genre"),
+                                    icon = icon("filter"),
+                                    animation = "tada",
+                                    inline = TRUE
+                                )
+                            ),
+                            column(
+                                width = 3,
+                                prettyRadioButtons(
+                                    inputId = "employ_industry_occupation_order",
+                                    label = "Ordre : ",
+                                    choices = c("Croissant", "Décroissant"),
+                                    icon = icon("sort"),
+                                    animation = "tada",
+                                    inline = TRUE
+                                )
+                            )
+                        )
+                    )
+                )
+            ),
+            tabItem(
+                tabName = "education",
+                fluidRow(
+                    tags$h1("Éducation")
+                ),
+                fluidRow(
+                    tags$br()
+                )
+            ),
+            tabItem(
+                tabName = "migrations",
+                fluidRow(
+                    tags$h1("Migrations")
+                ),
+                fluidRow(
+                    tags$br()
+                ),
                 fluidRow(
                     box(
                         title = "Le melting-pot américain : visualisation des origines internationales
