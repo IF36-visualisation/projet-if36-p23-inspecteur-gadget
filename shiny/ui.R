@@ -261,13 +261,27 @@ dashboardPage(
                     box(
                         status = "primary",
                         width = 12,
-                        sliderInput(
-                            inputId = "employ_selected_age",
-                            label = "Tranche d'âge : ",
-                            min = 0,
-                            max = 90,
-                            value = c(0, 90),
-                            ticks = FALSE
+                        column(
+                            width = 12,
+                            sliderInput(
+                                inputId = "employ_selected_age",
+                                label = "Tranche d'âge : ",
+                                min = 0,
+                                max = 90,
+                                value = c(0, 90),
+                                ticks = FALSE
+                            )
+                        ),
+                        column(
+                            width = 6,
+                            prettyRadioButtons(
+                                inputId = "employ_selected_race_sex",
+                                label = "Filtre : ",
+                                choices = c("Ethnie", "Genre"),
+                                icon = icon("filter"),
+                                animation = "tada",
+                                inline = TRUE
+                            )
                         )
                     )
                 ),
@@ -312,7 +326,7 @@ dashboardPage(
                             column(
                                 width = 3,
                                 prettyRadioButtons(
-                                    inputId = "employ_selected_filter",
+                                    inputId = "employ_selected_industry_occupation_filter",
                                     label = "Filtre : ",
                                     choices = c("Ethnie", "Genre"),
                                     icon = icon("filter"),

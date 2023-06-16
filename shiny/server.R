@@ -249,6 +249,12 @@ server <- function(input, output) {
             filter(education != "Children") %>%
             filter(age >= input$employ_selected_age[1] & age <= input$employ_selected_age[2])
 
+        color_variable <- if (input$employ_selected_race_sex == "Ethnie") {
+            adults$race
+        } else {
+            adults$sex
+        }
+
         employment_rate <- aggregate(
             adults$full_or_part_time_employment_stat,
             by = list(adults$age), FUN = function(x) {
@@ -260,16 +266,43 @@ server <- function(input, output) {
             }
         )
 
-        colnames(employment_rate) <- c("age", "employment_rate")
+        colnames(employment_rate) <- c("age", "rate")
 
-        plot <- ggplot(data = employment_rate, aes(x = age, y = employment_rate)) +
-            geom_smooth(se = FALSE) +
+        plot <- ggplot(data = employment_rate, aes(x = age, y = rate)) +
+            geom_smooth(color = color_variable, se = FALSE) +
             labs(x = "Âge", y = "Taux d'emploi")
 
         return(plot)
     })
     # -------------------------------------------------
 
+    # -------------- nombre moyen de semaine travaillées dans l'année selon l'âge ---------------
+    weeks_worked_filtered <- reactive({
+        weeks <- data %>%
+            filter(age >= input$employ_selected_age[1] & age <= input$employ_selected_age[2])
+
+        color_variable <- if (input$employ_selected_race_sex == "Ethnie") {
+            weeks$race
+        } else {
+            weeks$sex
+        }
+
+        plot <- ggplot(weeks, aes(x = age, y = weeks_worked_in_year)) +
+            geom_smooth(aes(color = color_variable), se = FALSE, size = 0.5) +
+            labs(
+                x = "Âge",
+                y = "Nombre de semaines travaillées dans l'année",
+                color = if (input$employ_selected_race_sex == "Ethnie") {
+                    "Ethnie"
+                } else {
+                    "Genre"
+                }
+            )
+
+        return(plot)
+    })
+    # -------------------------------------------------------------------------------------------
+    
     # -------------- industry et occupation ---------------
     industry <- data %>%
         filter(major_industry_recode != "Not in universe or children" &
@@ -294,13 +327,13 @@ server <- function(input, output) {
             }
         }
 
-        fill_variable <- if (input$employ_selected_filter == "Ethnie") {
+        fill_variable <- if (input$employ_selected_industry_occupation_filter == "Ethnie") {
             industry$race
         } else {
             industry$sex
         }
 
-        ggplot(industry, aes(y = y_variable, fill = fill_variable)) +
+        plot <- ggplot(industry, aes(y = y_variable, fill = fill_variable)) +
             geom_bar() +
             labs(
                 x = "Nombre de personnes",
@@ -309,30 +342,17 @@ server <- function(input, output) {
                 } else {
                     "Occupation"
                 },
-                fill = if (input$employ_selected_filter == "Ethnie") {
+                fill = if (input$employ_selected_industry_occupation_filter == "Ethnie") {
                     "Ethnie"
                 } else {
                     "Genre"
                 }
             ) +
             theme(axis.text.y = element_text(size = 8))
-    })
-    # -----------------------------------------------------
-
-    # -------------- nombre moyen de semaine travaillées dans l'année selon l'âge ---------------
-
-    weeks_worked_filtered <- reactive({
-        plot <- ggplot(data, aes(x = age, y = weeks_worked_in_year)) +
-            geom_smooth(aes(color = race), se = FALSE, size = 0.5) +
-            labs(
-                x = "Âge",
-                y = "Nombre de semaines travaillées dans l'année",
-                color = "Ethnie"
-            )
-
+        
         return(plot)
     })
-    # -------------------------------------------------------------------------------------------
+    # -----------------------------------------------------
 
     output$annee_recensement <- renderText({
         "1994"
@@ -386,10 +406,10 @@ server <- function(input, output) {
     output$employment_rate <- renderPlotly({
         employment_rate_filtered()
     })
-    output$industry_occupation <- renderPlotly({
-        industry_occupation_filtered()
-    })
     output$weeks_worked <- renderPlotly({
         weeks_worked_filtered()
+    })
+    output$industry_occupation <- renderPlotly({
+        industry_occupation_filtered()
     })
 }
